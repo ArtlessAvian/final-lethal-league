@@ -3,7 +3,7 @@ package com.artlessavian.lethalleague;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-public class Player
+public class Ball
 {
 	Sprite sprite;
 	Vector2 pos;

@@ -22,9 +22,21 @@ public class GameScreen extends ScreenAdapter
 
 	public void render(float delta)
 	{
+		doStuff();
 
 		main.batch.begin();
 		main.font.draw(main.batch, "hey", p1.pos.x, p1.pos.y);
 		main.batch.end();
+	}
+
+	public void doStuff()
+	{
+		// move players
+		// move ball
+		//    do move
+		//    check collisions
+		//    check wall collision
+		//    
+		// kill people
 	}
 }

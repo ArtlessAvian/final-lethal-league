@@ -16,6 +16,5 @@ public class Ball
 		pos = new Vector2();
 		vel = new Vector2();
 		lastPos = new Vector2();
-
 	}
 }

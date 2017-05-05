@@ -10,8 +10,8 @@ public class GameScreen extends ScreenAdapter
 
 	Player p1;
 	Player p2;
-
 	Ball ball;
+	Stage stage;
 
 	public GameScreen(Maineroni main)
 	{
@@ -21,17 +21,30 @@ public class GameScreen extends ScreenAdapter
 
 		cam.update();
 
-		p1 = new Player();
-		p2 = new Player();
+		p1 = new Player(main.getInput(0));
+		p1.vel.add(2, 2);
+		p2 = new Player(main.getInput(1));
 		ball = new Ball();
+		stage = new Stage();
 	}
+
+	float rollover = 0;
 
 	public void render(float delta)
 	{
-		doStuff();
+		rollover += delta;
+		for (; rollover > 0; rollover -= 1/60f) {doStuff();}
 
 		main.batch.setProjectionMatrix(cam.combined);
 		main.batch.begin();
+
+		// stage.sprite.draw(main.batch);
+
+		p1.sprite.setPosition(p1.pos.x - p1.sprite.getWidth()/2f, p1.pos.y);
+		p1.sprite.draw(main.batch);
+		p2.sprite.setPosition(p2.pos.x - p2.sprite.getWidth()/2f, p2.pos.y);
+		p2.sprite.draw(main.batch);
+
 		main.font.draw(main.batch, "player1", p1.pos.x, p1.pos.y + 6);
 		main.font.draw(main.batch, "player2", p2.pos.x, p2.pos.y + 6);
 		main.font.draw(main.batch, "ball", ball.pos.x, ball.pos.y + 6);
@@ -40,7 +53,9 @@ public class GameScreen extends ScreenAdapter
 
 	public void doStuff()
 	{
-		// move players
+		p1.move();
+		p2.move();
+
 		// move ball
 		//    do move
 		//    check collisions

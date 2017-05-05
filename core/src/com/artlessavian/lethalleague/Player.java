@@ -1,20 +1,40 @@
 package com.artlessavian.lethalleague;
 
+import com.artlessavian.lethalleague.playerstates.*;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player
 {
 	Sprite sprite;
-	Vector2 pos;
-	Vector2 vel;
+	public Vector2 pos;
+	public Vector2 vel;
 	Vector2 lastPos;
+	boolean grounded = false;
 
-	public Player()
+	StateMachine stateMachine;
+
+	public PlayerInput input;
+
+	public Player(PlayerInput input)
 	{
-		sprite = new Sprite();
-		pos = new Vector2();
+		sprite = new Sprite(new Texture("badlogic.jpg"));
+		sprite.setSize(128, 128);
+		pos = new Vector2(0, 100);
 		vel = new Vector2();
 		lastPos = new Vector2();
+		stateMachine = new StateMachine();
+
+		stateMachine.current = new FallState(this);
+
+		this.input = input;
+	}
+
+	public void move()
+	{
+		stateMachine.run();
+		// if (pos.y <= 0) {pos.y += 900;}
+
 	}
 }

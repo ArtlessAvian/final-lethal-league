@@ -1,7 +1,7 @@
 package com.artlessavian.lethalleague;
 
 //import com.artlessavian.lethalleague.entities.Ball;
-import com.artlessavian.lethalleague.Stage;
+
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
 import com.artlessavian.lethalleague.ecs.systems.PhysicsSystem;

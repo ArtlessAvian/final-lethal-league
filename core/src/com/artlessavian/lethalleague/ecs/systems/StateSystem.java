@@ -12,12 +12,6 @@ public class StateSystem extends IteratingSystem
 		super(Family.all(StateComponent.class).get());
 	}
 
-	/**
-	 * Accelerates a player based on their associated inputs.
-	 *
-	 * @param entity
-	 * @param deltaTime
-	 */
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{

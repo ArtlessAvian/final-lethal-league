@@ -23,7 +23,7 @@ public class Maineroni extends Game
 		batch = new SpriteBatch();
 
 		screenSpace = new OrthographicCamera(1280, 720);
-		screenSpace.translate(1280f/2f, 720f/2f);
+		screenSpace.translate(1280f / 2f, 720f / 2f);
 		screenSpace.update();
 
 		font = new BitmapFont();

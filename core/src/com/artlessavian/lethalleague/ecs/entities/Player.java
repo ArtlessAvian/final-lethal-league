@@ -5,15 +5,17 @@ import com.artlessavian.lethalleague.PlayerInput;
 import com.artlessavian.lethalleague.Stage;
 import com.artlessavian.lethalleague.StateMachine;
 import com.artlessavian.lethalleague.ecs.components.*;
-import com.artlessavian.lethalleague.playerstates.*;
+import com.artlessavian.lethalleague.playerstates.PlayerChargeState;
+import com.artlessavian.lethalleague.playerstates.PlayerJumpState;
+import com.artlessavian.lethalleague.playerstates.PlayerStandState;
+import com.artlessavian.lethalleague.playerstates.PlayerSwingState;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-;
-
 /**
- * Stores all components a Player usually has, and some functions to override for arbitrary behavior
+ * Generic Player to base others around. Extend to create new Players
+ * Stores all components a Player usually has, and some functions to override for arbitrary behavior.
  */
 public class Player extends Entity
 {
@@ -22,10 +24,11 @@ public class Player extends Entity
 	private PhysicsComponent physicsC;
 	private StateComponent stateC;
 
-	PlayerInput input;
+	public PlayerInput input;
 
 	public Player(PlayerInput input)
 	{
+		this.input = input;
 		inputC = new InputComponent(input);
 		this.add(inputC);
 
@@ -42,7 +45,7 @@ public class Player extends Entity
 		this.add(spriteC);
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
-		this.add((StageComponent)collisionBehaviorComponent);
+		this.add(collisionBehaviorComponent);
 	}
 
 	private void addAllStates(StateMachine stateMachine)

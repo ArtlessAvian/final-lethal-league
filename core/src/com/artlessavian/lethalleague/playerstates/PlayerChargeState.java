@@ -6,11 +6,11 @@ import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
-public class PlayerStandState implements State
+public class PlayerChargeState implements State
 {
 	Player player;
 
-	public PlayerStandState(Player player)
+	public PlayerChargeState(Player player)
 	{
 		this.player = player;
 	}
@@ -19,15 +19,12 @@ public class PlayerStandState implements State
 	public void exit()
 	{
 		// TODO
-
 	}
 
 	@Override
 	public void enter()
 	{
 		// TODO
-		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-		physicsC.grounded = true;
 	}
 
 	@Override
@@ -43,21 +40,6 @@ public class PlayerStandState implements State
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 		InputComponent inputC = player.getComponent(InputComponent.class);
 
-		if (inputC.input.leftPressed != inputC.input.rightPressed)
-		{
-			if (inputC.input.leftPressed)
-			{
-				physicsC.vel.x -= 50;
-			}
-			else //inputC.input.rightPressed
-			{
-				physicsC.vel.x += 50;
-			}
-		}
-		else
-		{
-			physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
-		}
-		physicsC.vel.clamp(0, 300);
+		// TODO
 	}
 }

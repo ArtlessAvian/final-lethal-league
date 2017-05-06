@@ -23,7 +23,6 @@ public class StateSystem extends IteratingSystem
 	{
 		StateComponent stateC = entity.getComponent(StateComponent.class);
 
-		stateC.machine.current.changeStateMaybe(stateC.machine);
-		stateC.machine.current.doStuff();
+		stateC.machine.run();
 	}
 }

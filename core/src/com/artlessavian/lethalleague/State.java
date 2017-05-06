@@ -1,10 +1,15 @@
 package com.artlessavian.lethalleague;
 
+/**
+ * One object per state, reused by the same state machine
+ */
 public interface State
 {
-	void reset();
+	public void exit();
 
-	boolean changeStateMaybe(StateMachine sm);
+	public void enter();
 
-	void doStuff();
+	public boolean changeStateMaybe(StateMachine sm);
+
+	public void doStuff();
 }

@@ -14,6 +14,7 @@ public class PhysicsComponent implements Component
 	public boolean facingLeft;
 
 	public Rectangle collision;
+	public boolean grounded;
 
 	public PhysicsComponent()
 	{

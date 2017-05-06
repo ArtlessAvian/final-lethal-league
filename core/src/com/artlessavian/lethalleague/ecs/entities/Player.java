@@ -3,8 +3,9 @@ package com.artlessavian.lethalleague.ecs.entities;
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.PlayerInput;
 import com.artlessavian.lethalleague.Stage;
+import com.artlessavian.lethalleague.StateMachine;
 import com.artlessavian.lethalleague.ecs.components.*;
-import com.artlessavian.lethalleague.playerstates.PlayerStandState;
+import com.artlessavian.lethalleague.playerstates.*;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -32,7 +33,7 @@ public class Player extends Entity
 		this.add(physicsC);
 
 		stateC = new StateComponent();
-		stateC.machine.addState(new PlayerStandState(this));
+		this.addAllStates(stateC.machine);
 		stateC.machine.gotoState(PlayerStandState.class);
 		this.add(stateC);
 
@@ -42,6 +43,14 @@ public class Player extends Entity
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
 		this.add((StageComponent)collisionBehaviorComponent);
+	}
+
+	private void addAllStates(StateMachine stateMachine)
+	{
+		stateMachine.addState(new PlayerStandState(this));
+		stateMachine.addState(new PlayerChargeState(this));
+		stateMachine.addState(new PlayerSwingState(this));
+		stateMachine.addState(new PlayerJumpState(this));
 	}
 
 	/**
@@ -97,6 +106,7 @@ public class Player extends Entity
 		@Override
 		public void onTouchFloor(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
+			physicsC.grounded = true;
 			physicsC.pos.y = stage.bounds.y;
 			physicsC.vel.y = 0;
 

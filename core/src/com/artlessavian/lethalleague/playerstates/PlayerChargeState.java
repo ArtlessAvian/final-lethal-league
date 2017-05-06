@@ -38,7 +38,6 @@ public class PlayerChargeState implements State
 	public void doStuff()
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-		InputComponent inputC = player.getComponent(InputComponent.class);
 
 		// TODO
 	}

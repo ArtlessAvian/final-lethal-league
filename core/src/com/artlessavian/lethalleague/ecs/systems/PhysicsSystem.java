@@ -1,8 +1,8 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.Stage;
-import com.artlessavian.lethalleague.ecs.components.StageComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
+import com.artlessavian.lethalleague.ecs.components.StageComponent;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -24,7 +24,7 @@ public class PhysicsSystem extends IteratingSystem
 
 		physicsC.lastPos.set(physicsC.pos);
 
-		physicsC.vel.y -= physicsC.passiveGravity * 1/60f;
+		physicsC.vel.y -= physicsC.passiveGravity * 1 / 60f;
 		physicsC.pos.x += physicsC.vel.x * 1 / 60f;
 		physicsC.pos.y += physicsC.vel.y * 1 / 60f;
 
@@ -39,11 +39,11 @@ public class PhysicsSystem extends IteratingSystem
 			{
 				stageComponent.behavior.onTouchFloor(stage, physicsC, entity);
 			}
-			if (physicsC.pos.x - physicsC.collision.width/2f < stage.bounds.x)
+			if (physicsC.pos.x - physicsC.collision.width / 2f < stage.bounds.x)
 			{
 				stageComponent.behavior.onTouchLeft(stage, physicsC, entity);
 			}
-			if (physicsC.pos.x + physicsC.collision.width/2f > stage.bounds.x + stage.bounds.width)
+			if (physicsC.pos.x + physicsC.collision.width / 2f > stage.bounds.x + stage.bounds.width)
 			{
 				stageComponent.behavior.onTouchRight(stage, physicsC, entity);
 			}

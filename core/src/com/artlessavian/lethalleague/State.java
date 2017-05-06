@@ -5,11 +5,11 @@ package com.artlessavian.lethalleague;
  */
 public interface State
 {
-	public void exit();
+	void exit();
 
-	public void enter();
+	void enter();
 
-	public boolean changeStateMaybe(StateMachine sm);
+	boolean changeStateMaybe(StateMachine sm);
 
-	public void doStuff();
+	void doStuff();
 }

@@ -1,20 +1,17 @@
 package com.artlessavian.lethalleague;
 
+/**
+ * Intentionally Empty State. Avoids NPE.
+ */
 public class NullState implements State
 {
 	public static NullState singleton = new NullState();
 
 	@Override
-	public void exit()
-	{
-
-	}
+	public void exit() {}
 
 	@Override
-	public void enter()
-	{
-
-	}
+	public void enter() {}
 
 	@Override
 	public boolean changeStateMaybe(StateMachine sm)
@@ -23,8 +20,5 @@ public class NullState implements State
 	}
 
 	@Override
-	public void doStuff()
-	{
-
-	}
+	public void doStuff() {}
 }

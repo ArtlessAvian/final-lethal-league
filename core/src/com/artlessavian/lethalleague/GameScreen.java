@@ -1,38 +1,51 @@
 package com.artlessavian.lethalleague;
 
-import com.artlessavian.lethalleague.old.Ball;
-import com.artlessavian.lethalleague.old.Player;
-import com.artlessavian.lethalleague.old.Stage;
+//import com.artlessavian.lethalleague.entities.Ball;
+import com.artlessavian.lethalleague.Stage;
+import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
+import com.artlessavian.lethalleague.ecs.systems.PhysicsSystem;
+import com.artlessavian.lethalleague.ecs.systems.StateSystem;
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class GameScreen extends ScreenAdapter
 {
 	Maineroni main;
-	OrthographicCamera cam;
 
-//	Engine engine;
-//
-//	Player p1;
-//	Player p2;
+	Engine engine;
+	EntitySystem[] drawSystems;
+
+	public Stage stage;
+
+	Player p1;
+	Player p2;
 //	Ball ball;
 //	Stage stage;
 
 	public GameScreen(Maineroni main)
 	{
 		this.main = main;
-		this.cam = new OrthographicCamera(980, 540);
-		cam.translate(0, cam.viewportHeight/2f);
-		cam.update();
 
-//		engine = new Engine();
-//
-//		p1 = new Player(main.getInput(0));
+		this.stage = new Stage();
+
+		engine = new Engine();
+		engine.addSystem(new StateSystem());
+		engine.addSystem(new PhysicsSystem(stage));
+
+		drawSystems = new EntitySystem[1];
+		DrawSystem drawSystem = new DrawSystem(main, this);
+		engine.addSystem(drawSystem);
+		drawSystems[0] = drawSystem;
+
+		p1 = new Player(main.getInput(0));
 //		p1.vel.add(2, 2);
 //		p2 = new Player(main.getInput(1));
 //		ball = new Ball();
 //		stage = new Stage();
+
+		engine.addEntity(p1);
 	}
 
 	float rollover = 0;
@@ -40,34 +53,8 @@ public class GameScreen extends ScreenAdapter
 	public void render(float delta)
 	{
 		rollover += delta;
-		for (; rollover > 0; rollover -= 1/60f) {doStuff();}
+		for (; rollover > 0; rollover -= 1 / 60f) {engine.update(0);}
 
-		main.batch.setProjectionMatrix(cam.combined);
-		main.batch.begin();
-
-		// stage.sprite.draw(main.batch);
-
-//		p1.sprite.setPosition(p1.pos.x - p1.sprite.getWidth()/2f, p1.pos.y);
-//		p1.sprite.draw(main.batch);
-//		p2.sprite.setPosition(p2.pos.x - p2.sprite.getWidth()/2f, p2.pos.y);
-//		p2.sprite.draw(main.batch);
-//
-//		main.font.draw(main.batch, "player1", p1.pos.x, p1.pos.y + 6);
-//		main.font.draw(main.batch, "player2", p2.pos.x, p2.pos.y + 6);
-//		main.font.draw(main.batch, "ball", ball.pos.x, ball.pos.y + 6);
-		main.batch.end();
-	}
-
-	public void doStuff()
-	{
-//		p1.move();
-//		p2.move();
-
-		// move ball
-		//    do move
-		//    check collisions
-		//    check wall collision
-		//    
-		// kill people
+		for (EntitySystem sys : drawSystems) {sys.update(0);}
 	}
 }

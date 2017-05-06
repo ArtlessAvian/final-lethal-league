@@ -1,0 +1,8 @@
+Player sprites' height are 1/5 of the screen's height
+Players are either 1:1 at max or 3:1 at min
+
+Screen height is 720 because lol
+so: 48 x 144 to 144 x 144
+
+
+generally you still wanna space out the sprite sheet because lazy

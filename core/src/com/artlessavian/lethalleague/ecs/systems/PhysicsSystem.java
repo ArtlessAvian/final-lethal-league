@@ -48,7 +48,5 @@ public class PhysicsSystem extends IteratingSystem
 				stageComponent.behavior.onTouchRight(stage, physicsC, entity);
 			}
 		}
-
-
 	}
 }

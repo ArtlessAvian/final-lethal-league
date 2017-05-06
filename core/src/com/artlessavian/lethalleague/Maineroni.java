@@ -12,7 +12,7 @@ public class Maineroni extends Game
 {
 	public SpriteBatch batch;
 	BitmapFont font;
-	OrthographicCamera screenSpace;
+	public OrthographicCamera screenSpace;
 
 	PlayerInput[] inputs;
 	InputMultiplexer allInputs;
@@ -33,10 +33,8 @@ public class Maineroni extends Game
 		inputs[0] = new PlayerInput(0);
 		inputs[1] = new PlayerInput(1);
 
-		for (PlayerInput p : inputs)
-		{
-			allInputs.addProcessor(p);
-		}
+		allInputs.addProcessor(inputs[0]);
+		allInputs.addProcessor(inputs[1]);
 
 		Gdx.input.setInputProcessor(allInputs);
 

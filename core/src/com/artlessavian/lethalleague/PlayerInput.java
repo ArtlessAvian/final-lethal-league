@@ -10,6 +10,11 @@ public class PlayerInput extends InputAdapter
 	public boolean downPressed;
 	public boolean rightPressed;
 
+	public boolean upJustPressed;
+	public boolean leftJustPressed;
+	public boolean downJustPressed;
+	public boolean rightJustPressed;
+
 	int upKeycode;
 	int leftKeycode;
 	int downKeycode;
@@ -38,23 +43,31 @@ public class PlayerInput extends InputAdapter
 	{
 		if (keycode == upKeycode)
 		{
-			System.out.println("hi");
 			upPressed = true;
+			upJustPressed = true;
+			return true;
+
 		}
 		if (keycode == leftKeycode)
 		{
 			leftPressed = true;
+			leftJustPressed = true;
+			return true;
 		}
 		if (keycode == downKeycode)
 		{
 			downPressed = true;
+			downJustPressed = true;
+			return true;
 		}
 		if (keycode == rightKeycode)
 		{
 			rightPressed = true;
+			rightJustPressed = true;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override
@@ -63,20 +76,32 @@ public class PlayerInput extends InputAdapter
 		if (keycode == upKeycode)
 		{
 			upPressed = false;
+			return true;
 		}
 		if (keycode == leftKeycode)
 		{
 			leftPressed = false;
+			return true;
 		}
 		if (keycode == downKeycode)
 		{
 			downPressed = false;
+			return true;
 		}
 		if (keycode == rightKeycode)
 		{
 			rightPressed = false;
+			return true;
 		}
 
-		return true;
+		return false;
+	}
+
+	public void clearJust()
+	{
+		upJustPressed = false;
+		downJustPressed = false;
+		leftJustPressed = false;
+		rightJustPressed = false;
 	}
 }

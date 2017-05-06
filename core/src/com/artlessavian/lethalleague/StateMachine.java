@@ -1,5 +1,7 @@
 package com.artlessavian.lethalleague;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.HashMap;
 
 /**
@@ -33,9 +35,11 @@ public class StateMachine
 
 	public void gotoState(Class<? extends State> newState)
 	{
+		current.lastExit = Gdx.graphics.getFrameId();
 		current.exit();
 		current = states.get(newState);
 		current.enter();
+		current.lastEnter = Gdx.graphics.getFrameId();
 	}
 
 	public void run()

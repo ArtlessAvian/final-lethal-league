@@ -2,6 +2,7 @@ package com.artlessavian.lethalleague;
 
 //import com.artlessavian.lethalleague.entities.Ball;
 
+import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
 import com.artlessavian.lethalleague.ecs.systems.PhysicsSystem;
@@ -21,8 +22,7 @@ public class GameScreen extends ScreenAdapter
 
 	Player p1;
 	Player p2;
-//	Ball ball;
-//	Stage stage;
+	Ball ball;
 
 	public GameScreen(Maineroni main)
 	{
@@ -41,11 +41,12 @@ public class GameScreen extends ScreenAdapter
 
 		p1 = new Player(main.getInput(0));
 //		p1.vel.add(2, 2);
-//		p2 = new Player(main.getInput(1));
-//		ball = new Ball();
-//		stage = new Stage();
+		p2 = new Player(main.getInput(1));
+		ball = new Ball();
 
 		engine.addEntity(p1);
+		engine.addEntity(p2);
+		engine.addEntity(ball);
 	}
 
 	float rollover = 0;

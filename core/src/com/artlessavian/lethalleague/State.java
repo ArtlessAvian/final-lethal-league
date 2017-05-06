@@ -10,13 +10,13 @@ public abstract class State
 	long lastEnter;
 	long lastExit;
 
-	abstract void exit();
+	public abstract void exit();
 
-	abstract void enter();
+	public abstract void enter();
 
-	abstract boolean changeStateMaybe(StateMachine sm);
+	public abstract boolean changeStateMaybe(StateMachine sm);
 
-	abstract void doStuff();
+	public abstract void doStuff();
 
 	public abstract int getSpriteID();
 

@@ -1,9 +1,6 @@
 package com.artlessavian.lethalleague.ecs.entities;
 
-import com.artlessavian.lethalleague.GameScreen;
-import com.artlessavian.lethalleague.PlayerInput;
-import com.artlessavian.lethalleague.Stage;
-import com.artlessavian.lethalleague.StateMachine;
+import com.artlessavian.lethalleague.*;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.playerstates.PlayerChargeState;
 import com.artlessavian.lethalleague.playerstates.PlayerJumpState;
@@ -24,9 +21,9 @@ public class Player extends Entity
 	private PhysicsComponent physicsC;
 	private StateComponent stateC;
 
-	public PlayerInput input;
+	public PlayerInputContainer input;
 
-	public Player(PlayerInput input)
+	public Player(PlayerInputContainer input)
 	{
 		this.input = input;
 		inputC = new InputComponent(input);

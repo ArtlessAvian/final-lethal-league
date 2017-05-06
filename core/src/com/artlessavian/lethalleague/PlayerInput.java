@@ -1,27 +1,22 @@
 package com.artlessavian.lethalleague;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public class PlayerInput extends InputAdapter
 {
-	public boolean upPressed;
-	public boolean leftPressed;
-	public boolean downPressed;
-	public boolean rightPressed;
-
-	public boolean upJustPressed;
-	public boolean leftJustPressed;
-	public boolean downJustPressed;
-	public boolean rightJustPressed;
-
 	int upKeycode;
 	int leftKeycode;
 	int downKeycode;
 	int rightKeycode;
 
-	public PlayerInput(int playerNumber)
+	PlayerInputContainer inputs;
+
+	public PlayerInput(int playerNumber, PlayerInputContainer inputs)
 	{
+		this.inputs = inputs;
+
 		if (playerNumber == 0)
 		{
 			upKeycode = Input.Keys.UP;
@@ -43,27 +38,27 @@ public class PlayerInput extends InputAdapter
 	{
 		if (keycode == upKeycode)
 		{
-			upPressed = true;
-			upJustPressed = true;
+			inputs.upPressed = true;
+			inputs.upPressFrame = Gdx.graphics.getFrameId();
 			return true;
 
 		}
 		if (keycode == leftKeycode)
 		{
-			leftPressed = true;
-			leftJustPressed = true;
+			inputs.leftPressed = true;
+			inputs.leftPressFrame = Gdx.graphics.getFrameId();
 			return true;
 		}
 		if (keycode == downKeycode)
 		{
-			downPressed = true;
-			downJustPressed = true;
+			inputs.downPressed = true;
+			inputs.downPressFrame = Gdx.graphics.getFrameId();
 			return true;
 		}
 		if (keycode == rightKeycode)
 		{
-			rightPressed = true;
-			rightJustPressed = true;
+			inputs.rightPressed = true;
+			inputs.rightPressFrame = Gdx.graphics.getFrameId();
 			return true;
 		}
 
@@ -75,33 +70,25 @@ public class PlayerInput extends InputAdapter
 	{
 		if (keycode == upKeycode)
 		{
-			upPressed = false;
+			inputs.upPressed = false;
 			return true;
 		}
 		if (keycode == leftKeycode)
 		{
-			leftPressed = false;
+			inputs.leftPressed = false;
 			return true;
 		}
 		if (keycode == downKeycode)
 		{
-			downPressed = false;
+			inputs.downPressed = false;
 			return true;
 		}
 		if (keycode == rightKeycode)
 		{
-			rightPressed = false;
+			inputs.rightPressed = false;
 			return true;
 		}
 
 		return false;
-	}
-
-	public void clearJust()
-	{
-		upJustPressed = false;
-		downJustPressed = false;
-		leftJustPressed = false;
-		rightJustPressed = false;
 	}
 }

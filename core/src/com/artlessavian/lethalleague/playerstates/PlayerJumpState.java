@@ -6,7 +6,7 @@ import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
-public class PlayerJumpState implements State
+public class PlayerJumpState extends State
 {
 	Player player;
 
@@ -40,5 +40,11 @@ public class PlayerJumpState implements State
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
 		// TODO
+	}
+
+	@Override
+	public int getSpriteID()
+	{
+		return 0;
 	}
 }

@@ -3,7 +3,7 @@ package com.artlessavian.lethalleague;
 /**
  * Intentionally Empty State. Avoids NPE.
  */
-public class NullState implements State
+public class NullState extends State
 {
 	public static NullState singleton = new NullState();
 
@@ -21,4 +21,7 @@ public class NullState implements State
 
 	@Override
 	public void doStuff() {}
+
+	@Override
+	public int getSpriteID() { return 0; }
 }

@@ -6,7 +6,7 @@ import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
-public class PlayerStandState implements State
+public class PlayerStandState extends State
 {
 	Player player;
 
@@ -58,5 +58,11 @@ public class PlayerStandState implements State
 			physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
 		}
 		physicsC.vel.clamp(0, 300);
+	}
+
+	@Override
+	public int getSpriteID()
+	{
+		return 0;
 	}
 }

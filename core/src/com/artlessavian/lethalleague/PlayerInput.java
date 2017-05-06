@@ -14,8 +14,6 @@ public class PlayerInput extends InputAdapter
     int leftKeycode;
     int downKeycode;
     int rightKeycode;
-
-    boolean airborn;
     
     public PlayerInput(int playerNumber) {
         if (playerNumber == 0)
@@ -67,7 +65,7 @@ public class PlayerInput extends InputAdapter
         if (keycode == rightKeycode) {
             rightPressed = false;
         }
-        
+
         return true;
     }
 }

@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+/**
+ * Generic Stage, with no graphics. Extend to create new Stages.
+ */
 public class Stage
 {
 	public Rectangle bounds;

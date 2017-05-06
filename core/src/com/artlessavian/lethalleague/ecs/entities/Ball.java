@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Ball extends Entity
 {
-	public Ball(PlayerInput input)
+	public Ball()
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
 		this.add(physicsC);

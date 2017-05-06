@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.HashMap;
 
+/**
+ * A State Based Machine for arbitary usage
+ */
 public class StateMachine
 {
 	public State current = NullState.singleton;
@@ -20,9 +23,10 @@ public class StateMachine
 	}
 
 	/**
-	 * Using this, a state can transfer to an unknown state, "overriding" default behavior
-	 * @param clazz
-	 * @param state
+	 * Using this, any state can pretend to be generic state, "overriding" default behavior
+	 *
+	 * @param clazz Class of State to override
+	 * @param state Overriding State
 	 */
 	public void addState(Class<? extends State> clazz, State state)
 	{
@@ -31,14 +35,16 @@ public class StateMachine
 
 	public void gotoState(Class<? extends State> newState)
 	{
+		current.lastExit = Gdx.graphics.getFrameId();
 		current.exit();
 		current = states.get(newState);
 		current.enter();
+		current.lastEnter = Gdx.graphics.getFrameId();
 	}
 
 	public void run()
 	{
-		for (int i = 0; i < 10 && current.changeStateMaybe(this); i++) { ; }
+		for (int i = 0; i < 10 && current.changeStateMaybe(this); i++) { }
 		current.doStuff();
 	}
 }

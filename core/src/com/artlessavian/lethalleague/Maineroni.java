@@ -12,9 +12,10 @@ public class Maineroni extends Game
 {
 	public SpriteBatch batch;
 	BitmapFont font;
-	OrthographicCamera screenSpace;
+	public OrthographicCamera screenSpace;
 
-	PlayerInput[] inputs;
+	PlayerInputContainer[] inputs;
+	PlayerInput[] processors;
 	InputMultiplexer allInputs;
 
 	@Override
@@ -23,21 +24,21 @@ public class Maineroni extends Game
 		batch = new SpriteBatch();
 
 		screenSpace = new OrthographicCamera(1280, 720);
-		screenSpace.translate(1280f/2f, 720f/2f);
+		screenSpace.translate(1280f / 2f, 720f / 2f);
 		screenSpace.update();
 
 		font = new BitmapFont();
 
 		allInputs = new InputMultiplexer();
-		inputs = new PlayerInput[2];
-		inputs[0] = new PlayerInput(0);
-		inputs[1] = new PlayerInput(1);
+		inputs = new PlayerInputContainer[2];
+		inputs[0] = new PlayerInputContainer();
+		inputs[1] = new PlayerInputContainer();
+		processors = new PlayerInput[2];
+		processors[0] = new PlayerInput(0, inputs[0]);
+		processors[1] = new PlayerInput(1, inputs[1]);
 
-		for (PlayerInput p : inputs)
-		{
-			allInputs.addProcessor(p);
-		}
-
+		allInputs.addProcessor(processors[0]);
+		allInputs.addProcessor(processors[1]);
 		Gdx.input.setInputProcessor(allInputs);
 
 		this.setScreen(new GameScreen(this));
@@ -67,7 +68,7 @@ public class Maineroni extends Game
 		font.dispose();
 	}
 
-	public PlayerInput getInput(int id)
+	public PlayerInputContainer getInput(int id)
 	{
 		return inputs[id];
 	}

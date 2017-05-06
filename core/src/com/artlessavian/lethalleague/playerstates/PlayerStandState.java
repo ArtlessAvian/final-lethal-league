@@ -6,7 +6,7 @@ import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
-public class PlayerStandState implements State
+public class PlayerStandState extends State
 {
 	Player player;
 
@@ -41,11 +41,10 @@ public class PlayerStandState implements State
 	public void doStuff()
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-		InputComponent inputC = player.getComponent(InputComponent.class);
 
-		if (inputC.input.leftPressed != inputC.input.rightPressed)
+		if (player.input.leftPressed != player.input.rightPressed)
 		{
-			if (inputC.input.leftPressed)
+			if (player.input.leftPressed)
 			{
 				physicsC.vel.x -= 50;
 			}
@@ -59,5 +58,11 @@ public class PlayerStandState implements State
 			physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
 		}
 		physicsC.vel.clamp(0, 300);
+	}
+
+	@Override
+	public int getSpriteID()
+	{
+		return 0;
 	}
 }

@@ -34,6 +34,12 @@ public class PlayerStandState extends State
 	public boolean changeStateMaybe(StateMachine sm)
 	{
 		// TODO
+		if (player.input.upPressed)
+		{
+			sm.gotoState(PlayerJumpState.class);
+			return true;
+		}
+
 		return false;
 	}
 

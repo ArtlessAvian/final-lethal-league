@@ -21,6 +21,20 @@ public class Player extends Entity
 
 	public PlayerInputContainer input;
 
+	public float gravity = 2000;
+	public float lowGravity = 1000;
+
+	public float jumpVelocity = 700;
+	public float hopVelocity = 500;
+
+	public float fastFallSpeed = -1000;
+	public float groundMaxSpeed = 400;
+	public float airMaxSpeed = 400;
+
+	public float groundAccel = 50;
+	public float airAccel = 30;
+	public float groundFriction = 10;
+
 	public Player(PlayerInputContainer input)
 	{
 		this.input = input;

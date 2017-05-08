@@ -18,11 +18,7 @@ public class PlayerHitState extends State
     @Override
     public void exit()
     {
-        PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-        if(!physicsC.grounded)
-        {
-            physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
-        }
+
     }
 
     @Override
@@ -45,8 +41,11 @@ public class PlayerHitState extends State
     public void doStuff()
     {
         PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-        
-        physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
+
+        if(!physicsC.grounded)
+        {
+            physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
+        }
     }
 
     @Override

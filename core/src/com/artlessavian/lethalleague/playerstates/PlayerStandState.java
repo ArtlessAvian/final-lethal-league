@@ -2,7 +2,6 @@ package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.StateMachine;
-import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
@@ -61,18 +60,20 @@ public class PlayerStandState extends State
 		{
 			if (player.input.leftPressed)
 			{
-				physicsC.vel.x -= 50;
+				physicsC.vel.x -= player.groundAccel;
 			}
 			else //inputC.input.rightPressed
 			{
-				physicsC.vel.x += 50;
+				physicsC.vel.x += player.groundAccel;
 			}
 		}
 		else
 		{
-			physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
+			physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
 		}
-		physicsC.vel.clamp(0, 300);
+
+		if (physicsC.vel.x > player.groundMaxSpeed) {physicsC.vel.x = player.groundMaxSpeed;}
+		if (physicsC.vel.x < -player.groundMaxSpeed) {physicsC.vel.x = -player.groundMaxSpeed;}
 	}
 
 	@Override

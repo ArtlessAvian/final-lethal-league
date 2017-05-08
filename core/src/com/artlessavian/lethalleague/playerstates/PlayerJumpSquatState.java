@@ -19,7 +19,14 @@ public class PlayerJumpSquatState extends State
     public void exit()
     {
         PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-        physicsC.vel.y = 900;
+        if (player.input.upPressed)
+        {
+            physicsC.vel.y = player.jumpVelocity;
+        }
+        else
+        {
+            physicsC.vel.y = player.hopVelocity;
+        }
     }
 
     @Override
@@ -32,7 +39,7 @@ public class PlayerJumpSquatState extends State
     @Override
     public boolean changeStateMaybe(StateMachine sm)
     {
-        if(getTimeInState() > 5)
+        if (getTimeInState() > 5)
         {
             sm.gotoState(PlayerJumpState.class);
         }
@@ -43,8 +50,8 @@ public class PlayerJumpSquatState extends State
     public void doStuff()
     {
         PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-        
-        physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
+
+        physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
     }
 
     @Override

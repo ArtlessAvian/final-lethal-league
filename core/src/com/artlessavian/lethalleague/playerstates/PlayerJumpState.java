@@ -1,4 +1,4 @@
-package com.artlessavian.lethalleague.playerstates;
+ 
 
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.StateMachine;
@@ -18,19 +18,19 @@ public class PlayerJumpState extends State
 	@Override
 	public void exit()
 	{
-		// TODO
+		//DONE
 	}
 
 	@Override
 	public void enter()
 	{
-		// TODO
+		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+		physicsC.grounded = false;
 	}
 
 	@Override
 	public boolean changeStateMaybe(StateMachine sm)
 	{
-		// TODO
 		return false;
 	}
 
@@ -39,7 +39,22 @@ public class PlayerJumpState extends State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
-		// TODO
+		if (player.input.leftPressed != player.input.rightPressed)
+		{
+			if (player.input.leftPressed)
+			{
+				physicsC.vel.x -= 50;
+			}
+			else //inputC.input.rightPressed
+			{
+				physicsC.vel.x += 50;
+			}
+		}
+		else
+		{
+			physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
+		}
+		physicsC.vel.clamp(0, 300);
 	}
 
 	@Override

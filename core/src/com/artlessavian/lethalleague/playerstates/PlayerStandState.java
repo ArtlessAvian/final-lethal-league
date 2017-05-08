@@ -1,4 +1,4 @@
- 
+package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.StateMachine;
@@ -43,12 +43,12 @@ public class PlayerStandState extends State
 		    sm.gotoState(PlayerJumpState.class);
 		    return true;
 		}
-		else if (player.input.swingPressed)
-		{
-		    sm.gotoState(PlayerSwingState.class);
-		    return true;
-		}
-	    
+//		else if (player.input.swingPressed)
+//		{
+//		    sm.gotoState(PlayerSwingState.class);
+//		    return true;
+//		}
+//
 		return false;
 	}
 

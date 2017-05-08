@@ -16,6 +16,7 @@ public class Player extends Entity
 	private SpriteComponent spriteC;
 	private InputComponent inputC;
 	private PhysicsComponent physicsC;
+	private HitboxComponent hitboxC;
 	private StateComponent stateC;
 
 	public PlayerInputContainer input;
@@ -37,6 +38,9 @@ public class Player extends Entity
 		spriteC = new SpriteComponent(new Sprite(new Texture("grid.png")));
 		spriteC.sprite.setSize(72, 144);
 		this.add(spriteC);
+
+		hitboxC = new HitboxComponent();
+		this.add(hitboxC);
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
 		this.add(collisionBehaviorComponent);

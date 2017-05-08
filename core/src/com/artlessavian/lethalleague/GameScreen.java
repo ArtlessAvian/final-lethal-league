@@ -4,6 +4,7 @@ package com.artlessavian.lethalleague;
 
 import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.artlessavian.lethalleague.ecs.systems.DebugDrawSystem;
 import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
 import com.artlessavian.lethalleague.ecs.systems.PhysicsSystem;
 import com.artlessavian.lethalleague.ecs.systems.StateSystem;
@@ -34,10 +35,14 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(new StateSystem());
 		engine.addSystem(new PhysicsSystem(stage));
 
-		drawSystems = new EntitySystem[1];
+		drawSystems = new EntitySystem[2];
 		DrawSystem drawSystem = new DrawSystem(main, this);
 		engine.addSystem(drawSystem);
 		drawSystems[0] = drawSystem;
+
+		DebugDrawSystem debugDrawSystem = new DebugDrawSystem(main, this, drawSystem);
+		engine.addSystem(debugDrawSystem);
+		drawSystems[1] = debugDrawSystem;
 
 		p1 = new Player(main.getInput(0));
 //		p1.vel.add(2, 2);

@@ -13,60 +13,45 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
-public class DrawSystem extends EntitySystem
+public class DebugDrawSystem extends EntitySystem
 {
 	Maineroni main;
 	GameScreen game;
 
 	private ImmutableArray<Entity> entities;
 
-	OrthographicCamera cam;
-	private Texture map;
+	DrawSystem drawSystem;
 
-	public DrawSystem(Maineroni main, GameScreen game)
+	public DebugDrawSystem(Maineroni main, GameScreen game, DrawSystem drawSystem)
 	{
 		this.main = main;
 		this.game = game;
+		this.drawSystem = drawSystem;
 	}
 
 	public void addedToEngine(Engine engine)
 	{
 		this.setProcessing(false);
 
-		this.cam = new OrthographicCamera(1280, 720);
-		cam.translate(0, cam.viewportHeight / 2f);
-		cam.update();
-
-		entities = engine.getEntitiesFor(Family.all(SpriteComponent.class).get());
+		entities = engine.getEntitiesFor(Family.all(PhysicsComponent.class, StateComponent.class).get());
 		setProcessing(false);
 	}
 
 	@Override
 	public void update(float rollover)
 	{
-		main.batch.setProjectionMatrix(cam.combined);
+		main.batch.setProjectionMatrix(drawSystem.cam.combined);
 		game.stage.draw(main.batch);
 
 		for (Entity entity : entities)
 		{
-			SpriteComponent spriteC = entity.getComponent(SpriteComponent.class);
-			if (spriteC.isScreenSpace) {continue;}
-
 			PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
-			if (physicsC != null)
-			{
-				spriteC.sprite.setCenter(physicsC.pos.x, physicsC.pos.y + spriteC.sprite.getHeight() / 2);
-				spriteC.sprite.setFlip(physicsC.facingLeft, false);
-			}
 
 			StateComponent stateC = entity.getComponent(StateComponent.class);
 			if (stateC != null)
 			{
-				// TODO: Change sprite based on sprite id
-				stateC.machine.current.getSpriteID();
+				main.font.draw(main.batch, stateC.machine.current.getClass().getSimpleName(), physicsC.pos.x, physicsC.pos.y);
 			}
-
-			spriteC.sprite.draw(main.batch);
 		}
 	}
 }

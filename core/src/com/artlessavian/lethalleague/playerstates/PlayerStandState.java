@@ -33,7 +33,6 @@ public class PlayerStandState extends State
 	@Override
 	public boolean changeStateMaybe(StateMachine sm)
 	{
-<<<<<<< HEAD
 		if (player.input.downPressed)
 		{
 		    sm.gotoState(PlayerCrouchState.class);
@@ -41,7 +40,7 @@ public class PlayerStandState extends State
 		}
 		else if (player.input.upPressed)
 		{
-		    sm.gotoState(PlayerJumpState.class);
+		    sm.gotoState(PlayerJumpSquatState.class);
 		    return true;
 		}
 //		else if (player.input.swingPressed)
@@ -50,15 +49,6 @@ public class PlayerStandState extends State
 //		    return true;
 //		}
 //
-=======
-		// TODO
-		if (player.input.upPressed)
-		{
-			sm.gotoState(PlayerJumpState.class);
-			return true;
-		}
-
->>>>>>> refs/remotes/origin/add-functionality
 		return false;
 	}
 

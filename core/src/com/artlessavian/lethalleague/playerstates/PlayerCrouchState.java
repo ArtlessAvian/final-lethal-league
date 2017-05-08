@@ -1,4 +1,4 @@
-package com.artlessavian.lethalleague.playerstates;
+ 
 
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.StateMachine;
@@ -24,13 +24,23 @@ public class PlayerCrouchState extends State
 	@Override
 	public void enter()
 	{
-		// TODO
+		
 	}
 
 	@Override
 	public boolean changeStateMaybe(StateMachine sm)
 	{
-		// TODO
+		if (!player.input.downPressed)
+		{
+		    sm.gotoState(PlayerStandState.class);
+		    return true;
+		}
+		else if (player.input.upPressed)
+		{
+		    sm.gotoState(PlayerJumpState.class);
+		    return true;
+		}
+		
 		return false;
 	}
 

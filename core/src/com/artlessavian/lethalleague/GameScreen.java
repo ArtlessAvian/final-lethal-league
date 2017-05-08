@@ -10,6 +10,8 @@ import com.artlessavian.lethalleague.ecs.systems.PhysicsSystem;
 import com.artlessavian.lethalleague.ecs.systems.StateSystem;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 
 public class GameScreen extends ScreenAdapter
@@ -54,12 +56,24 @@ public class GameScreen extends ScreenAdapter
 		engine.addEntity(ball);
 	}
 
+	int engineRuns = 0;
 	float rollover = 0;
+	boolean timeStop = false;
 
 	public void render(float delta)
 	{
-		rollover += delta;
-		for (; rollover > 0; rollover -= 1 / 60f) {engine.update(0);}
+		// TODO: Remove me!
+		if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {timeStop = !timeStop;}
+		if (!timeStop || Gdx.input.isKeyJustPressed(Input.Keys.EQUALS))
+		{
+			rollover += delta;
+		}
+
+		for (; rollover > 0; rollover -= 1 / 60f)
+		{
+			engineRuns++;
+			engine.update(0);
+		}
 
 		for (EntitySystem sys : drawSystems) {sys.update(0);}
 	}

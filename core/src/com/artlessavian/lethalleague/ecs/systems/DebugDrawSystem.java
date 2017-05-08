@@ -52,6 +52,10 @@ public class DebugDrawSystem extends EntitySystem
 			{
 				main.font.draw(main.batch, stateC.machine.current.getClass().getSimpleName(), physicsC.pos.x, physicsC.pos.y);
 			}
+			main.font.draw(main.batch, physicsC.vel.x + "", physicsC.pos.x, physicsC.pos.y + 12);
+			main.font.draw(main.batch, physicsC.vel.y + "", physicsC.pos.x, physicsC.pos.y + 24);
+			main.font.draw(main.batch, physicsC.pos.x + "", physicsC.pos.x, physicsC.pos.y + 36);
+			main.font.draw(main.batch, physicsC.pos.y + "", physicsC.pos.x, physicsC.pos.y + 48);
 		}
 	}
 }

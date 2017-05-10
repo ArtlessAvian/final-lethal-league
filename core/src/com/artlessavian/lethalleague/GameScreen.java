@@ -4,10 +4,7 @@ package com.artlessavian.lethalleague;
 
 import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.artlessavian.lethalleague.ecs.entities.Player;
-import com.artlessavian.lethalleague.ecs.systems.DebugDrawSystem;
-import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
-import com.artlessavian.lethalleague.ecs.systems.PhysicsSystem;
-import com.artlessavian.lethalleague.ecs.systems.StateSystem;
+import com.artlessavian.lethalleague.ecs.systems.*;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
@@ -36,6 +33,7 @@ public class GameScreen extends ScreenAdapter
 		engine = new Engine();
 		engine.addSystem(new StateSystem());
 		engine.addSystem(new PhysicsSystem(stage));
+		engine.addSystem(new HitboxCollisionSystem());
 
 		drawSystems = new EntitySystem[2];
 		DrawSystem drawSystem = new DrawSystem(main, this);

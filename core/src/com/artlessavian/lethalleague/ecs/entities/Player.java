@@ -102,7 +102,17 @@ public class Player extends Entity
 	{
 		return false;
 	}
+  
+    public static class PlayerCollisionBehavior extends StageComponent.CollisionBehavior
+    {
+        @Override
+        public void onTouchCeil(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
+        {
+            physicsC.pos.y = stage.bounds.y + stage.bounds.height - physicsC.collision.height / 2f;
+            physicsC.vel.y = 0;
+        }
 
+<<<<<<< HEAD
 	/**
 	 * Called when the player is in hitlag, and presses hit again
 	 *
@@ -145,4 +155,29 @@ public class Player extends Entity
 			physicsC.pos.x = stage.bounds.x + stage.bounds.width - physicsC.collision.width / 2f;
 		}
 	}
+=======
+        @Override
+        public void onTouchFloor(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
+        {
+            physicsC.grounded = true;
+            physicsC.pos.y = stage.bounds.y + physicsC.collision.height / 2f;
+            physicsC.vel.y = 0;
+
+            StateComponent stateC = thisEntity.getComponent(StateComponent.class);
+            stateC.machine.gotoState(PlayerStandState.class);
+        }
+
+        @Override
+        public void onTouchLeft(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
+        {
+            physicsC.pos.x = stage.bounds.x + physicsC.collision.width / 2f;
+        }
+
+        @Override
+        public void onTouchRight(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
+        {
+            physicsC.pos.x = stage.bounds.x + stage.bounds.width - physicsC.collision.width / 2f;
+        }
+    }
+>>>>>>> origin/impl-functionality
 }

@@ -1,4 +1,4 @@
-package com.artlessavian.lethalleague.ecs.systems;
+ 
 
 import com.artlessavian.lethalleague.Stage;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
@@ -41,6 +41,7 @@ public class PhysicsSystem extends IteratingSystem
 				stageComponent.behavior.onTouchCeil(stage, physicsC, entity);
 			}
 			if (physicsC.collision.y < stage.bounds.y)
+
 			{
 				stageComponent.behavior.onTouchFloor(stage, physicsC, entity);
 			}

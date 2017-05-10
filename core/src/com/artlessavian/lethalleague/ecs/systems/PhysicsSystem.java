@@ -1,4 +1,4 @@
-package com.artlessavian.lethalleague.ecs.systems;
+ 
 
 import com.artlessavian.lethalleague.Stage;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
@@ -24,18 +24,21 @@ public class PhysicsSystem extends IteratingSystem
 
 		physicsC.lastPos.set(physicsC.pos);
 
-		physicsC.vel.y -= physicsC.passiveGravity * 1 / 60f;
+		if (!physicsC.grounded)
+		{
+			physicsC.vel.y -= physicsC.passiveGravity * 1 / 60f;
+		}
 		physicsC.pos.x += physicsC.vel.x * 1 / 60f;
 		physicsC.pos.y += physicsC.vel.y * 1 / 60f;
 
 		StageComponent stageComponent = entity.getComponent(StageComponent.class);
 		if (stageComponent != null)
 		{
-			if (physicsC.pos.y > stage.bounds.y + stage.bounds.height)
+			if (physicsC.pos.y + physicsC.collision.height / 2f > stage.bounds.y + stage.bounds.height)
 			{
 				stageComponent.behavior.onTouchCeil(stage, physicsC, entity);
 			}
-			if (physicsC.pos.y < stage.bounds.y)
+			if (physicsC.pos.y - physicsC.collision.height / 2f < stage.bounds.y)
 			{
 				stageComponent.behavior.onTouchFloor(stage, physicsC, entity);
 			}
@@ -48,7 +51,5 @@ public class PhysicsSystem extends IteratingSystem
 				stageComponent.behavior.onTouchRight(stage, physicsC, entity);
 			}
 		}
-
-
 	}
 }

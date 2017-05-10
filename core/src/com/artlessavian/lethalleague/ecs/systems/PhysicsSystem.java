@@ -41,10 +41,6 @@ public class PhysicsSystem extends IteratingSystem
 				stageComponent.behavior.onTouchCeil(stage, physicsC, entity);
 			}
 			if (physicsC.collision.y < stage.bounds.y)
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/impl-functionality
 			{
 				stageComponent.behavior.onTouchFloor(stage, physicsC, entity);
 			}

@@ -24,7 +24,10 @@ public class PhysicsSystem extends IteratingSystem
 
 		physicsC.lastPos.set(physicsC.pos);
 
-		physicsC.vel.y -= physicsC.passiveGravity * 1 / 60f;
+		if (!physicsC.grounded)
+		{
+			physicsC.vel.y -= physicsC.passiveGravity * 1 / 60f;
+		}
 		physicsC.pos.x += physicsC.vel.x * 1 / 60f;
 		physicsC.pos.y += physicsC.vel.y * 1 / 60f;
 

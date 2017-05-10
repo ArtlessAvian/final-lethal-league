@@ -2,7 +2,6 @@ package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.StateMachine;
-import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
@@ -18,19 +17,19 @@ public class PlayerJumpState extends State
 	@Override
 	public void exit()
 	{
-		// TODO
+		//DONE
 	}
 
 	@Override
 	public void enter()
 	{
-		// TODO
+		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+		physicsC.grounded = false;
 	}
 
 	@Override
 	public boolean changeStateMaybe(StateMachine sm)
 	{
-		// TODO
 		return false;
 	}
 
@@ -39,7 +38,33 @@ public class PlayerJumpState extends State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
-		// TODO
+		if (physicsC.vel.y < 0)
+		{
+			if (player.input.downPressed)
+			{
+				physicsC.vel.y = player.fastFallSpeed;
+			}
+			physicsC.passiveGravity = player.gravity;
+
+		}
+		else
+		{
+			physicsC.passiveGravity = player.lowGravity;
+		}
+
+		if (player.input.leftPressed != player.input.rightPressed)
+		{
+			if (player.input.leftPressed)
+			{
+				physicsC.vel.x -= player.airAccel;
+			}
+			else //inputC.input.rightPressed
+			{
+				physicsC.vel.x += player.airAccel;
+			}
+		}
+		if (physicsC.vel.x > player.airMaxSpeed) {physicsC.vel.x = player.airMaxSpeed;}
+		if (physicsC.vel.x < -player.airMaxSpeed) {physicsC.vel.x = -player.airMaxSpeed;}
 	}
 
 	@Override

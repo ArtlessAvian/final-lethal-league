@@ -2,7 +2,6 @@ package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.StateMachine;
-import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
@@ -33,13 +32,22 @@ public class PlayerStandState extends State
 	@Override
 	public boolean changeStateMaybe(StateMachine sm)
 	{
-		// TODO
-		if (player.input.upPressed)
+		if (player.input.downPressed)
 		{
-			sm.gotoState(PlayerJumpState.class);
-			return true;
+		    sm.gotoState(PlayerCrouchState.class);
+		    return true;
 		}
-
+		else if (player.input.upPressed)
+		{
+		    sm.gotoState(PlayerJumpSquatState.class);
+		    return true;
+		}
+//		else if (player.input.swingPressed)
+//		{
+//		    sm.gotoState(PlayerSwingState.class);
+//		    return true;
+//		}
+//
 		return false;
 	}
 
@@ -47,23 +55,25 @@ public class PlayerStandState extends State
 	public void doStuff()
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-
+	
 		if (player.input.leftPressed != player.input.rightPressed)
 		{
 			if (player.input.leftPressed)
 			{
-				physicsC.vel.x -= 50;
+				physicsC.vel.x -= player.groundAccel;
 			}
 			else //inputC.input.rightPressed
 			{
-				physicsC.vel.x += 50;
+				physicsC.vel.x += player.groundAccel;
 			}
 		}
 		else
 		{
-			physicsC.vel.x -= Math.signum(physicsC.vel.x) * 10;
+			physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
 		}
-		physicsC.vel.clamp(0, 300);
+
+		if (physicsC.vel.x > player.groundMaxSpeed) {physicsC.vel.x = player.groundMaxSpeed;}
+		if (physicsC.vel.x < -player.groundMaxSpeed) {physicsC.vel.x = -player.groundMaxSpeed;}
 	}
 
 	@Override

@@ -2,10 +2,7 @@ package com.artlessavian.lethalleague.ecs.entities;
 
 import com.artlessavian.lethalleague.*;
 import com.artlessavian.lethalleague.ecs.components.*;
-import com.artlessavian.lethalleague.playerstates.PlayerChargeState;
-import com.artlessavian.lethalleague.playerstates.PlayerJumpState;
-import com.artlessavian.lethalleague.playerstates.PlayerStandState;
-import com.artlessavian.lethalleague.playerstates.PlayerSwingState;
+import com.artlessavian.lethalleague.playerstates.*;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -23,6 +20,20 @@ public class Player extends Entity
 	private StateComponent stateC;
 
 	public PlayerInputContainer input;
+
+	public float gravity = 2000;
+	public float lowGravity = 1000;
+
+	public float jumpVelocity = 700;
+	public float hopVelocity = 500;
+
+	public float fastFallSpeed = -1000;
+	public float groundMaxSpeed = 400;
+	public float airMaxSpeed = 400;
+
+	public float groundAccel = 50;
+	public float airAccel = 30;
+	public float groundFriction = 10;
 
 	public Player(PlayerInputContainer input)
 	{
@@ -55,6 +66,8 @@ public class Player extends Entity
 		stateMachine.addState(new PlayerChargeState(this));
 		stateMachine.addState(new PlayerSwingState(this));
 		stateMachine.addState(new PlayerJumpState(this));
+		stateMachine.addState(new PlayerJumpSquatState(this));
+		stateMachine.addState(new PlayerCrouchState(this));
 	}
 
 	/**

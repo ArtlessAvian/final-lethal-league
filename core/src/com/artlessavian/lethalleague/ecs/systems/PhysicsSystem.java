@@ -31,22 +31,24 @@ public class PhysicsSystem extends IteratingSystem
 		physicsC.pos.x += physicsC.vel.x * 1 / 60f;
 		physicsC.pos.y += physicsC.vel.y * 1 / 60f;
 
+		physicsC.collision.setPosition(physicsC.pos.x - physicsC.collision.width/2, physicsC.pos.y);
+
 		StageComponent stageComponent = entity.getComponent(StageComponent.class);
 		if (stageComponent != null)
 		{
-			if (physicsC.pos.y > stage.bounds.y + stage.bounds.height)
+			if (physicsC.collision.y + physicsC.collision.height > stage.bounds.y + stage.bounds.height)
 			{
 				stageComponent.behavior.onTouchCeil(stage, physicsC, entity);
 			}
-			if (physicsC.pos.y < stage.bounds.y)
+			if (physicsC.collision.y < stage.bounds.y)
 			{
 				stageComponent.behavior.onTouchFloor(stage, physicsC, entity);
 			}
-			if (physicsC.pos.x - physicsC.collision.width / 2f < stage.bounds.x)
+			if (physicsC.collision.x < stage.bounds.x)
 			{
 				stageComponent.behavior.onTouchLeft(stage, physicsC, entity);
 			}
-			if (physicsC.pos.x + physicsC.collision.width / 2f > stage.bounds.x + stage.bounds.width)
+			if (physicsC.collision.x + physicsC.collision.width > stage.bounds.x + stage.bounds.width)
 			{
 				stageComponent.behavior.onTouchRight(stage, physicsC, entity);
 			}

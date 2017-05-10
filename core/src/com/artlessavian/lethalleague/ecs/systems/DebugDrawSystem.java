@@ -2,6 +2,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
+import com.artlessavian.lethalleague.OffsetRectangle;
 import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
@@ -54,7 +55,7 @@ public class DebugDrawSystem extends EntitySystem
 			PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
 			rectangle.setColor(Color.BLUE);
 			rectangle.setSize(physicsC.collision.width, physicsC.collision.height);
-			rectangle.setPosition(physicsC.collision.x - physicsC.collision.width/2, physicsC.collision.y);
+			rectangle.setPosition(physicsC.collision.x, physicsC.collision.y);
 			rectangle.draw(main.batch);
 
 			StateComponent stateC = entity.getComponent(StateComponent.class);
@@ -67,17 +68,17 @@ public class DebugDrawSystem extends EntitySystem
 			if (hitboxC != null)
 			{
 				rectangle.setColor(Color.YELLOW);
-				for (Rectangle r : hitboxC.hurtboxes)
+				for (OffsetRectangle r : hitboxC.hurtboxes)
 				{
 					rectangle.setSize(r.width, r.height);
-					rectangle.setPosition(r.x - r.width/2, r.y);
+					rectangle.setPosition(r.x, r.y);
 					rectangle.draw(main.batch);
 				}
 				rectangle.setColor(Color.RED);
-				for (Rectangle r : hitboxC.hitboxes)
+				for (OffsetRectangle r : hitboxC.hitboxes)
 				{
 					rectangle.setSize(r.width, r.height);
-					rectangle.setPosition(r.x - r.width/2, r.y);
+					rectangle.setPosition(r.x, r.y);
 					rectangle.draw(main.batch);
 				}
 			}

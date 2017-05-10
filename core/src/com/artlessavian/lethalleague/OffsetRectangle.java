@@ -2,34 +2,28 @@ package com.artlessavian.lethalleague;
 
 import com.badlogic.gdx.math.Rectangle;
 
-public class OffsetRectangle
+public class OffsetRectangle extends Rectangle
 {
-	protected Rectangle rectangle;
 	public float deltaX;
 	public float deltaY;
 
-	public OffsetRectangle()
+	public OffsetRectangle(float deltaX, float deltaY)
 	{
-		rectangle = new Rectangle();
+		super();
+		this.deltaX = deltaX;
+		this.deltaY = deltaY;
 	}
 
-	public void setSize(float width, float height)
+	public OffsetRectangle(float deltaX, float deltaY, float width, float height)
 	{
-		rectangle.setSize(width, height);
+		super(0, 0, width, height);
+		this.deltaX = deltaX;
+		this.deltaY = deltaY;
 	}
 
-	public void setPosition(float x, float y)
+	public Rectangle setPosition(float x, float y)
 	{
-		rectangle.setPosition(x + deltaX, y + deltaY);
+		return super.setPosition(x + deltaX, y + deltaY);
 	}
 
-	public boolean contains(OffsetRectangle other)
-	{
-		return rectangle.contains(other.rectangle);
-	}
-
-	public boolean overlaps(OffsetRectangle other)
-	{
-		return rectangle.overlaps(other.rectangle);
-	}
 }

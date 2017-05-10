@@ -116,7 +116,7 @@ public class Player extends Entity
 		public void onTouchFloor(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
 			physicsC.grounded = true;
-			physicsC.pos.y = stage.bounds.y + physicsC.collision.height / 2f;
+			physicsC.pos.y = stage.bounds.y;
 			physicsC.vel.y = 0;
 
 			StateComponent stateC = thisEntity.getComponent(StateComponent.class);
@@ -127,12 +127,14 @@ public class Player extends Entity
 		public void onTouchLeft(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
 			physicsC.pos.x = stage.bounds.x + physicsC.collision.width / 2f;
+			physicsC.vel.x = 0;
 		}
 
 		@Override
 		public void onTouchRight(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
 			physicsC.pos.x = stage.bounds.x + stage.bounds.width - physicsC.collision.width / 2f;
+			physicsC.vel.x = 0;
 		}
     }
 }

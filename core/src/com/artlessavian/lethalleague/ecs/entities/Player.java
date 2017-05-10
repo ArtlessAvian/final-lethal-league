@@ -42,6 +42,7 @@ public class Player extends Entity
 		this.add(inputC);
 
 		physicsC = new PhysicsComponent();
+		physicsC.collision.setSize(72, 144);
 		this.add(physicsC);
 
 		stateC = new StateComponent();

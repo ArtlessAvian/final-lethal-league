@@ -41,13 +41,14 @@ public class HitboxCollisionSystem extends EntitySystem
 		{
 			HitboxComponent e1Hitboxes = e1.getComponent(HitboxComponent.class);
 
-			for (Entity e2 : entities)
+			for (Rectangle e1Hitbox : e1Hitboxes.hitboxes)
 			{
-				if (e1 == e2) {continue;}
-				HitboxComponent e2Hurtboxes = e1.getComponent(HitboxComponent.class);
-
-				for (Rectangle e1Hitbox : e1Hitboxes.hitboxes)
+				for (Entity e2 : entities)
 				{
+					if (e1 == e2) {continue;}
+
+					HitboxComponent e2Hurtboxes = e1.getComponent(HitboxComponent.class);
+
 					for (Rectangle e2Hurtbox : e2Hurtboxes.hurtboxes)
 					{
 						if (e1Hitbox.overlaps(e2Hurtbox))

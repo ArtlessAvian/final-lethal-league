@@ -40,7 +40,7 @@ public class DebugDrawSystem extends EntitySystem
 	{
 		this.setProcessing(false);
 
-		entities = engine.getEntitiesFor(Family.all(PhysicsComponent.class, StateComponent.class).get());
+		entities = engine.getEntitiesFor(Family.all(PhysicsComponent.class).get());
 		setProcessing(false);
 	}
 
@@ -48,7 +48,6 @@ public class DebugDrawSystem extends EntitySystem
 	public void update(float rollover)
 	{
 		main.batch.setProjectionMatrix(drawSystem.cam.combined);
-		game.stage.draw(main.batch);
 
 		for (Entity entity : entities)
 		{
@@ -56,7 +55,7 @@ public class DebugDrawSystem extends EntitySystem
 			rectangle.setColor(Color.BLUE);
 			rectangle.setSize(physicsC.collision.width, physicsC.collision.height);
 			rectangle.setPosition(physicsC.collision.x, physicsC.collision.y);
-			rectangle.draw(main.batch);
+			rectangle.draw(main.batch, 0.3f);
 
 			StateComponent stateC = entity.getComponent(StateComponent.class);
 			if (stateC != null)
@@ -72,14 +71,14 @@ public class DebugDrawSystem extends EntitySystem
 				{
 					rectangle.setSize(r.width, r.height);
 					rectangle.setPosition(r.x, r.y);
-					rectangle.draw(main.batch);
+					rectangle.draw(main.batch, 0.3f);
 				}
 				rectangle.setColor(Color.RED);
 				for (OffsetRectangle r : hitboxC.hitboxes)
 				{
 					rectangle.setSize(r.width, r.height);
 					rectangle.setPosition(r.x, r.y);
-					rectangle.draw(main.batch);
+					rectangle.draw(main.batch, 0.3f);
 				}
 			}
 

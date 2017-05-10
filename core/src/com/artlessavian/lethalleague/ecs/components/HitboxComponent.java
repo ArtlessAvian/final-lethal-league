@@ -39,7 +39,6 @@ public class HitboxComponent implements Component
 	{
 		this.behavior = new TempBehavior();
 		hitboxes = new ArrayList<OffsetRectangle>();
-		hitboxes.add(new OffsetRectangle(-10, 10, 20, 20));
 		hurtboxes = new ArrayList<OffsetRectangle>();
 		hurtboxes.add(new OffsetRectangle(-36, 0, 72, 144));
 	}

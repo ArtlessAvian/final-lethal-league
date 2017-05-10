@@ -10,6 +10,10 @@ public class PlayerInput extends InputAdapter
 	int leftKeycode;
 	int downKeycode;
 	int rightKeycode;
+	int swingKeycode;
+	int jumpKeycode;
+
+	boolean tapJump = true;
 
 	PlayerInputContainer inputs;
 
@@ -23,6 +27,8 @@ public class PlayerInput extends InputAdapter
 			leftKeycode = Input.Keys.LEFT;
 			downKeycode = Input.Keys.DOWN;
 			rightKeycode = Input.Keys.RIGHT;
+			swingKeycode = Input.Keys.SHIFT_RIGHT;
+			jumpKeycode = Input.Keys.SLASH;
 		}
 		else if (playerNumber == 1)
 		{
@@ -30,6 +36,9 @@ public class PlayerInput extends InputAdapter
 			leftKeycode = Input.Keys.A;
 			downKeycode = Input.Keys.S;
 			rightKeycode = Input.Keys.D;
+			swingKeycode = Input.Keys.J;
+			jumpKeycode = Input.Keys.SPACE;
+
 		}
 	}
 
@@ -40,6 +49,11 @@ public class PlayerInput extends InputAdapter
 		{
 			inputs.upPressed = true;
 			inputs.upPressFrame = Gdx.graphics.getFrameId();
+			if (tapJump)
+			{
+				inputs.jumpPressed = true;
+				inputs.jumpPressFrame = Gdx.graphics.getFrameId();
+			}
 			return true;
 
 		}
@@ -61,6 +75,18 @@ public class PlayerInput extends InputAdapter
 			inputs.rightPressFrame = Gdx.graphics.getFrameId();
 			return true;
 		}
+		if (keycode == swingKeycode)
+		{
+			inputs.swingPressed = true;
+			inputs.swingPressFrame = Gdx.graphics.getFrameId();
+			return true;
+		}
+		if (keycode == jumpKeycode)
+		{
+			inputs.jumpPressed = true;
+			inputs.jumpPressFrame = Gdx.graphics.getFrameId();
+			return true;
+		}
 
 		return false;
 	}
@@ -71,6 +97,7 @@ public class PlayerInput extends InputAdapter
 		if (keycode == upKeycode)
 		{
 			inputs.upPressed = false;
+			if (tapJump) {inputs.jumpPressed = false;}
 			return true;
 		}
 		if (keycode == leftKeycode)
@@ -86,6 +113,16 @@ public class PlayerInput extends InputAdapter
 		if (keycode == rightKeycode)
 		{
 			inputs.rightPressed = false;
+			return true;
+		}
+		if (keycode == swingKeycode)
+		{
+			inputs.swingPressed = false;
+			return true;
+		}
+		if (keycode == jumpKeycode)
+		{
+			inputs.jumpPressed = false;
 			return true;
 		}
 

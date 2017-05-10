@@ -1,5 +1,6 @@
 package com.artlessavian.lethalleague.playerstates;
 
+import com.artlessavian.lethalleague.OffsetRectangle;
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.StateMachine;
 import com.artlessavian.lethalleague.ecs.components.InputComponent;

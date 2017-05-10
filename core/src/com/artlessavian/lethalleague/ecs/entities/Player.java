@@ -1,14 +1,8 @@
-package com.artlessavian.lethalleague.ecs.entities;
+ 
 
-import com.artlessavian.lethalleague.GameScreen;
-import com.artlessavian.lethalleague.PlayerInput;
-import com.artlessavian.lethalleague.Stage;
-import com.artlessavian.lethalleague.StateMachine;
+import com.artlessavian.lethalleague.*;
 import com.artlessavian.lethalleague.ecs.components.*;
-import com.artlessavian.lethalleague.playerstates.PlayerChargeState;
-import com.artlessavian.lethalleague.playerstates.PlayerJumpState;
-import com.artlessavian.lethalleague.playerstates.PlayerStandState;
-import com.artlessavian.lethalleague.playerstates.PlayerSwingState;
+import com.artlessavian.lethalleague.playerstates.*;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,114 +13,135 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Player extends Entity
 {
-	private SpriteComponent spriteC;
-	private InputComponent inputC;
-	private PhysicsComponent physicsC;
-	private StateComponent stateC;
+    private SpriteComponent spriteC;
+    private InputComponent inputC;
+    private PhysicsComponent physicsC;
+    private HitboxComponent hitboxC;
+    private StateComponent stateC;
 
-	public PlayerInput input;
+    public PlayerInputContainer input;
 
-	public Player(PlayerInput input)
-	{
-		this.input = input;
-		inputC = new InputComponent(input);
-		this.add(inputC);
+    public float gravity = 2000;
+    public float lowGravity = 1000;
 
-		physicsC = new PhysicsComponent();
-		this.add(physicsC);
+    public float jumpVelocity = 700;
+    public float hopVelocity = 500;
 
-		stateC = new StateComponent();
-		this.addAllStates(stateC.machine);
-		stateC.machine.gotoState(PlayerStandState.class);
-		this.add(stateC);
+    public float fastFallSpeed = -1000;
+    public float groundMaxSpeed = 400;
+    public float airMaxSpeed = 400;
 
-		spriteC = new SpriteComponent(new Sprite(new Texture("grid.png")));
-		spriteC.sprite.setSize(72, 144);
-		this.add(spriteC);
+    public float groundAccel = 50;
+    public float airAccel = 30;
+    public float groundFriction = 10;
 
-		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
-		this.add(collisionBehaviorComponent);
-	}
+    public Player(PlayerInputContainer input)
+    {
+        this.input = input;
+        inputC = new InputComponent(input);
+        this.add(inputC);
 
-	private void addAllStates(StateMachine stateMachine)
-	{
-		stateMachine.addState(new PlayerStandState(this));
-		stateMachine.addState(new PlayerChargeState(this));
-		stateMachine.addState(new PlayerSwingState(this));
-		stateMachine.addState(new PlayerJumpState(this));
-	}
+        physicsC = new PhysicsComponent();
+        this.add(physicsC);
 
-	/**
-	 * Called whenever a player dies
-	 */
-	public void onDie()
-	{
+        stateC = new StateComponent();
+        this.addAllStates(stateC.machine);
+        stateC.machine.gotoState(PlayerStandState.class);
+        this.add(stateC);
 
-	}
+        spriteC = new SpriteComponent(new Sprite(new Texture("grid.png")));
+        spriteC.sprite.setSize(72, 144);
+        this.add(spriteC);
 
-	/**
-	 * Called whenever a player hits a ball
-	 */
-	public void onHit()
-	{
+        hitboxC = new HitboxComponent();
+        this.add(hitboxC);
 
-	}
+        StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
+        this.add(collisionBehaviorComponent);
+    }
 
-	/**
-	 * Called whenever the player is responsible for another dying
-	 */
-	public void onKill()
-	{
+    private void addAllStates(StateMachine stateMachine)
+    {
+        stateMachine.addState(new PlayerStandState(this));
+        stateMachine.addState(new PlayerChargeState(this));
+        stateMachine.addState(new PlayerSwingState(this));
+        stateMachine.addState(new PlayerJumpState(this));
+        stateMachine.addState(new PlayerJumpSquatState(this));
+        stateMachine.addState(new PlayerCrouchState(this));
+    }
 
-	}
+    /**
+     * Called whenever a player dies
+     */
+    public void onDie()
+    {
 
-	/**
-	 * @return if a player can super
-	 */
-	public boolean canSuper()
-	{
-		return false;
-	}
+    }
 
-	/**
-	 * Called when the player is in hitlag, and presses hit again
-	 *
-	 * @param game the game, to allow for crazy accesses and modification
-	 */
-	public void onSuper(GameScreen game)
-	{
+    /**
+     * Called whenever a player hits a ball
+     */
+    public void onHit()
+    {
 
-	}
+    }
 
-	public static class PlayerCollisionBehavior extends StageComponent.CollisionBehavior
-	{
-		@Override
-		public void onTouchCeil(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
-		{
+    /**
+     * Called whenever the player is responsible for another dying
+     */
+    public void onKill()
+    {
 
-		}
+    }
 
-		@Override
-		public void onTouchFloor(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
-		{
-			physicsC.grounded = true;
-			physicsC.pos.y = stage.bounds.y;
-			physicsC.vel.y = 0;
+    /**
+     * @return if a player can super
+     */
+    public boolean canSuper()
+    {
+        return false;
+    }
 
-			StateComponent stateC = thisEntity.getComponent(StateComponent.class);
-			stateC.machine.gotoState(PlayerStandState.class);
-		}
+    /**
+     * Called when the player is in hitlag, and presses hit again
+     *
+     * @param game the game , to allow for crazy accesses and modification
+     */
+    public void onSuper(GameScreen game)
+    {
 
-		@Override
-		public void onTouchLeft(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
-		{
+    }
 
-		}
+    public static class PlayerCollisionBehavior extends StageComponent.CollisionBehavior
+    {
+        @Override
+        public void onTouchCeil(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
+        {
+            physicsC.pos.y = stage.bounds.y + stage.bounds.height - physicsC.collision.height / 2f;
+            physicsC.vel.y = 0;
+        }
 
-		@Override
-		public void onTouchRight(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
-		{
+        @Override
+        public void onTouchFloor(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
+        {
+            physicsC.grounded = true;
+            physicsC.pos.y = stage.bounds.y + physicsC.collision.height / 2f;
+            physicsC.vel.y = 0;
 
-		}
-	}
+            StateComponent stateC = thisEntity.getComponent(StateComponent.class);
+            stateC.machine.gotoState(PlayerStandState.class);
+        }
+
+        @Override
+        public void onTouchLeft(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
+        {
+            physicsC.pos.x = stage.bounds.x + physicsC.collision.width / 2f;
+        }
+
+        @Override
+        public void onTouchRight(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
+        {
+            physicsC.pos.x = stage.bounds.x + stage.bounds.width - physicsC.collision.width / 2f;
+        }
+    }
 }

@@ -11,5 +11,6 @@ public class SpriteComponent implements Component
 	public SpriteComponent(Sprite sprite)
 	{
 		this.sprite = sprite;
+		this.sprite.setOriginCenter();
 	}
 }

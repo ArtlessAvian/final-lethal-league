@@ -1,3 +1,4 @@
+/*
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
@@ -42,6 +43,8 @@ public class PlayerHitState extends State
 
         if(!physicsC.grounded)
         {
+
+
             physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
         }
     }
@@ -52,3 +55,4 @@ public class PlayerHitState extends State
         return 0;
     }
 }
+*/

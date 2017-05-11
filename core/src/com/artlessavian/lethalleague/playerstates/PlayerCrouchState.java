@@ -3,6 +3,7 @@ package com.artlessavian.lethalleague.playerstates;
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerCrouchState extends State
 {
@@ -49,13 +50,13 @@ public class PlayerCrouchState extends State
 	public void doStuff()
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-		physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
+
+		CommonPlayerFuncts.friction(player, physicsC);
 		// TODO
 	}
 
 	@Override
-	public int getSpriteID()
+	public void editSprite(Sprite sprite)
 	{
-		return 0;
 	}
 }

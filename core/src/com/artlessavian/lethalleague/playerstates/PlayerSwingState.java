@@ -1,8 +1,10 @@
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
+import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerSwingState extends State
 {
@@ -17,21 +19,25 @@ public class PlayerSwingState extends State
 	public void exit()
 	{
 		// TODO
-
+		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
+		hitboxC.hitboxes.remove(player.swingBox);
 	}
 
 	@Override
 	public void enter()
 	{
 		// TODO
+		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
+		hitboxC.hitboxes.add(player.swingBox);
 
+		hitboxC.cannotHit.clear();
 	}
 
 	@Override
 	public boolean changeStateMaybe()
 	{
 		// TODO
-		if(getTimeInState() > 30)
+		if (getTimeInState() >= 30)
 		{
 			PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 			if (physicsC.grounded)
@@ -54,24 +60,44 @@ public class PlayerSwingState extends State
 
 		//TODO
 
-		if (player.input.leftPressed != player.input.rightPressed)
+		if (!physicsC.grounded)
 		{
-			if (player.input.leftPressed)
-			{
-				physicsC.vel.x -= player.airAccel;
-			}
-			else //inputC.input.rightPressed
-			{
-				physicsC.vel.x += player.airAccel;
-			}
+			CommonPlayerFuncts.fall(player, physicsC);
+			CommonPlayerFuncts.fastfallCheck(player, physicsC);
+
+			CommonPlayerFuncts.horizontalInput(player, physicsC);
+			CommonPlayerFuncts.clampMovement(player, physicsC);
 		}
-		if (physicsC.vel.x > player.airMaxSpeed) {physicsC.vel.x = player.airMaxSpeed;}
-		if (physicsC.vel.x < -player.airMaxSpeed) {physicsC.vel.x = -player.airMaxSpeed;}
+		else
+		{
+			CommonPlayerFuncts.friction(player, physicsC);
+		}
+
+		if (player.ball != null)
+		{
+			PhysicsComponent physicsCBall = player.ball.getComponent(PhysicsComponent.class);
+			if (player.input.upPressed)
+			{
+				physicsCBall.vel.setAngle(player.upAngle);
+			}
+			else if (player.input.downPressed)
+			{
+				physicsCBall.vel.setAngle(player.downAngle);
+			}
+			else
+			{
+				physicsCBall.vel.setAngle(player.straightAngle);
+			}
+
+			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
+
+			player.ball = null;
+		}
 	}
 
 	@Override
-	public int getSpriteID()
+	public void editSprite(Sprite sprite)
 	{
-		return 0;
+		sprite.rotate(12);
 	}
 }

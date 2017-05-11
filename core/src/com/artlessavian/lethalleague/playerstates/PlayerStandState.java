@@ -3,6 +3,7 @@ package com.artlessavian.lethalleague.playerstates;
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerStandState extends State
 {
@@ -54,30 +55,14 @@ public class PlayerStandState extends State
 	public void doStuff()
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-	
-		if (player.input.leftPressed != player.input.rightPressed)
-		{
-			if (player.input.leftPressed)
-			{
-				physicsC.vel.x -= player.groundAccel;
-			}
-			else //inputC.input.rightPressed
-			{
-				physicsC.vel.x += player.groundAccel;
-			}
-		}
-		else
-		{
-			physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
-		}
 
-		if (physicsC.vel.x > player.groundMaxSpeed) {physicsC.vel.x = player.groundMaxSpeed;}
-		if (physicsC.vel.x < -player.groundMaxSpeed) {physicsC.vel.x = -player.groundMaxSpeed;}
+		CommonPlayerFuncts.horizontalInput(player, physicsC);
+		CommonPlayerFuncts.clampMovement(player, physicsC);
 	}
 
 	@Override
-	public int getSpriteID()
+	public void editSprite(Sprite sprite)
 	{
-		return 0;
+
 	}
 }

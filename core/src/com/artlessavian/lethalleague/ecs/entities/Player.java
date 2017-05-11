@@ -35,6 +35,16 @@ public class Player extends Entity
 	public float airAccel = 30;
 	public float groundFriction = 10;
 
+	public float upAngle = 60;
+	public float straightAngle = 0;
+	public float downAngle = -15;
+	public float smashAngle = -45;
+
+	public Ball ball = null;
+
+	public OffsetRectangle swingBox;
+//	public OffsetRectangle smashBox; // helps you not get rsi
+
 	public Player(PlayerInputContainer input)
 	{
 		this.input = input;
@@ -50,22 +60,28 @@ public class Player extends Entity
 		stateC.machine.gotoState(PlayerStandState.class);
 		this.add(stateC);
 
-		spriteC = new SpriteComponent(new Sprite(new Texture("not_a_trace.png")));
-		spriteC.sprite.setSize(144, 144);
+		Sprite s = new Sprite(new Texture("not_a_trace.png"));
+		s.setSize(144, 144);
+		spriteC = new SpriteComponent(s);
 		this.add(spriteC);
 
-		hitboxC = new HitboxComponent();
+		hitboxC = new HitboxComponent(new PlayerHittingBehavior());
 		this.add(hitboxC);
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
 		this.add(collisionBehaviorComponent);
+
+		this.add(new HitlagComponent());
+
+		swingBox = new OffsetRectangle(0, 0, 144, 144);
 	}
 
 	private void addAllStates(StateMachine stateMachine)
 	{
 		stateMachine.addState(new PlayerStandState(this));
-		stateMachine.addState(new PlayerChargeState(this));
+//		stateMachine.addState(new PlayerChargeState(this));
 		stateMachine.addState(new PlayerSwingState(this));
+		stateMachine.addState(new PlayerSmashState(this));
 		stateMachine.addState(new PlayerJumpState(this));
 		stateMachine.addState(new PlayerJumpSquatState(this));
 		stateMachine.addState(new PlayerCrouchState(this));
@@ -120,7 +136,10 @@ public class Player extends Entity
 			physicsC.vel.y = 0;
 
 			StateComponent stateC = thisEntity.getComponent(StateComponent.class);
-			stateC.machine.gotoState(PlayerStandState.class);
+			if (stateC.machine.current.getClass() != PlayerSwingState.class && stateC.machine.current.getClass() != PlayerSmashState.class)
+			{
+				stateC.machine.gotoState(PlayerStandState.class);
+			}
 		}
 
 		@Override
@@ -137,4 +156,20 @@ public class Player extends Entity
 			physicsC.vel.x = 0;
 		}
     }
+
+	private static class PlayerHittingBehavior implements HitboxComponent.HitBehavior
+	{
+		@Override
+		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
+		{
+			HitboxComponent hitboxC = thisEntity.getComponent(HitboxComponent.class);
+			hitboxC.cannotHit.add(other);
+		}
+
+		@Override
+		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
+		{
+
+		}
+	}
 }

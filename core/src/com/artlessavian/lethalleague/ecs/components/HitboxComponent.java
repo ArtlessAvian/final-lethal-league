@@ -10,20 +10,20 @@ public class HitboxComponent implements Component
 {
 	public interface HitBehavior
 	{
-		void onHit(Entity thisEntity, Entity other);
-		void onGetHit(Entity thisEntity, Entity other);
+		void onHit(Entity thisEntity, Entity other, boolean isSmash);
+		void onGetHit(Entity thisEntity, Entity other, boolean isSmash);
 	}
 
-	public class TempBehavior implements HitBehavior
+	public static class TempBehavior implements HitBehavior
 	{
 		@Override
-		public void onHit(Entity thisEntity, Entity other)
+		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
 			System.out.println("hit " + thisEntity.hashCode() + " " + other.hashCode());
 		}
 
 		@Override
-		public void onGetHit(Entity thisEntity, Entity other)
+		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
 //			System.out.println("get hit");
 		}
@@ -33,10 +33,14 @@ public class HitboxComponent implements Component
 	public ArrayList<OffsetRectangle> hitboxes;
 	public OffsetRectangle hurtbox; // where you get hurt from
 
-	public HitboxComponent()
+	public ArrayList<Entity> cannotHit;
+
+	public HitboxComponent(HitBehavior behavior)
 	{
-		this.behavior = new TempBehavior();
+		this.behavior = behavior;
 		hitboxes = new ArrayList<OffsetRectangle>();
 		hurtbox = new OffsetRectangle(-36, 0, 72, 144);
+
+		cannotHit = new ArrayList<Entity>();
 	}
 }

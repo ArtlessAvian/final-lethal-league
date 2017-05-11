@@ -1,6 +1,7 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.Stage;
+import com.artlessavian.lethalleague.ecs.components.HitlagComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.components.StageComponent;
 import com.badlogic.ashley.core.Entity;
@@ -20,6 +21,9 @@ public class PhysicsSystem extends IteratingSystem
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{
+		HitlagComponent hitlagC = entity.getComponent(HitlagComponent.class);
+		if (hitlagC != null && hitlagC.hitlag > 0) {return;}
+
 		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
 
 		physicsC.lastPos.set(physicsC.pos);
@@ -53,5 +57,7 @@ public class PhysicsSystem extends IteratingSystem
 				stageComponent.behavior.onTouchRight(stage, physicsC, entity);
 			}
 		}
+
+		physicsC.facingLeft = physicsC.pos.x < physicsC.lastPos.x;
 	}
 }

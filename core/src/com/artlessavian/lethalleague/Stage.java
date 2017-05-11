@@ -12,6 +12,7 @@ public class Stage
 {
 	public Rectangle bounds;
 	Sprite sprite;
+	Sprite background;
 
 	public Stage()
 	{
@@ -23,10 +24,18 @@ public class Stage
 		sprite = new Sprite(new Texture("grid.png"));
 		sprite.setSize(bounds.width, bounds.height);
 		sprite.setPosition(bounds.x, bounds.y);
+
+		background = new Sprite(new Texture("awwye.png"));
+		background.setCenter(0,720/2f);
 	}
 
-	public void draw(SpriteBatch batch)
+	public void drawRect(SpriteBatch batch)
 	{
 		sprite.draw(batch, 0.2f);
+	}
+	public void draw(SpriteBatch batch)
+	{
+		background.draw(batch);
+		drawRect(batch);
 	}
 }

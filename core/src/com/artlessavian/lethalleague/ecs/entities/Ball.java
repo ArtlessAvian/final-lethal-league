@@ -1,22 +1,21 @@
 package com.artlessavian.lethalleague.ecs.entities;
 
-import com.artlessavian.lethalleague.PlayerInput;
+import com.artlessavian.lethalleague.OffsetRectangle;
 import com.artlessavian.lethalleague.Stage;
-import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
-import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
-import com.artlessavian.lethalleague.ecs.components.StageComponent;
+import com.artlessavian.lethalleague.ecs.components.*;
+import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
+import com.artlessavian.lethalleague.playerstates.PlayerSmashState;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Ball extends Entity
 {
-	public Ball()
+	public Ball(DrawSystem drawSystem)
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.pos.y = 300;
-		physicsC.vel.x = -300;
-		physicsC.vel.y = -500;
+		physicsC.vel.x = -900;
 		physicsC.collision.setSize(48, 48);
 		this.add(physicsC);
 //		StateComponent stateC = new StateComponent();
@@ -25,8 +24,15 @@ public class Ball extends Entity
 		SpriteComponent spriteC = new SpriteComponent(new Sprite(new Texture("grid.png")));
 		spriteC.sprite.setSize(48, 48);
 		this.add(spriteC);
+		HitboxComponent hitboxC = new HitboxComponent(new BallHittingBehavior());
+		hitboxC.hurtbox = new OffsetRectangle(-24, 0, 48, 48);
+		this.add(hitboxC);
 		StageComponent stageC = new StageComponent(new BallCollisionBehavior());
 		this.add(stageC);
+
+		this.add(new HitlagComponent());
+
+		this.add(new BallComponent(drawSystem));
 	}
 
 	// TODO
@@ -35,6 +41,9 @@ public class Ball extends Entity
 		@Override
 		public void onTouchCeil(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
+			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
+			ballC.drawSystem.doScreenShake(5, 5);
+
 			float deltaX = physicsC.pos.x - physicsC.lastPos.x;
 			float deltaY = physicsC.pos.y - physicsC.lastPos.y;
 			float newY = stage.bounds.y + stage.bounds.height - physicsC.collision.height;
@@ -48,6 +57,9 @@ public class Ball extends Entity
 		@Override
 		public void onTouchFloor(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
+			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
+			ballC.drawSystem.doScreenShake(5, 5);
+
 			float deltaX = physicsC.pos.x - physicsC.lastPos.x;
 			float deltaY = physicsC.pos.y - physicsC.lastPos.y;
 			float newY = stage.bounds.y;
@@ -61,6 +73,9 @@ public class Ball extends Entity
 		@Override
 		public void onTouchLeft(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
+			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
+			ballC.drawSystem.doScreenShake(5, 5);
+
 			float deltaX = physicsC.pos.x - physicsC.lastPos.x;
 			float deltaY = physicsC.pos.y - physicsC.lastPos.y;
 			float newX = stage.bounds.x + physicsC.collision.width/2;
@@ -74,6 +89,9 @@ public class Ball extends Entity
 		@Override
 		public void onTouchRight(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
+			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
+			ballC.drawSystem.doScreenShake(5, 5);
+
 			float deltaX = physicsC.pos.x - physicsC.lastPos.x;
 			float deltaY = physicsC.pos.y - physicsC.lastPos.y;
 			float newX = stage.bounds.x + stage.bounds.width - physicsC.collision.width/2;
@@ -82,6 +100,70 @@ public class Ball extends Entity
 			physicsC.vel.x *= -1;
 
 			physicsC.pos.set(newX, newY);
+		}
+	}
+
+	public class BallHittingBehavior implements HitboxComponent.HitBehavior
+	{
+		@Override
+		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
+		{
+
+		}
+
+		@Override
+		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
+		{
+			PhysicsComponent physicsC = thisEntity.getComponent(PhysicsComponent.class);
+			if (isSmash)
+			{
+				physicsC.vel.scl(2);
+			}
+			else
+			{
+				physicsC.vel.setLength(physicsC.vel.len() + 20);
+			}
+
+			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
+			hitlagC.hitlag = getHitlag(physicsC.vel.len());
+
+			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
+			if (hitlagC.hitlag == 180)
+			{
+				ballC.drawSystem.doScreenShake(hitlagC.hitlag, 10);
+			}
+			else
+			{
+				ballC.drawSystem.doScreenShake(5, 5);
+			}
+
+
+			if (other instanceof Player)
+			{
+				HitlagComponent hitlagCOther = other.getComponent(HitlagComponent.class);
+				hitlagCOther.hitlag = hitlagC.hitlag;
+
+				PhysicsComponent physicsCOther = other.getComponent(PhysicsComponent.class);
+				physicsCOther.vel.y = 0;
+
+				((Player)other).ball = (Ball)thisEntity;
+			}
+			else
+			{
+				physicsC.vel.setLength(physicsC.vel.len() + 20);
+			}
+		}
+
+		public int getHitlag(float speed)
+		{
+			if (speed > 5000)
+			{
+				return 180;
+			}
+			else
+			{
+				return (int)(60 * speed / 5000);
+			}
 		}
 	}
 }

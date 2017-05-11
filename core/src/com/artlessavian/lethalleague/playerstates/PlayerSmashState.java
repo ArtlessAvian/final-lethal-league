@@ -1,8 +1,10 @@
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
+import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerSmashState extends State
 {
@@ -17,20 +19,37 @@ public class PlayerSmashState extends State
 	public void exit()
 	{
 		// TODO
-
+		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
+		hitboxC.hitboxes.remove(player.swingBox);
 	}
 
 	@Override
 	public void enter()
 	{
 		// TODO
+		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
+		hitboxC.hitboxes.add(player.swingBox);
 
+		hitboxC.cannotHit.clear();
 	}
 
 	@Override
 	public boolean changeStateMaybe()
 	{
 		// TODO
+		if (getTimeInState() >= 30)
+		{
+			PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+			if (physicsC.grounded)
+			{
+				sm.gotoState(PlayerStandState.class);
+			}
+			else
+			{
+				sm.gotoState(PlayerJumpState.class);
+			}
+			return true;
+		}
 		return false;
 	}
 
@@ -39,12 +58,34 @@ public class PlayerSmashState extends State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
-		// TODO
+		//TODO
+
+		if (!physicsC.grounded)
+		{
+			CommonPlayerFuncts.fall(player, physicsC);
+			CommonPlayerFuncts.fastfallCheck(player, physicsC);
+
+			CommonPlayerFuncts.horizontalInput(player, physicsC);
+			CommonPlayerFuncts.clampMovement(player, physicsC);
+		}
+		else
+		{
+			CommonPlayerFuncts.friction(player, physicsC);
+		}
+
+		if (player.ball != null)
+		{
+			PhysicsComponent physicsCBall = player.ball.getComponent(PhysicsComponent.class);
+			physicsCBall.vel.setAngle(player.smashAngle);
+
+			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
+			player.ball = null;
+		}
 	}
 
 	@Override
-	public int getSpriteID()
+	public void editSprite(Sprite sprite)
 	{
-		return 0;
+		sprite.rotate(36);
 	}
 }

@@ -21,8 +21,8 @@ public class BallSystem extends IteratingSystem
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{
-		HitlagComponent hitlagC = entity.getComponent(HitlagComponent.class);
-		if (hitlagC.hitlag > 0) {return;}
+//		HitlagComponent hitlagC = entity.getComponent(HitlagComponent.class);
+//		if (hitlagC.hitlag > 0) {return;}
 
 		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
 		HitboxComponent hitboxC = entity.getComponent(HitboxComponent.class);

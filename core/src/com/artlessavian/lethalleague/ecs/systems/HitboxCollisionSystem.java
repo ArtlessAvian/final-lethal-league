@@ -30,7 +30,7 @@ public class HitboxCollisionSystem extends EntitySystem
 	}
 
 	@Override
-	public void update(float rollover)
+	public void update(float delta)
 	{
 		for (Entity e : entities2)
 		{
@@ -76,7 +76,7 @@ public class HitboxCollisionSystem extends EntitySystem
 							isSmash = stateC.machine.current.getClass() == PlayerSmashState.class;
 						}
 
-						System.out.println("hi");
+//						System.out.println("hi");
 						e1Hitboxes.behavior.onHit(e1, e2, isSmash);
 						e2Hurtbox.behavior.onGetHit(e2, e1, isSmash);
 						break;

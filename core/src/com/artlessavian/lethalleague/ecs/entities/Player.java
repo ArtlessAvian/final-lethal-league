@@ -169,7 +169,10 @@ public class Player extends Entity
 		@Override
 		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
-
+//			if (other instanceof Ball)
+//			{
+//				thisEntity.
+//			}
 		}
 	}
 }

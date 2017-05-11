@@ -49,7 +49,13 @@ public class Ball extends Entity
 			float newY = stage.bounds.y + stage.bounds.height - physicsC.collision.height;
 			float newX = physicsC.lastPos.x + deltaX * (newY - physicsC.lastPos.y) / deltaY;
 
+//			System.out.println(deltaX / deltaY);
+//			System.out.println((newX - physicsC.lastPos.x) / (newY - physicsC.lastPos.y));
+
 			physicsC.vel.y *= -1;
+
+			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
+			hitlagC.hitlag = 3;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -67,6 +73,9 @@ public class Ball extends Entity
 
 			physicsC.vel.y *= -1;
 
+			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
+			hitlagC.hitlag = 3;
+
 			physicsC.pos.set(newX, newY);
 		}
 
@@ -83,6 +92,9 @@ public class Ball extends Entity
 
 			physicsC.vel.x *= -1;
 
+			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
+			hitlagC.hitlag = 3;
+
 			physicsC.pos.set(newX, newY);
 		}
 
@@ -97,7 +109,13 @@ public class Ball extends Entity
 			float newX = stage.bounds.x + stage.bounds.width - physicsC.collision.width/2;
 			float newY = physicsC.lastPos.y + deltaY * (newX - physicsC.lastPos.x) / deltaX;
 
+//			System.out.println(deltaX / deltaY);
+//			System.out.println((newX - physicsC.lastPos.x) / (newY - physicsC.lastPos.y));
+
 			physicsC.vel.x *= -1;
+
+			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
+			hitlagC.hitlag = 3;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -123,6 +141,9 @@ public class Ball extends Entity
 			{
 				physicsC.vel.setLength(physicsC.vel.len() + 20);
 			}
+
+			HitboxComponent hitboxC = thisEntity.getComponent(HitboxComponent.class);
+			hitboxC.hitboxes.clear();
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
 			hitlagC.hitlag = getHitlag(physicsC.vel.len());

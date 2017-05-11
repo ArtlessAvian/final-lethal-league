@@ -35,7 +35,7 @@ public class Stage
 	}
 	public void draw(SpriteBatch batch)
 	{
-		background.draw(batch);
+//		background.draw(batch);
 		drawRect(batch);
 	}
 }

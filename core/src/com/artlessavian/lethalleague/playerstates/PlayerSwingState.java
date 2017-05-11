@@ -4,6 +4,7 @@ import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerSwingState extends State
 {
@@ -95,8 +96,8 @@ public class PlayerSwingState extends State
 	}
 
 	@Override
-	public int getSpriteID()
+	public void editSprite(Sprite sprite)
 	{
-		return 0;
+		sprite.rotate(12);
 	}
 }

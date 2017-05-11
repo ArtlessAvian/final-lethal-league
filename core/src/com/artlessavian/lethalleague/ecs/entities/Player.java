@@ -60,8 +60,9 @@ public class Player extends Entity
 		stateC.machine.gotoState(PlayerStandState.class);
 		this.add(stateC);
 
-		spriteC = new SpriteComponent(new Sprite(new Texture("not_a_trace.png")));
-		spriteC.sprite.setSize(144, 144);
+		Sprite s = new Sprite(new Texture("not_a_trace.png"));
+		s.setSize(144, 144);
+		spriteC = new SpriteComponent(s);
 		this.add(spriteC);
 
 		hitboxC = new HitboxComponent(new PlayerHittingBehavior());
@@ -78,7 +79,7 @@ public class Player extends Entity
 	private void addAllStates(StateMachine stateMachine)
 	{
 		stateMachine.addState(new PlayerStandState(this));
-		stateMachine.addState(new PlayerChargeState(this));
+//		stateMachine.addState(new PlayerChargeState(this));
 		stateMachine.addState(new PlayerSwingState(this));
 		stateMachine.addState(new PlayerSmashState(this));
 		stateMachine.addState(new PlayerJumpState(this));

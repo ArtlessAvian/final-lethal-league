@@ -1,5 +1,7 @@
 package com.artlessavian.lethalleague;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 /**
  * One object per state, reused by the same state machine
  */
@@ -17,7 +19,7 @@ public abstract class State
 
 	public abstract void doStuff();
 
-	public abstract int getSpriteID();
+	public abstract void editSprite(Sprite sprite);
 
 	public long getTimeInState()
 	{

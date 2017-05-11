@@ -3,6 +3,7 @@ package com.artlessavian.lethalleague.playerstates;
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerSuperState extends State
 {
@@ -43,8 +44,7 @@ public class PlayerSuperState extends State
 	}
 
 	@Override
-	public int getSpriteID()
+	public void editSprite(Sprite sprite)
 	{
-		return 0;
 	}
 }

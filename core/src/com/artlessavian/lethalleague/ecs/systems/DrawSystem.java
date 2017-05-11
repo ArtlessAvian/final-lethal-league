@@ -56,7 +56,7 @@ public class DrawSystem extends EntitySystem
 			if (stateC != null)
 			{
 				// TODO: Change sprite based on sprite id
-				//stateC.machine.current.getSpriteID();
+				stateC.machine.current.editSprite(spriteC.sprite);
 			}
 
 			PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);

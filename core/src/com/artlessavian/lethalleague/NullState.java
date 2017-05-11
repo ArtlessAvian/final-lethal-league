@@ -1,5 +1,7 @@
 package com.artlessavian.lethalleague;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 /**
  * Intentionally Empty State. Avoids NPE.
  */
@@ -23,5 +25,5 @@ public class NullState extends State
 	public void doStuff() {}
 
 	@Override
-	public int getSpriteID() { return 0; }
+	public void editSprite(Sprite sprite) {}
 }

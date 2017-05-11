@@ -31,7 +31,7 @@ public class OffsetRectangle extends Rectangle
 	{
 		flipped = !flipped;
 		float ax = x - deltaX;
-		deltaX = -getWidth()/2 - deltaX;
+		deltaX = -getWidth() - deltaX;
 		setPosition(ax, y - deltaY);
 		return this;
 	}

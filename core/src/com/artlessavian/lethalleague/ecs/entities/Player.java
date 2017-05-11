@@ -35,6 +35,9 @@ public class Player extends Entity
 	public float airAccel = 30;
 	public float groundFriction = 10;
 
+	public OffsetRectangle swingBox;
+//	public OffsetRectangle smashBox; // helps you not get rsi
+
 	public Player(PlayerInputContainer input)
 	{
 		this.input = input;
@@ -59,6 +62,8 @@ public class Player extends Entity
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
 		this.add(collisionBehaviorComponent);
+
+		swingBox = new OffsetRectangle(0, 0, 144, 144);
 	}
 
 	private void addAllStates(StateMachine stateMachine)
@@ -66,6 +71,7 @@ public class Player extends Entity
 		stateMachine.addState(new PlayerStandState(this));
 		stateMachine.addState(new PlayerChargeState(this));
 		stateMachine.addState(new PlayerSwingState(this));
+		stateMachine.addState(new PlayerSmashState(this));
 		stateMachine.addState(new PlayerJumpState(this));
 		stateMachine.addState(new PlayerJumpSquatState(this));
 		stateMachine.addState(new PlayerCrouchState(this));

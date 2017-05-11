@@ -54,25 +54,9 @@ public class PlayerStandState extends State
 	public void doStuff()
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-	
-		if (player.input.leftPressed != player.input.rightPressed)
-		{
-			if (player.input.leftPressed)
-			{
-				physicsC.vel.x -= player.groundAccel;
-			}
-			else //inputC.input.rightPressed
-			{
-				physicsC.vel.x += player.groundAccel;
-			}
-		}
-		else
-		{
-			physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
-		}
 
-		if (physicsC.vel.x > player.groundMaxSpeed) {physicsC.vel.x = player.groundMaxSpeed;}
-		if (physicsC.vel.x < -player.groundMaxSpeed) {physicsC.vel.x = -player.groundMaxSpeed;}
+		CommonPlayerFuncts.horizontalInput(player, physicsC);
+		CommonPlayerFuncts.clampMovement(player, physicsC);
 	}
 
 	@Override

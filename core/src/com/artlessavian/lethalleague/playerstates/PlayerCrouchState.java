@@ -49,7 +49,8 @@ public class PlayerCrouchState extends State
 	public void doStuff()
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-		physicsC.vel.x -= Math.signum(physicsC.vel.x) * player.groundFriction;
+
+		CommonPlayerFuncts.friction(player, physicsC);
 		// TODO
 	}
 

@@ -31,7 +31,14 @@ public class PlayerJumpState extends State
 	{
 		if (player.input.swingPressed)
 		{
-			sm.gotoState(PlayerSwingState.class);
+			if (player.input.downPressed || player.input.rightPressed)
+			{
+				sm.gotoState(PlayerSmashState.class);
+			}
+			else
+			{
+				sm.gotoState(PlayerSwingState.class);
+			}
 			return true;
 		}
 		return false;
@@ -42,33 +49,11 @@ public class PlayerJumpState extends State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
-		if (physicsC.vel.y < 0)
-		{
-			if (player.input.downPressed)
-			{
-				physicsC.vel.y = player.fastFallSpeed;
-			}
-			physicsC.passiveGravity = player.gravity;
+		CommonPlayerFuncts.fall(player, physicsC);
+		CommonPlayerFuncts.fastfallCheck(player, physicsC);
 
-		}
-		else
-		{
-			physicsC.passiveGravity = player.lowGravity;
-		}
-
-		if (player.input.leftPressed != player.input.rightPressed)
-		{
-			if (player.input.leftPressed)
-			{
-				physicsC.vel.x -= player.airAccel;
-			}
-			else //inputC.input.rightPressed
-			{
-				physicsC.vel.x += player.airAccel;
-			}
-		}
-		if (physicsC.vel.x > player.airMaxSpeed) {physicsC.vel.x = player.airMaxSpeed;}
-		if (physicsC.vel.x < -player.airMaxSpeed) {physicsC.vel.x = -player.airMaxSpeed;}
+		CommonPlayerFuncts.horizontalInput(player, physicsC);
+		CommonPlayerFuncts.clampMovement(player, physicsC);
 	}
 
 	@Override

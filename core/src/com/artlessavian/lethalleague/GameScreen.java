@@ -13,6 +13,8 @@ import com.badlogic.gdx.ScreenAdapter;
 
 public class GameScreen extends ScreenAdapter
 {
+	static final float deltaTime = 1/60f;
+
 	Maineroni main;
 
 	Engine engine;
@@ -54,9 +56,10 @@ public class GameScreen extends ScreenAdapter
 		engine.addEntity(ball);
 	}
 
-	int engineRuns = 0;
+	public int engineRuns = 0;
 	float rollover = 0;
 	boolean timeStop = false;
+	float timeSlow = 1/1f;
 
 	public void render(float delta)
 	{
@@ -64,15 +67,16 @@ public class GameScreen extends ScreenAdapter
 		if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {timeStop = !timeStop;}
 		if (!timeStop || Gdx.input.isKeyJustPressed(Input.Keys.EQUALS))
 		{
-			rollover += delta;
+			rollover += delta * timeSlow;
 		}
 
-		for (; rollover > 0; rollover -= 1 / 60f)
+		for (; rollover > 0; rollover -= deltaTime)
 		{
 			engineRuns++;
-			engine.update(0);
+			engine.update(deltaTime);
 		}
 
-		for (EntitySystem sys : drawSystems) {sys.update(0);}
+//		System.out.println(rollover / deltaTime + 1);
+		for (EntitySystem sys : drawSystems) {sys.update(rollover / deltaTime + 1);}
 	}
 }

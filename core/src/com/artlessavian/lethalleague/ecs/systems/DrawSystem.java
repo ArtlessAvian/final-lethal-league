@@ -52,18 +52,22 @@ public class DrawSystem extends EntitySystem
 			SpriteComponent spriteC = entity.getComponent(SpriteComponent.class);
 			if (spriteC.isScreenSpace) {continue;}
 
-			PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
-			if (physicsC != null)
-			{
-				spriteC.sprite.setCenter(physicsC.pos.x, physicsC.pos.y + spriteC.sprite.getHeight() / 2);
-				spriteC.sprite.setFlip(physicsC.facingLeft, false);
-			}
-
 			StateComponent stateC = entity.getComponent(StateComponent.class);
 			if (stateC != null)
 			{
 				// TODO: Change sprite based on sprite id
-				stateC.machine.current.getSpriteID();
+				//stateC.machine.current.getSpriteID();
+			}
+
+			PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
+			if (physicsC != null)
+			{
+//				spriteC.sprite.setX(physicsC.pos.x + (physicsC.pos.x - physicsC.lastPos.x) * rollover);
+//				spriteC.sprite.setX(spriteC.sprite.getWidth()/2f + spriteC.sprite.getX());
+//				spriteC.sprite.setY(physicsC.pos.y + (physicsC.pos.y - physicsC.lastPos.y) * rollover);
+
+				spriteC.sprite.setCenter(physicsC.pos.x, physicsC.pos.y + spriteC.sprite.getHeight() / 2);
+				spriteC.sprite.setFlip(physicsC.facingLeft, false);
 			}
 
 			spriteC.sprite.draw(main.batch);

@@ -14,7 +14,7 @@ public class NullState extends State
 	public void enter() {}
 
 	@Override
-	public boolean changeStateMaybe(StateMachine sm)
+	public boolean changeStateMaybe()
 	{
 		return false;
 	}

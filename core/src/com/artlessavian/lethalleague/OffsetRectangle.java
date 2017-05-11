@@ -6,6 +6,7 @@ public class OffsetRectangle extends Rectangle
 {
 	public float deltaX;
 	public float deltaY;
+	public boolean flipped;
 
 	public OffsetRectangle(float deltaX, float deltaY)
 	{
@@ -26,4 +27,21 @@ public class OffsetRectangle extends Rectangle
 		return super.setPosition(x + deltaX, y + deltaY);
 	}
 
+	public Rectangle flip()
+	{
+		flipped = !flipped;
+		float ax = x - deltaX;
+		deltaX = -getWidth()/2 - deltaX;
+		setPosition(ax, y - deltaY);
+		return this;
+	}
+
+	public Rectangle setFlip(boolean flip)
+	{
+		if (flip != flipped)
+		{
+			flip();
+		}
+		return this;
+	}
 }

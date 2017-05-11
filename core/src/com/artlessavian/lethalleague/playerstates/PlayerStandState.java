@@ -1,7 +1,6 @@
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
-import com.artlessavian.lethalleague.StateMachine;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
@@ -30,24 +29,24 @@ public class PlayerStandState extends State
 	}
 
 	@Override
-	public boolean changeStateMaybe(StateMachine sm)
+	public boolean changeStateMaybe()
 	{
 		if (player.input.downPressed)
 		{
 		    sm.gotoState(PlayerCrouchState.class);
 		    return true;
 		}
-		else if (player.input.upPressed)
+		else if (player.input.jumpPressed)
 		{
 		    sm.gotoState(PlayerJumpSquatState.class);
 		    return true;
 		}
-//		else if (player.input.swingPressed)
-//		{
-//		    sm.gotoState(PlayerSwingState.class);
-//		    return true;
-//		}
-//
+		else if (player.input.swingPressed)
+		{
+		    sm.gotoState(PlayerSwingState.class);
+		    return true;
+		}
+
 		return false;
 	}
 

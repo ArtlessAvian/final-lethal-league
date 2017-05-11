@@ -1,7 +1,5 @@
 package com.artlessavian.lethalleague;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.HashMap;
 
 /**
@@ -9,6 +7,7 @@ import java.util.HashMap;
  */
 public class StateMachine
 {
+	int runs = 0;
 	public State current = NullState.singleton;
 	private HashMap<Class<? extends State>, State> states;
 
@@ -20,6 +19,7 @@ public class StateMachine
 	public void addState(State state)
 	{
 		states.put(state.getClass(), state);
+		state.sm = this;
 	}
 
 	/**
@@ -31,20 +31,22 @@ public class StateMachine
 	public void addState(Class<? extends State> clazz, State state)
 	{
 		states.put(clazz, state);
+		state.sm = this;
 	}
 
 	public void gotoState(Class<? extends State> newState)
 	{
-		current.lastExit = Gdx.graphics.getFrameId();
+		current.lastExit = runs;
 		current.exit();
 		current = states.get(newState);
 		current.enter();
-		current.lastEnter = Gdx.graphics.getFrameId();
+		current.lastEnter = runs;
 	}
 
 	public void run()
 	{
-		for (int i = 0; i < 10 && current.changeStateMaybe(this); i++) { }
+		for (int i = 0; i < 10 && current.changeStateMaybe(); i++) { }
 		current.doStuff();
+		runs++;
 	}
 }

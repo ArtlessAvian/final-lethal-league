@@ -71,6 +71,27 @@ public class PlayerSwingState extends State
 		{
 			CommonPlayerFuncts.friction(player, physicsC);
 		}
+
+		if (player.ball != null)
+		{
+			PhysicsComponent physicsCBall = player.ball.getComponent(PhysicsComponent.class);
+			if (player.input.upPressed)
+			{
+				physicsCBall.vel.setAngle(player.upAngle);
+			}
+			else if (player.input.downPressed)
+			{
+				physicsCBall.vel.setAngle(player.downAngle);
+			}
+			else
+			{
+				physicsCBall.vel.setAngle(player.straightAngle);
+			}
+
+			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
+
+			player.ball = null;
+		}
 	}
 
 	@Override

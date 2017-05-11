@@ -30,6 +30,8 @@ public class Ball extends Entity
 		StageComponent stageC = new StageComponent(new BallCollisionBehavior());
 		this.add(stageC);
 
+		this.add(new HitlagComponent());
+
 		this.add(new BallComponent());
 	}
 
@@ -101,7 +103,30 @@ public class Ball extends Entity
 		public void onGetHit(Entity thisEntity, Entity other)
 		{
 			PhysicsComponent physicsC = thisEntity.getComponent(PhysicsComponent.class);
-			physicsC.vel.setAngle(30);
+
+			if (other instanceof Player)
+			{
+				StateComponent stateC = other.getComponent(StateComponent.class);
+				if (stateC.machine.current.getClass() == PlayerSmashState.class)
+				{
+					physicsC.vel.scl(2);
+				}
+
+				HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
+				hitlagC.hitlag = 10;
+
+				PhysicsComponent physicsCOther = other.getComponent(PhysicsComponent.class);
+				physicsCOther.vel.y = 0;
+
+				((Player)other).ball = (Ball)thisEntity;
+			}
+			else
+			{
+				physicsC.vel.setLength(physicsC.vel.len() + 20);
+			}
+
+			HitlagComponent hitlagCOther = other.getComponent(HitlagComponent.class);
+			hitlagCOther.hitlag = 10;
 		}
 	}
 }

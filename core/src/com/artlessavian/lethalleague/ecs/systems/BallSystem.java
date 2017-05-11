@@ -2,10 +2,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.OffsetRectangle;
 import com.artlessavian.lethalleague.Stage;
-import com.artlessavian.lethalleague.ecs.components.BallComponent;
-import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
-import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
-import com.artlessavian.lethalleague.ecs.components.StageComponent;
+import com.artlessavian.lethalleague.ecs.components.*;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -24,8 +21,13 @@ public class BallSystem extends IteratingSystem
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{
+		HitlagComponent hitlagC = entity.getComponent(HitlagComponent.class);
+		if (hitlagC.hitlag > 0) {return;}
+
 		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
 		HitboxComponent hitboxC = entity.getComponent(HitboxComponent.class);
+
+		physicsC.facingLeft = false;
 
 		hitboxC.hitboxes.clear();
 

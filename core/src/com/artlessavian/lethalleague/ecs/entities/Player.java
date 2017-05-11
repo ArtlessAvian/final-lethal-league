@@ -37,8 +37,10 @@ public class Player extends Entity
 
 	public float upAngle = 60;
 	public float straightAngle = 0;
-	public float downAngle = 45;
-	public float smashAngle = 45;
+	public float downAngle = -15;
+	public float smashAngle = -45;
+
+	public Ball ball = null;
 
 	public OffsetRectangle swingBox;
 //	public OffsetRectangle smashBox; // helps you not get rsi
@@ -67,6 +69,8 @@ public class Player extends Entity
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
 		this.add(collisionBehaviorComponent);
+
+		this.add(new HitlagComponent());
 
 		swingBox = new OffsetRectangle(0, 0, 144, 144);
 	}

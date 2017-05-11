@@ -71,6 +71,15 @@ public class PlayerSmashState extends State
 		{
 			CommonPlayerFuncts.friction(player, physicsC);
 		}
+
+		if (player.ball != null)
+		{
+			PhysicsComponent physicsCBall = player.ball.getComponent(PhysicsComponent.class);
+			physicsCBall.vel.setAngle(player.smashAngle);
+
+			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
+			player.ball = null;
+		}
 	}
 
 	@Override

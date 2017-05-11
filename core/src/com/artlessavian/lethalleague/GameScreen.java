@@ -37,6 +37,7 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(new PhysicsSystem(stage));
 		engine.addSystem(new BallSystem());
 		engine.addSystem(new HitboxCollisionSystem());
+		engine.addSystem(new HitlagSystem());
 
 		drawSystems = new EntitySystem[2];
 		DrawSystem drawSystem = new DrawSystem(main, this);

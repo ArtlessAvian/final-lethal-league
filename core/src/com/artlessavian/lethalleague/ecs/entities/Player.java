@@ -103,22 +103,13 @@ public class Player extends Entity
 		return false;
 	}
 
-	/**
-	 * Called when the player is in hitlag, and presses hit again
-	 *
-	 * @param game the game, to allow for crazy accesses and modification
-	 */
-	public void onSuper(GameScreen game)
-	{
-
-	}
-
 	public static class PlayerCollisionBehavior extends StageComponent.CollisionBehavior
 	{
 		@Override
 		public void onTouchCeil(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
-
+			physicsC.pos.y = stage.bounds.y + stage.bounds.height - physicsC.collision.height / 2f;
+			physicsC.vel.y = 0;
 		}
 
 		@Override
@@ -135,13 +126,15 @@ public class Player extends Entity
 		@Override
 		public void onTouchLeft(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
-
+			physicsC.pos.x = stage.bounds.x + physicsC.collision.width / 2f;
+			physicsC.vel.x = 0;
 		}
 
 		@Override
 		public void onTouchRight(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
-
+			physicsC.pos.x = stage.bounds.x + stage.bounds.width - physicsC.collision.width / 2f;
+			physicsC.vel.x = 0;
 		}
-	}
+    }
 }

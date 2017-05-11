@@ -48,6 +48,9 @@ public class HitboxCollisionSystem extends EntitySystem
 				if (e1 == e2) {continue;}
 
 				HitboxComponent e1Hitboxes = e1.getComponent(HitboxComponent.class);
+
+				if (e1Hitboxes.cannotHit.contains(e2)) {continue;}
+
 				HitboxComponent e2Hurtbox = e2.getComponent(HitboxComponent.class);
 
 				for (OffsetRectangle e1Hitbox : e1Hitboxes.hitboxes)
@@ -55,8 +58,9 @@ public class HitboxCollisionSystem extends EntitySystem
 					if (e1Hitbox.overlaps(e2Hurtbox.hurtbox))
 					{
 						System.out.println("hi");
-//							e1Hitboxes.behavior.onHit(e1, e2);
-//							e2Hurtboxes.behavior.onGetHit(e2, e1);
+						e1Hitboxes.behavior.onHit(e1, e2);
+						e2Hurtbox.behavior.onGetHit(e2, e1);
+						break;
 					}
 				}
 			}

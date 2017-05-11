@@ -28,6 +28,8 @@ public class PlayerSwingState extends State
 		// TODO
 		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
 		hitboxC.hitboxes.add(player.swingBox);
+
+		hitboxC.cannotHit.clear();
 	}
 
 	@Override

@@ -35,6 +35,11 @@ public class Player extends Entity
 	public float airAccel = 30;
 	public float groundFriction = 10;
 
+	public float upAngle = 60;
+	public float straightAngle = 0;
+	public float downAngle = 45;
+	public float smashAngle = 45;
+
 	public OffsetRectangle swingBox;
 //	public OffsetRectangle smashBox; // helps you not get rsi
 
@@ -57,7 +62,7 @@ public class Player extends Entity
 		spriteC.sprite.setSize(144, 144);
 		this.add(spriteC);
 
-		hitboxC = new HitboxComponent();
+		hitboxC = new HitboxComponent(new PlayerHittingBehavior());
 		this.add(hitboxC);
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
@@ -143,4 +148,20 @@ public class Player extends Entity
 			physicsC.vel.x = 0;
 		}
     }
+
+	private static class PlayerHittingBehavior implements HitboxComponent.HitBehavior
+	{
+		@Override
+		public void onHit(Entity thisEntity, Entity other)
+		{
+			HitboxComponent hitboxC = thisEntity.getComponent(HitboxComponent.class);
+			hitboxC.cannotHit.add(other);
+		}
+
+		@Override
+		public void onGetHit(Entity thisEntity, Entity other)
+		{
+
+		}
+	}
 }

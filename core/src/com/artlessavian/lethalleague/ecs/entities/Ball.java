@@ -1,10 +1,10 @@
 package com.artlessavian.lethalleague.ecs.entities;
 
+import com.artlessavian.lethalleague.OffsetRectangle;
 import com.artlessavian.lethalleague.PlayerInput;
 import com.artlessavian.lethalleague.Stage;
-import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
-import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
-import com.artlessavian.lethalleague.ecs.components.StageComponent;
+import com.artlessavian.lethalleague.ecs.components.*;
+import com.artlessavian.lethalleague.playerstates.PlayerSmashState;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,8 +15,7 @@ public class Ball extends Entity
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.pos.y = 300;
-		physicsC.vel.x = -300;
-		physicsC.vel.y = -500;
+		physicsC.vel.x = -900;
 		physicsC.collision.setSize(48, 48);
 		this.add(physicsC);
 //		StateComponent stateC = new StateComponent();
@@ -25,8 +24,13 @@ public class Ball extends Entity
 		SpriteComponent spriteC = new SpriteComponent(new Sprite(new Texture("grid.png")));
 		spriteC.sprite.setSize(48, 48);
 		this.add(spriteC);
+		HitboxComponent hitboxC = new HitboxComponent(new BallHittingBehavior());
+		hitboxC.hurtbox = new OffsetRectangle(-24, 0, 48, 48);
+		this.add(hitboxC);
 		StageComponent stageC = new StageComponent(new BallCollisionBehavior());
 		this.add(stageC);
+
+		this.add(new BallComponent());
 	}
 
 	// TODO
@@ -82,6 +86,22 @@ public class Ball extends Entity
 			physicsC.vel.x *= -1;
 
 			physicsC.pos.set(newX, newY);
+		}
+	}
+
+	public class BallHittingBehavior implements HitboxComponent.HitBehavior
+	{
+		@Override
+		public void onHit(Entity thisEntity, Entity other)
+		{
+
+		}
+
+		@Override
+		public void onGetHit(Entity thisEntity, Entity other)
+		{
+			PhysicsComponent physicsC = thisEntity.getComponent(PhysicsComponent.class);
+			physicsC.vel.setAngle(30);
 		}
 	}
 }

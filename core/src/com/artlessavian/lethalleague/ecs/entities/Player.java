@@ -160,14 +160,14 @@ public class Player extends Entity
 	private static class PlayerHittingBehavior implements HitboxComponent.HitBehavior
 	{
 		@Override
-		public void onHit(Entity thisEntity, Entity other)
+		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
 			HitboxComponent hitboxC = thisEntity.getComponent(HitboxComponent.class);
 			hitboxC.cannotHit.add(other);
 		}
 
 		@Override
-		public void onGetHit(Entity thisEntity, Entity other)
+		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
 
 		}

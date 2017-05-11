@@ -37,7 +37,7 @@ public class PlayerSmashState extends State
 	public boolean changeStateMaybe()
 	{
 		// TODO
-		if (getTimeInState() > 30)
+		if (getTimeInState() >= 30)
 		{
 			PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 			if (physicsC.grounded)

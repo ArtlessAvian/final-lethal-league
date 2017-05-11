@@ -4,6 +4,9 @@ import com.artlessavian.lethalleague.OffsetRectangle;
 import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.HitlagComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
+import com.artlessavian.lethalleague.ecs.components.StateComponent;
+import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.artlessavian.lethalleague.playerstates.PlayerSmashState;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -66,9 +69,16 @@ public class HitboxCollisionSystem extends EntitySystem
 				{
 					if (e1Hitbox.overlaps(e2Hurtbox.hurtbox))
 					{
+						boolean isSmash = false;
+						if (e1 instanceof Player)
+						{
+							StateComponent stateC = e1.getComponent(StateComponent.class);
+							isSmash = stateC.machine.current.getClass() == PlayerSmashState.class;
+						}
+
 						System.out.println("hi");
-						e1Hitboxes.behavior.onHit(e1, e2);
-						e2Hurtbox.behavior.onGetHit(e2, e1);
+						e1Hitboxes.behavior.onHit(e1, e2, isSmash);
+						e2Hurtbox.behavior.onGetHit(e2, e1, isSmash);
 						break;
 					}
 				}

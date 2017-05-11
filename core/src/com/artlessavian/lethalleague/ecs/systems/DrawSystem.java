@@ -23,6 +23,10 @@ public class DrawSystem extends EntitySystem
 	OrthographicCamera cam;
 	private Texture map;
 
+	public float screenShakeTime = 0;
+	public float screenShakeAmount = 0;
+	public float screenShakeMultiplier = 0;
+
 	public DrawSystem(Maineroni main, GameScreen game)
 	{
 		this.main = main;
@@ -34,16 +38,35 @@ public class DrawSystem extends EntitySystem
 		this.setProcessing(false);
 
 		this.cam = new OrthographicCamera(1280, 720);
-		cam.translate(0, cam.viewportHeight / 2f);
+		cam.position.x = 0;
+		cam.position.y = cam.viewportHeight / 2f;
 		cam.update();
 
 		entities = engine.getEntitiesFor(Family.all(SpriteComponent.class).get());
 		setProcessing(false);
 	}
 
+	public void doScreenShake(float time, float strength)
+	{
+		screenShakeTime = time;
+		screenShakeAmount = strength;
+	}
+
 	@Override
 	public void update(float rollover)
 	{
+		cam.position.x = 0;
+		cam.position.y = cam.viewportHeight / 2f;
+		if (screenShakeTime > 0)
+		{
+			cam.translate(
+				(float)(Math.random()*2-1) * screenShakeAmount * screenShakeMultiplier,
+				(float)(Math.random()*2-1) * screenShakeAmount * screenShakeMultiplier
+			);
+			screenShakeTime--;
+		}
+		cam.update();
+
 		main.batch.setProjectionMatrix(cam.combined);
 		game.stage.draw(main.batch);
 

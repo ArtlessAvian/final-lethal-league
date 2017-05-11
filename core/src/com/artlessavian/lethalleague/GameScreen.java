@@ -55,7 +55,7 @@ public class GameScreen extends ScreenAdapter
 		p1 = new Player(main.getInput(0));
 //		p1.vel.add(2, 2);
 		p2 = new Player(main.getInput(1));
-		ball = new Ball();
+		ball = new Ball(drawSystem);
 
 		engine.addEntity(p1);
 		engine.addEntity(p2);

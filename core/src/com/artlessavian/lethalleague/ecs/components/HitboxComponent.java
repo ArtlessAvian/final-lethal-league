@@ -10,20 +10,20 @@ public class HitboxComponent implements Component
 {
 	public interface HitBehavior
 	{
-		void onHit(Entity thisEntity, Entity other);
-		void onGetHit(Entity thisEntity, Entity other);
+		void onHit(Entity thisEntity, Entity other, boolean isSmash);
+		void onGetHit(Entity thisEntity, Entity other, boolean isSmash);
 	}
 
 	public static class TempBehavior implements HitBehavior
 	{
 		@Override
-		public void onHit(Entity thisEntity, Entity other)
+		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
 			System.out.println("hit " + thisEntity.hashCode() + " " + other.hashCode());
 		}
 
 		@Override
-		public void onGetHit(Entity thisEntity, Entity other)
+		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
 //			System.out.println("get hit");
 		}

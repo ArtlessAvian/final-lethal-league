@@ -28,7 +28,7 @@ public class DebugDrawSystem extends EntitySystem
 	Sprite rectangle;
 	Sprite dot;
 
-	int show = 3;
+	int show = 4;
 
 	public DebugDrawSystem(Maineroni main, GameScreen game, DrawSystem drawSystem)
 	{
@@ -80,12 +80,11 @@ public class DebugDrawSystem extends EntitySystem
 			if ((show/4) % 2 == 1 && hitboxC != null)
 			{
 				rectangle.setColor(Color.YELLOW);
-				for (OffsetRectangle r : hitboxC.hurtboxes)
-				{
-					rectangle.setSize(r.width, r.height);
-					rectangle.setPosition(r.x, r.y);
-					rectangle.draw(main.batch, 0.3f);
-				}
+
+				rectangle.setSize(hitboxC.hurtbox.width, hitboxC.hurtbox.height);
+				rectangle.setPosition(hitboxC.hurtbox.x, hitboxC.hurtbox.y);
+				rectangle.draw(main.batch, 0.3f);
+
 				rectangle.setColor(Color.RED);
 				for (OffsetRectangle r : hitboxC.hitboxes)
 				{

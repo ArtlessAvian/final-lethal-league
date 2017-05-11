@@ -17,7 +17,7 @@ public class PlayerJumpSquatState extends State
     public void exit()
     {
         PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-        if (player.input.upPressed)
+        if (player.input.jumpPressed)
         {
             physicsC.vel.y = player.jumpVelocity;
         }

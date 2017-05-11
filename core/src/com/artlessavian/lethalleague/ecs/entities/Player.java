@@ -50,8 +50,8 @@ public class Player extends Entity
 		stateC.machine.gotoState(PlayerStandState.class);
 		this.add(stateC);
 
-		spriteC = new SpriteComponent(new Sprite(new Texture("grid.png")));
-		spriteC.sprite.setSize(72, 144);
+		spriteC = new SpriteComponent(new Sprite(new Texture("not_a_trace.png")));
+		spriteC.sprite.setSize(144, 144);
 		this.add(spriteC);
 
 		hitboxC = new HitboxComponent();

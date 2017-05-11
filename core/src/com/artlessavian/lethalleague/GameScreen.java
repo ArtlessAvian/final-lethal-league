@@ -24,7 +24,7 @@ public class GameScreen extends ScreenAdapter
 
 	Player p1;
 	Player p2;
-	Ball ball;
+	public Ball ball;
 
 	public GameScreen(Maineroni main)
 	{
@@ -39,14 +39,18 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(new HitboxCollisionSystem());
 		engine.addSystem(new HitlagSystem());
 
-		drawSystems = new EntitySystem[2];
+		drawSystems = new EntitySystem[3];
 		DrawSystem drawSystem = new DrawSystem(main, this);
 		engine.addSystem(drawSystem);
 		drawSystems[0] = drawSystem;
 
+		GUIDrawSystem guiDrawSystem = new GUIDrawSystem(main, this);
+		engine.addSystem(guiDrawSystem);
+		drawSystems[1] = guiDrawSystem;
+
 		DebugDrawSystem debugDrawSystem = new DebugDrawSystem(main, this, drawSystem);
 		engine.addSystem(debugDrawSystem);
-		drawSystems[1] = debugDrawSystem;
+		drawSystems[2] = debugDrawSystem;
 
 		p1 = new Player(main.getInput(0));
 //		p1.vel.add(2, 2);

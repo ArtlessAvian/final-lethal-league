@@ -135,7 +135,10 @@ public class Player extends Entity
 			physicsC.vel.y = 0;
 
 			StateComponent stateC = thisEntity.getComponent(StateComponent.class);
-			stateC.machine.gotoState(PlayerStandState.class);
+			if (stateC.machine.current.getClass() != PlayerSwingState.class && stateC.machine.current.getClass() != PlayerSmashState.class)
+			{
+				stateC.machine.gotoState(PlayerStandState.class);
+			}
 		}
 
 		@Override

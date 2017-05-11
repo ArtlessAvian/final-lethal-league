@@ -38,7 +38,6 @@ public class GUIDrawSystem extends EntitySystem
 	public void update(float rollover)
 	{
 		main.batch.setProjectionMatrix(main.screenSpace.combined);
-		game.stage.draw(main.batch);
 
 		for (Entity entity : entities)
 		{
@@ -48,5 +47,7 @@ public class GUIDrawSystem extends EntitySystem
 			// TODO:
 
 		}
+
+		main.font.draw(main.batch, game.ball.getComponent(PhysicsComponent.class).vel.len() + "hoi", 600, 18);
 	}
 }

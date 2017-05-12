@@ -31,10 +31,14 @@ public class PhysicsSystem extends IteratingSystem
 
 		if (!physicsC.grounded)
 		{
-			physicsC.vel.y -= physicsC.passiveGravity * 1 / 60f;
+			physicsC.accel.y -= physicsC.passiveGravity;
 		}
-		physicsC.pos.x += physicsC.vel.x * 1 / 60f;
-		physicsC.pos.y += physicsC.vel.y * 1 / 60f;
+		physicsC.pos.x += physicsC.vel.x * 1 / 60f + 1/2 * physicsC.accel.x * 1/3600;
+		physicsC.pos.y += physicsC.vel.y * 1 / 60f + 1/2 * physicsC.accel.y * 1/3600;
+		physicsC.vel.x += physicsC.accel.x * 1 / 60f;
+		physicsC.vel.y += physicsC.accel.y * 1 / 60f;
+
+		physicsC.accel.set(0,0);
 
 		physicsC.collision.setPosition(physicsC.pos.x - physicsC.collision.width/2, physicsC.pos.y);
 

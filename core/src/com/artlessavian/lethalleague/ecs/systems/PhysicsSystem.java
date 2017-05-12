@@ -1,6 +1,7 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.Stage;
+import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.HitlagComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.components.StageComponent;
@@ -17,6 +18,14 @@ public class PhysicsSystem extends IteratingSystem
 	{
 		super(Family.all(PhysicsComponent.class).get());
 		this.stage = stage;
+	}
+
+	@Override
+	public void update(float delta)
+	{
+		TimeLogger.logIn();
+		super.update(delta);
+		TimeLogger.logOut("PhysicsSystem");
 	}
 
 	@Override

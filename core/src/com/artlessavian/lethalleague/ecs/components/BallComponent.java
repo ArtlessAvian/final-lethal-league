@@ -17,6 +17,8 @@ public class BallComponent implements Component
 	public Rectangle rect;
 	public int intangible = 0;
 
+	public static float precision = 10;
+
 	public BallComponent(DrawSystem drawSystem)
 	{
 		this.drawSystem = drawSystem;

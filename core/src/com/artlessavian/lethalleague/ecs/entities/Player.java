@@ -46,7 +46,7 @@ public class Player extends Entity
 	public OffsetRectangle swingBox;
 //	public OffsetRectangle smashBox; // helps you not get rsi
 
-	public Player(PlayerInputContainer input)
+	public Player(PlayerInputContainer input, int team)
 	{
 		this.input = input;
 		inputC = new InputComponent(input);
@@ -54,6 +54,7 @@ public class Player extends Entity
 
 		physicsC = new PhysicsComponent();
 		physicsC.collision.setSize(72, 144);
+		physicsC.pos.x = (float)(Math.random() * 1000 - 500);
 		this.add(physicsC);
 
 		stateC = new StateComponent();
@@ -66,7 +67,7 @@ public class Player extends Entity
 		spriteC = new SpriteComponent(s);
 		this.add(spriteC);
 
-		hitboxC = new HitboxComponent(new PlayerHittingBehavior());
+		hitboxC = new HitboxComponent(new PlayerHittingBehavior(), team);
 		this.add(hitboxC);
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
@@ -125,7 +126,7 @@ public class Player extends Entity
 		@Override
 		public void onTouchCeil(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
-			physicsC.pos.y = stage.bounds.y + stage.bounds.height - physicsC.collision.height / 2f;
+			physicsC.pos.y = stage.bounds.y + stage.bounds.height - physicsC.collision.height;
 			physicsC.vel.y = 0;
 		}
 
@@ -180,10 +181,10 @@ public class Player extends Entity
 		@Override
 		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
-//			if (other instanceof Ball)
-//			{
-//				thisEntity.
-//			}
+			if (other instanceof Ball)
+			{
+				thisEntity.add(new RemoveComponent());
+			}
 		}
 	}
 }

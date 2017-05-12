@@ -38,6 +38,7 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(new HitboxCollisionSystem());
 		engine.addSystem(new BallSystem());
 		engine.addSystem(new HitlagSystem());
+		engine.addSystem(new RemoveSystem());
 
 		drawSystems = new EntitySystem[3];
 		DrawSystem drawSystem = new DrawSystem(main, this);
@@ -52,19 +53,19 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(debugDrawSystem);
 		drawSystems[2] = debugDrawSystem;
 
-		p1 = new Player(main.getInput(0));
+		p1 = new Player(main.getInput(0), 0);
 //		p1.vel.add(2, 2);
-		p2 = new Player(main.getInput(1));
+		p2 = new Player(main.getInput(1), 1);
 		ball = new Ball(drawSystem);
 
 		engine.addEntity(p1);
 		engine.addEntity(p2);
 		engine.addEntity(ball);
 
-		// hue
+//		 hue
 //		for (int i = 0; i < 360; i++)
 //		{
-//			engine.addEntity(new Ball(drawSystem));
+//			engine.addEntity(new Player(main.getInput(1), 1));
 //		}
 	}
 

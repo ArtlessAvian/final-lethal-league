@@ -15,7 +15,8 @@ public class Ball extends Entity
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.pos.y = 300;
-		physicsC.vel.x = -900;
+		physicsC.vel.x = -300;
+//		physicsC.vel.setAngle((float)(360 * Math.random()));
 		physicsC.collision.setSize(48, 48);
 		this.add(physicsC);
 //		StateComponent stateC = new StateComponent();
@@ -148,7 +149,7 @@ public class Ball extends Entity
 			hitlagC.hitlag = getHitlag(physicsC.vel.len());
 
 			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
-			ballC.intangible = hitlagC.hitlag;
+			ballC.intangible = hitlagC.hitlag-1;
 			if (hitlagC.hitlag == 180)
 			{
 				ballC.drawSystem.doScreenShake(hitlagC.hitlag, 10);
@@ -164,6 +165,7 @@ public class Ball extends Entity
 				hitlagCOther.hitlag = hitlagC.hitlag - 1;
 				HitboxComponent hitboxC = other.getComponent(HitboxComponent.class);
 				hitboxC.intangible = hitlagC.hitlag - 1;
+				ballC.lastHit = hitboxC.team;
 			}
 
 		}

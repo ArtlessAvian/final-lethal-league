@@ -33,14 +33,18 @@ public class HitboxComponent implements Component
 	public ArrayList<OffsetRectangle> hitboxes;
 	public OffsetRectangle hurtbox; // where you get hurt from
 
+	public int team = 0;
+
 	public int intangible = 0;
 	public ArrayList<Entity> cannotHit;
 
-	public HitboxComponent(HitBehavior behavior)
+	public HitboxComponent(HitBehavior behavior, int team)
 	{
 		this.behavior = behavior;
 		hitboxes = new ArrayList<OffsetRectangle>();
 		hurtbox = new OffsetRectangle(-36, 0, 72, 144);
+
+		this.team = team;
 
 		cannotHit = new ArrayList<Entity>();
 	}

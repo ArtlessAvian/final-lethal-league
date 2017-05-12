@@ -52,15 +52,17 @@ public class BallSystem extends IteratingSystem
 		for (Entity hitboxHaver : hitboxHavers)
 		{
 			HitboxComponent hitboxC2 = hitboxHaver.getComponent(HitboxComponent.class);
-			if (hitboxC2.cannotHit.contains(entity)) {continue;}
 
-			if (hitboxC2.intangible == 0)
+			if (hitboxC2.intangible <= 0 && ballC.lastHit != hitboxC2.team)
 			{
 				hurtboxes.put(hitboxC2.hurtbox, hitboxHaver);
 			}
-			for (OffsetRectangle r : hitboxC2.hitboxes)
+			if (!hitboxC2.cannotHit.contains(entity))
 			{
-				hitboxes.put(r, hitboxHaver);
+				for (OffsetRectangle r : hitboxC2.hitboxes)
+				{
+					hitboxes.put(r, hitboxHaver);
+				}
 			}
 		}
 
@@ -99,6 +101,7 @@ public class BallSystem extends IteratingSystem
 		{
 			if (ballC.rect.overlaps(hurtbox))
 			{
+				physicsC.pos.set(x,y);
 				ballHitsEntity(hurtboxes.get(hurtbox), entity);
 				return true;
 			}
@@ -123,12 +126,12 @@ public class BallSystem extends IteratingSystem
 		e2BallC.behavior.onGetHit(ball, entity, isSmash);
 	}
 
-	private void ballHitsEntity(Entity e1, Entity e2)
+	private void ballHitsEntity(Entity entity, Entity ball)
 	{
-//		HitboxComponent e1HitboxC = e1.getComponent(HitboxComponent.class);
-//		BallComponent e2BallC = e2.getComponent(BallComponent.class);
-//
-//		e1HitboxC.behavior.onGetHit(e1, e2, false);
-//		e2BallC.behavior.onHit(e2, e1, false);
+		HitboxComponent e1HitboxC = entity.getComponent(HitboxComponent.class);
+		BallComponent e2BallC = ball.getComponent(BallComponent.class);
+
+		e1HitboxC.behavior.onGetHit(entity, ball, false);
+		e2BallC.behavior.onHit(ball, entity, false);
 	}
 }

@@ -37,6 +37,8 @@ public class HitboxCollisionSystem extends EntitySystem
 			HitboxComponent hitboxC = e.getComponent(HitboxComponent.class);
 			PhysicsComponent physicsC = e.getComponent(PhysicsComponent.class);
 
+			if (hitboxC.intangible > 0) {hitboxC.intangible--; continue;}
+
 			for (OffsetRectangle r : hitboxC.hitboxes)
 			{
 				r.setFlip(physicsC.facingLeft);
@@ -58,7 +60,7 @@ public class HitboxCollisionSystem extends EntitySystem
 				if (e1Hitboxes.cannotHit.contains(e2)) {continue;}
 
 				HitboxComponent e2Hurtbox = e2.getComponent(HitboxComponent.class);
-				if (e2Hurtbox.intangible > 0) {e2Hurtbox.intangible--; continue;}
+				if (e2Hurtbox.intangible > 0) {continue;}
 
 				for (OffsetRectangle e1Hitbox : e1Hitboxes.hitboxes)
 				{

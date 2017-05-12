@@ -3,10 +3,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
 import com.artlessavian.lethalleague.TimeLogger;
-import com.artlessavian.lethalleague.ecs.components.BallComponent;
-import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
-import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
-import com.artlessavian.lethalleague.ecs.components.StateComponent;
+import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -29,7 +26,7 @@ public class DrawSystem extends EntitySystem
 
 	public float screenShakeTime = 0;
 	public float screenShakeAmount = 0;
-	public float screenShakeMultiplier = 0.3f;
+	public float screenShakeMultiplier = 0f;
 
 	public DrawSystem(Maineroni main, GameScreen game)
 	{
@@ -78,8 +75,13 @@ public class DrawSystem extends EntitySystem
 
 		for (Entity entity : entities)
 		{
+			HitboxComponent hitboxC = entity.getComponent(HitboxComponent.class);
 			BallComponent ballC = entity.getComponent(BallComponent.class);
-//			if (ballC != null && ballC.intangible > 0 && Gdx.graphics.getFrameId()/2 % 2 == 0) {continue;}
+			if (ballC != null && ballC.intangible > 0 ||
+				hitboxC != null && hitboxC.intangible > 0)
+			{
+				if (Gdx.graphics.getFrameId() / 2 % 2 == 0) {continue;}
+			}
 
 			SpriteComponent spriteC = entity.getComponent(SpriteComponent.class);
 			if (spriteC.isScreenSpace) {continue;}

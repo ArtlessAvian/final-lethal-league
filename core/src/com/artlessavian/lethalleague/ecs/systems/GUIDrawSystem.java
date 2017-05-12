@@ -2,9 +2,8 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
-import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
-import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
-import com.artlessavian.lethalleague.ecs.components.StateComponent;
+import com.artlessavian.lethalleague.ecs.components.*;
+import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -34,6 +33,8 @@ public class GUIDrawSystem extends EntitySystem
 		setProcessing(false);
 	}
 
+	float ballHitlagMax = 0;
+
 	@Override
 	public void update(float rollover)
 	{
@@ -48,6 +49,12 @@ public class GUIDrawSystem extends EntitySystem
 
 		}
 
-		main.font.draw(main.batch, game.ball.getComponent(PhysicsComponent.class).vel.len() + "hoi", 600, 18);
+		HitlagComponent hitlagC = game.ball.getComponent(HitlagComponent.class);
+		if (hitlagC.hitlag == 0) {ballHitlagMax = 0;}
+		else if (ballHitlagMax == 0) {ballHitlagMax = hitlagC.hitlag;}
+
+		main.font.draw(main.batch, hitlagC.hitlag / ballHitlagMax + "", 600, 30);
+
+		main.font.draw(main.batch, game.ball.getComponent(PhysicsComponent.class).vel.len() / 60 + " units/frame", 600, 18);
 	}
 }

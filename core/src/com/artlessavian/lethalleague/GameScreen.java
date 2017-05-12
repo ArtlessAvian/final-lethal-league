@@ -60,6 +60,12 @@ public class GameScreen extends ScreenAdapter
 		engine.addEntity(p1);
 		engine.addEntity(p2);
 		engine.addEntity(ball);
+
+		// hue
+//		for (int i = 0; i < 360; i++)
+//		{
+//			engine.addEntity(new Ball(drawSystem));
+//		}
 	}
 
 	public int engineRuns = 0;

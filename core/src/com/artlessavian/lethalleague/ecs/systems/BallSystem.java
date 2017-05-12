@@ -1,6 +1,7 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.OffsetRectangle;
+import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.artlessavian.lethalleague.ecs.entities.Player;
@@ -33,6 +34,14 @@ public class BallSystem extends IteratingSystem
 	HashMap<OffsetRectangle, Entity> hurtboxes = new HashMap<OffsetRectangle, Entity>();
 
 	@Override
+	public void update(float delta)
+	{
+		TimeLogger.logIn();
+		super.update(delta);
+		TimeLogger.logOut("BallSystem");
+	}
+
+	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{
 		BallComponent ballC = entity.getComponent(BallComponent.class);
@@ -42,12 +51,13 @@ public class BallSystem extends IteratingSystem
 		hitboxes.clear();
 		for (Entity hitboxHaver : hitboxHavers)
 		{
-			HitlagComponent hitlagC2 = hitboxHaver.getComponent(HitlagComponent.class);
-			if (hitlagC2 != null && hitlagC2.hitlag > 0) {continue;}
 			HitboxComponent hitboxC2 = hitboxHaver.getComponent(HitboxComponent.class);
 			if (hitboxC2.cannotHit.contains(entity)) {continue;}
 
-			hurtboxes.put(hitboxC2.hurtbox, hitboxHaver);
+			if (hitboxC2.intangible == 0)
+			{
+				hurtboxes.put(hitboxC2.hurtbox, hitboxHaver);
+			}
 			for (OffsetRectangle r : hitboxC2.hitboxes)
 			{
 				hitboxes.put(r, hitboxHaver);
@@ -58,7 +68,7 @@ public class BallSystem extends IteratingSystem
 
 		float displacement = physicsC.pos.dst(physicsC.lastPos);
 		boolean hasCollided = false;
-		for (float i = 0; i < displacement && !hasCollided; i += 24)
+		for (float i = 0; i < displacement && !hasCollided; i += ballC.precision)
 		{
 			hasCollided = doThing(i/displacement, physicsC, ballC, entity);
 		}

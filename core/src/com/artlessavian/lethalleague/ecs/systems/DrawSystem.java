@@ -2,6 +2,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
+import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.BallComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
@@ -28,7 +29,7 @@ public class DrawSystem extends EntitySystem
 
 	public float screenShakeTime = 0;
 	public float screenShakeAmount = 0;
-	public float screenShakeMultiplier = 0;
+	public float screenShakeMultiplier = 0.3f;
 
 	public DrawSystem(Maineroni main, GameScreen game)
 	{
@@ -58,6 +59,8 @@ public class DrawSystem extends EntitySystem
 	@Override
 	public void update(float rollover)
 	{
+		TimeLogger.logIn();
+
 		cam.position.x = 0;
 		cam.position.y = cam.viewportHeight / 2f;
 		if (screenShakeTime > 0)
@@ -92,7 +95,7 @@ public class DrawSystem extends EntitySystem
 			if (ballC != null && ballC.intangible == 0)
 			{
 				float displacement = physicsC.pos.dst(physicsC.lastPos);
-				for (float i = 0; i < displacement; i += 24)
+				for (float i = 0; i < displacement; i += ballC.precision)
 				{
 					float x = i/displacement * (physicsC.pos.x - physicsC.lastPos.x) + physicsC.lastPos.x;
 					float y = i/displacement * (physicsC.pos.y - physicsC.lastPos.y) + physicsC.lastPos.y;
@@ -113,5 +116,7 @@ public class DrawSystem extends EntitySystem
 
 			spriteC.sprite.draw(main.batch);
 		}
+
+		TimeLogger.logOut("DrawSystem");
 	}
 }

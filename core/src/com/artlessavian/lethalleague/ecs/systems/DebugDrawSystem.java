@@ -3,6 +3,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
 import com.artlessavian.lethalleague.OffsetRectangle;
+import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.components.StateComponent;
@@ -115,5 +116,13 @@ public class DebugDrawSystem extends EntitySystem
 
 		main.batch.setProjectionMatrix(main.screenSpace.combined);
 		main.font.draw(main.batch, game.engineRuns + "", 6, 42);
+
+		int i = 12;
+		for (String key : TimeLogger.getKeys())
+		{
+			main.font.draw(main.batch, TimeLogger.get(key) + "", 300, i);
+			main.font.draw(main.batch, key, 100, i);
+			i += 12;
+		}
 	}
 }

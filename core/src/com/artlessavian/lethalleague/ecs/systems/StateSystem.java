@@ -1,5 +1,6 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
+import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.HitlagComponent;
 import com.artlessavian.lethalleague.ecs.components.StateComponent;
 import com.badlogic.ashley.core.Entity;
@@ -11,6 +12,14 @@ public class StateSystem extends IteratingSystem
 	public StateSystem()
 	{
 		super(Family.all(StateComponent.class).get());
+	}
+
+	@Override
+	public void update(float delta)
+	{
+		TimeLogger.logIn();
+		super.update(delta);
+		TimeLogger.logOut("StateSystem");
 	}
 
 	@Override

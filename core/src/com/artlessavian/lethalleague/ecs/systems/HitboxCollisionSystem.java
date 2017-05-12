@@ -1,6 +1,7 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.OffsetRectangle;
+import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.artlessavian.lethalleague.playerstates.PlayerSmashState;
@@ -29,6 +30,8 @@ public class HitboxCollisionSystem extends EntitySystem
 	@Override
 	public void update(float delta)
 	{
+		TimeLogger.logIn();
+
 		for (Entity e : entities2)
 		{
 			HitboxComponent hitboxC = e.getComponent(HitboxComponent.class);
@@ -76,5 +79,7 @@ public class HitboxCollisionSystem extends EntitySystem
 				}
 			}
 		}
+
+		TimeLogger.logOut("HitboxCollisionSystem");
 	}
 }

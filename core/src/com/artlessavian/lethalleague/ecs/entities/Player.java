@@ -21,15 +21,16 @@ public class Player extends Entity
 
 	public PlayerInputContainer input;
 
-	public float gravity = 2000;
-	public float lowGravity = 1000;
+	public float gravity = 4000;
+	public float lowGravity = 2000;
 
-	public float jumpVelocity = 700;
-	public float hopVelocity = 500;
+	public float jumpVelocity = 1200;
+//	public float hopVelocity = 800;
 
-	public float fastFallSpeed = -1000;
+	public float fastFallSpeed = 2000;
 	public float groundMaxSpeed = 400;
 	public float airMaxSpeed = 400;
+	public float maxFallSpeed = 1200; // should be same as jump speed because physics
 
 	public float groundAccel = 50;
 	public float airAccel = 30;
@@ -83,7 +84,7 @@ public class Player extends Entity
 		stateMachine.addState(new PlayerSwingState(this));
 		stateMachine.addState(new PlayerSmashState(this));
 		stateMachine.addState(new PlayerJumpState(this));
-		stateMachine.addState(new PlayerJumpSquatState(this));
+//		stateMachine.addState(new PlayerJumpSquatState(this));
 		stateMachine.addState(new PlayerCrouchState(this));
 	}
 

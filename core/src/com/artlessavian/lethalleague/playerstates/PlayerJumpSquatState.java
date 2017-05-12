@@ -1,3 +1,4 @@
+/*
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
@@ -59,3 +60,4 @@ public class PlayerJumpSquatState extends State
     {
     }
 }
+*/

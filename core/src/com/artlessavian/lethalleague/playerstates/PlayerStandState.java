@@ -21,12 +21,19 @@ public class PlayerStandState extends State
 
 	}
 
+	boolean antiSwingSpam = false;
+
 	@Override
 	public void enter()
 	{
 		// TODO
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 		physicsC.grounded = true;
+
+		if (player.input.swingPressed)
+		{
+			antiSwingSpam = true;
+		}
 	}
 
 	@Override
@@ -39,10 +46,12 @@ public class PlayerStandState extends State
 		}
 		else if (player.input.jumpPressed)
 		{
-		    sm.gotoState(PlayerJumpSquatState.class);
+			PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+			physicsC.vel.y = player.jumpVelocity;
+		    sm.gotoState(PlayerJumpState.class);
 		    return true;
 		}
-		else if (player.input.swingPressed)
+		else if (player.input.swingPressed && !antiSwingSpam)
 		{
 		    sm.gotoState(PlayerSwingState.class);
 		    return true;
@@ -59,6 +68,8 @@ public class PlayerStandState extends State
 		CommonPlayerFuncts.horizontalInput(player, physicsC);
 		CommonPlayerFuncts.clampMovement(player, physicsC);
 		CommonPlayerFuncts.changeDirection(player, physicsC);
+
+		if (antiSwingSpam && !player.input.swingPressed) {antiSwingSpam = false;}
 	}
 
 	@Override

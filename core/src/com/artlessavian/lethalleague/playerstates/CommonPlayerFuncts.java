@@ -34,13 +34,23 @@ public class CommonPlayerFuncts
 
 	public static void fall(Player player, PhysicsComponent physicsC)
 	{
-		if (physicsC.vel.y < 0)
+		if (physicsC.vel.y < -player.maxFallSpeed)
 		{
-			physicsC.passiveGravity = player.gravity;
+			if (physicsC.vel.y != -player.fastFallSpeed)
+			{
+				physicsC.vel.y = -player.maxFallSpeed;
+			}
 		}
 		else
 		{
-			physicsC.passiveGravity = player.lowGravity;
+			if (physicsC.vel.y < 0 || !player.input.jumpPressed)
+			{
+				physicsC.passiveGravity = player.gravity;
+			}
+			else
+			{
+				physicsC.passiveGravity = player.lowGravity;
+			}
 		}
 	}
 
@@ -48,7 +58,7 @@ public class CommonPlayerFuncts
 	{
 		if (physicsC.vel.y < 0 && player.input.downPressed)
 		{
-			physicsC.vel.y = player.fastFallSpeed;
+			physicsC.vel.y = -player.fastFallSpeed;
 		}
 	}
 

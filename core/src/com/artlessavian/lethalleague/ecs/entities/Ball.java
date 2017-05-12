@@ -161,9 +161,9 @@ public class Ball extends Entity
 			if (other instanceof Player)
 			{
 				HitlagComponent hitlagCOther = other.getComponent(HitlagComponent.class);
-				hitlagCOther.hitlag = hitlagC.hitlag;
+				hitlagCOther.hitlag = hitlagC.hitlag - 1;
 				HitboxComponent hitboxC = other.getComponent(HitboxComponent.class);
-				hitboxC.intangible = hitlagC.hitlag;
+				hitboxC.intangible = hitlagC.hitlag - 1;
 			}
 
 		}

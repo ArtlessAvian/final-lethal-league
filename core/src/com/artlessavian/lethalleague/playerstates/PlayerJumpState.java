@@ -53,6 +53,7 @@ public class PlayerJumpState extends State
 		CommonPlayerFuncts.fall(player, physicsC);
 		CommonPlayerFuncts.fastfallCheck(player, physicsC);
 
+		CommonPlayerFuncts.changeDirection(player, physicsC);
 		CommonPlayerFuncts.horizontalInput(player, physicsC);
 		CommonPlayerFuncts.clampMovement(player, physicsC);
 	}

@@ -58,6 +58,7 @@ public class PlayerStandState extends State
 
 		CommonPlayerFuncts.horizontalInput(player, physicsC);
 		CommonPlayerFuncts.clampMovement(player, physicsC);
+		CommonPlayerFuncts.changeDirection(player, physicsC);
 	}
 
 	@Override

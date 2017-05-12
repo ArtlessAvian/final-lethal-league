@@ -24,9 +24,9 @@ public class Ball extends Entity
 		SpriteComponent spriteC = new SpriteComponent(new Sprite(new Texture("grid.png")));
 		spriteC.sprite.setSize(48, 48);
 		this.add(spriteC);
-		HitboxComponent hitboxC = new HitboxComponent(new BallHittingBehavior());
-		hitboxC.hurtbox = new OffsetRectangle(-24, 0, 48, 48);
-		this.add(hitboxC);
+//		HitboxComponent hitboxC = new HitboxComponent(new BallHittingBehavior());
+//		hitboxC.hurtbox = new OffsetRectangle(-24, 0, 48, 48);
+//		this.add(hitboxC);
 		StageComponent stageC = new StageComponent(new BallCollisionBehavior());
 		this.add(stageC);
 
@@ -121,7 +121,7 @@ public class Ball extends Entity
 		}
 	}
 
-	public class BallHittingBehavior implements HitboxComponent.HitBehavior
+	public static class BallHittingBehavior implements HitboxComponent.HitBehavior
 	{
 		@Override
 		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
@@ -142,13 +142,13 @@ public class Ball extends Entity
 				physicsC.vel.setLength(physicsC.vel.len() + 20);
 			}
 
-			HitboxComponent hitboxC = thisEntity.getComponent(HitboxComponent.class);
-			hitboxC.hitboxes.clear();
+			physicsC.lastPos.set(physicsC.pos.x, physicsC.pos.y);
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
 			hitlagC.hitlag = getHitlag(physicsC.vel.len());
 
 			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
+			ballC.intangible = hitlagC.hitlag;
 			if (hitlagC.hitlag == 180)
 			{
 				ballC.drawSystem.doScreenShake(hitlagC.hitlag, 10);
@@ -158,21 +158,14 @@ public class Ball extends Entity
 				ballC.drawSystem.doScreenShake(5, 5);
 			}
 
-
 			if (other instanceof Player)
 			{
 				HitlagComponent hitlagCOther = other.getComponent(HitlagComponent.class);
 				hitlagCOther.hitlag = hitlagC.hitlag;
-
-				PhysicsComponent physicsCOther = other.getComponent(PhysicsComponent.class);
-				physicsCOther.vel.y = 0;
-
-				((Player)other).ball = (Ball)thisEntity;
+				HitboxComponent hitboxC = other.getComponent(HitboxComponent.class);
+				hitboxC.intangible = hitlagC.hitlag;
 			}
-			else
-			{
-				physicsC.vel.setLength(physicsC.vel.len() + 20);
-			}
+
 		}
 
 		public int getHitlag(float speed)

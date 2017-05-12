@@ -162,8 +162,18 @@ public class Player extends Entity
 		@Override
 		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
+			if (other instanceof Player) {return;}
+
 			HitboxComponent hitboxC = thisEntity.getComponent(HitboxComponent.class);
 			hitboxC.cannotHit.add(other);
+
+			PhysicsComponent physicsC = thisEntity.getComponent(PhysicsComponent.class);
+			physicsC.vel.y = 0;
+
+			if (other instanceof Ball)
+			{
+				((Player)thisEntity).ball = (Ball)other;
+			}
 		}
 
 		@Override

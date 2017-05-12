@@ -33,6 +33,7 @@ public class HitboxComponent implements Component
 	public ArrayList<OffsetRectangle> hitboxes;
 	public OffsetRectangle hurtbox; // where you get hurt from
 
+	public int intangible = 0;
 	public ArrayList<Entity> cannotHit;
 
 	public HitboxComponent(HitBehavior behavior)

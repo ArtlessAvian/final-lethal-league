@@ -79,6 +79,7 @@ public class PlayerSmashState extends State
 			physicsCBall.vel.setAngle(player.smashAngle);
 
 			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
+
 			player.ball = null;
 		}
 	}

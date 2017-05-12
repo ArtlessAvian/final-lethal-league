@@ -10,7 +10,6 @@ public class PhysicsComponent implements Component
 
 	public Vector2 pos;
 	public Vector2 vel;
-	public Vector2 accel;
 	public Vector2 lastPos;
 	public boolean facingLeft;
 
@@ -21,7 +20,6 @@ public class PhysicsComponent implements Component
 	{
 		pos = new Vector2();
 		vel = new Vector2();
-		accel = new Vector2();
 		lastPos = new Vector2();
 		collision = new Rectangle();
 	}

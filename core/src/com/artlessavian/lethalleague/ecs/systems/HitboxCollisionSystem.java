@@ -1,10 +1,7 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.OffsetRectangle;
-import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
-import com.artlessavian.lethalleague.ecs.components.HitlagComponent;
-import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
-import com.artlessavian.lethalleague.ecs.components.StateComponent;
+import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.artlessavian.lethalleague.playerstates.PlayerSmashState;
 import com.badlogic.ashley.core.Engine;
@@ -30,7 +27,7 @@ public class HitboxCollisionSystem extends EntitySystem
 	}
 
 	@Override
-	public void update(float rollover)
+	public void update(float delta)
 	{
 		for (Entity e : entities2)
 		{
@@ -49,21 +46,16 @@ public class HitboxCollisionSystem extends EntitySystem
 
 		for (Entity e1 : entities)
 		{
-			HitlagComponent hitlagC = e1.getComponent(HitlagComponent.class);
-			if (hitlagC != null && hitlagC.hitlag > 0) {continue;}
-
 			for (Entity e2 : entities2)
 			{
 				if (e1 == e2) {continue;}
-
-				HitlagComponent hitlagC2 = e2.getComponent(HitlagComponent.class);
-				if (hitlagC != null && hitlagC.hitlag != 0) {continue;}
 
 				HitboxComponent e1Hitboxes = e1.getComponent(HitboxComponent.class);
 
 				if (e1Hitboxes.cannotHit.contains(e2)) {continue;}
 
 				HitboxComponent e2Hurtbox = e2.getComponent(HitboxComponent.class);
+				if (e2Hurtbox.intangible > 0) {e2Hurtbox.intangible--; continue;}
 
 				for (OffsetRectangle e1Hitbox : e1Hitboxes.hitboxes)
 				{
@@ -76,7 +68,7 @@ public class HitboxCollisionSystem extends EntitySystem
 							isSmash = stateC.machine.current.getClass() == PlayerSmashState.class;
 						}
 
-						System.out.println("hi");
+//						System.out.println("hi");
 						e1Hitboxes.behavior.onHit(e1, e2, isSmash);
 						e2Hurtbox.behavior.onGetHit(e2, e1, isSmash);
 						break;

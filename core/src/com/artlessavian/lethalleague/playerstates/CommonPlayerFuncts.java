@@ -65,4 +65,22 @@ public class CommonPlayerFuncts
 			if (physicsC.vel.x < -player.airMaxSpeed) {physicsC.vel.x = -player.airMaxSpeed;}
 		}
 	}
+
+	public static void changeDirection(Player player, PhysicsComponent physicsC)
+	{
+		if (player.input.leftPressed != player.input.rightPressed)
+		{
+			float accel = (physicsC.grounded) ? player.groundAccel : player.airAccel;
+
+			if (player.input.leftPressed)
+			{
+				physicsC.facingLeft = true;
+			}
+			else
+			{
+				physicsC.facingLeft = false;
+			}
+		}
+	}
 }
+

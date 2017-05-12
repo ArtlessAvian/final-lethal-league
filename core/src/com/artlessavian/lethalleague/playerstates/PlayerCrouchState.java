@@ -51,6 +51,7 @@ public class PlayerCrouchState extends State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
+		CommonPlayerFuncts.changeDirection(player, physicsC);
 		CommonPlayerFuncts.friction(player, physicsC);
 		// TODO
 	}

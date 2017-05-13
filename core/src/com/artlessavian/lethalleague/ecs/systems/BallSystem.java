@@ -53,7 +53,7 @@ public class BallSystem extends IteratingSystem
 		{
 			HitboxComponent hitboxC2 = hitboxHaver.getComponent(HitboxComponent.class);
 
-			if (hitboxC2.intangible <= 0 && ballC.lastHit != hitboxC2.team)
+			if (hitboxC2.intangible <= 0 && ballC.lastHit != hitboxC2.team && ballC.lastHit >= 0)
 			{
 				hurtboxes.put(hitboxC2.hurtbox, hitboxHaver);
 			}

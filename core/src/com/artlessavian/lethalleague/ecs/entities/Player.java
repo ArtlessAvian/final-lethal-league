@@ -55,6 +55,7 @@ public class Player extends Entity
 		physicsC = new PhysicsComponent();
 		physicsC.collision.setSize(72, 144);
 		physicsC.pos.x = (float)(Math.random() * 1000 - 500);
+		physicsC.pos.y = 360;
 		this.add(physicsC);
 
 //		boolean isSpriteSheet = false;
@@ -83,6 +84,7 @@ public class Player extends Entity
 		this.add(spriteC);
 
 		hitboxC = new HitboxComponent(new PlayerHittingBehavior(), team);
+		hitboxC.intangible = 120;
 		this.add(hitboxC);
 
 		this.add(new PlayerComponent(number, team));
@@ -96,7 +98,7 @@ public class Player extends Entity
 
 		stateC = new StateComponent();
 		this.addAllStates(stateC.machine);
-		stateC.machine.gotoState(PlayerStandState.class);
+		stateC.machine.gotoState(PlayerJumpState.class);
 		this.add(stateC);
 	}
 

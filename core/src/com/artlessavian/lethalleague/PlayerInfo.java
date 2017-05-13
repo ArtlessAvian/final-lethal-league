@@ -29,6 +29,7 @@ public class PlayerInfo
 		}
 		this.inputs = inputs;
 		this.team = team;
+		this.number = number;
 	}
 
 	public Player spawn()

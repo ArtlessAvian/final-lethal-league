@@ -4,6 +4,7 @@ package com.artlessavian.lethalleague;
 
 import com.artlessavian.lethalleague.ecs.components.RemoveComponent;
 import com.artlessavian.lethalleague.ecs.entities.Ball;
+import com.artlessavian.lethalleague.ecs.entities.Particle;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.artlessavian.lethalleague.ecs.systems.*;
 import com.badlogic.ashley.core.Engine;
@@ -11,6 +12,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Texture;
 
 public class GameScreen extends ScreenAdapter
 {

@@ -52,13 +52,13 @@ public class GUIDrawSystem extends EntitySystem
 
 		}
 
-		HitlagComponent hitlagC = game.ball.getComponent(HitlagComponent.class);
+		HitlagComponent hitlagC = game.ball.instance.getComponent(HitlagComponent.class);
 		if (hitlagC.hitlag == 0) {ballHitlagMax = 0;}
 		else if (ballHitlagMax == 0) {ballHitlagMax = hitlagC.hitlag;}
 
 		main.font.draw(main.batch, hitlagC.hitlag / ballHitlagMax + "", 600, 30);
 
-		main.font.draw(main.batch, game.ball.getComponent(PhysicsComponent.class).vel.len() / 60 + " units/frame", 600, 18);
+		main.font.draw(main.batch, game.ball.instance.getComponent(PhysicsComponent.class).vel.len() / 60 + " units/frame", 600, 18);
 
 		TimeLogger.logOut("GUIDrawSystem");
 	}

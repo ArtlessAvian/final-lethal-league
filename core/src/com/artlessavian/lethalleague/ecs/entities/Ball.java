@@ -11,11 +11,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Ball extends Entity
 {
-	public Ball(DrawSystem drawSystem, GameScreen game)
+	public Ball(DrawSystem drawSystem, int team)
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.pos.y = 300;
-		physicsC.vel.x = -300;
 //		physicsC.vel.setAngle((float)(360 * Math.random()));
 		physicsC.collision.setSize(48, 48);
 		this.add(physicsC);
@@ -31,10 +30,10 @@ public class Ball extends Entity
 		StageComponent stageC = new StageComponent(new BallCollisionBehavior());
 		this.add(stageC);
 
-		this.add(new MainAccessComponent(game));
+//		this.add(new MainAccessComponent(game));
 		this.add(new HitlagComponent());
 
-		this.add(new BallComponent(drawSystem));
+		this.add(new BallComponent(drawSystem, team));
 	}
 
 	// TODO
@@ -138,6 +137,12 @@ public class Ball extends Entity
 		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
 			PhysicsComponent physicsC = thisEntity.getComponent(PhysicsComponent.class);
+
+			if (physicsC.vel.len2() == 0)
+			{
+				physicsC.vel.set(0, 200);
+			}
+
 			if (isSmash)
 			{
 				physicsC.vel.scl(2);

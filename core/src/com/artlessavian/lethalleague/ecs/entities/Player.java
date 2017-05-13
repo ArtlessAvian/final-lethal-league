@@ -46,7 +46,7 @@ public class Player extends Entity
 	public OffsetRectangle swingBox;
 //	public OffsetRectangle smashBox; // helps you not get rsi
 
-	public Player(PlayerInputContainer input, int team)
+	public Player(PlayerInputContainer input, int number, int team)
 	{
 		this.input = input;
 		inputC = new InputComponent(input);
@@ -57,37 +57,35 @@ public class Player extends Entity
 		physicsC.pos.x = (float)(Math.random() * 1000 - 500);
 		this.add(physicsC);
 
-		stateC = new StateComponent();
-		this.addAllStates(stateC.machine);
-		stateC.machine.gotoState(PlayerStandState.class);
-		this.add(stateC);
-
-		boolean isSpriteSheet = false;
+//		boolean isSpriteSheet = false;
 		Sprite s;
-//		if ((Math.random() < 0.33))
-//		{
-//			s = new Sprite(new Texture("butts.png"));
-//			s.setSize(190, 144);
-//		}
-//		else if (Math.random() < 0.5f)
-//		{
-//			s = new Sprite(new Texture("not_a_trace.png"));
-//			s.setSize(144, 144);
-//		}
-//		else
+		if ((Math.random() < 0.33))
 		{
-//			s = new Sprite(new Texture("creation tools/spritesheet guideline.png"));
-			s = new Sprite(new Texture("creation tools/sample.png"));
-			s.setSize(144, 144);
-			isSpriteSheet = true;
+			s = new Sprite(new Texture("butts.png"));
+			s.setSize(190, 144);
 		}
+		else
+//		else if (Math.random() < 0.5f)
+		{
+			s = new Sprite(new Texture("not_a_trace.png"));
+			s.setSize(144, 144);
+		}
+//		else
+//		{
+//			s = new Sprite(new Texture("creation tools/spritesheet guideline.png"));
+//			s = new Sprite(new Texture("creation tools/sample.png"));
+//			s.setSize(144, 144);
+//			isSpriteSheet = true;
+//		}
 
 		spriteC = new SpriteComponent(s);
-		spriteC.usingTestSpriteSheet = isSpriteSheet;
+//		spriteC.usingTestSpriteSheet = isSpriteSheet;
 		this.add(spriteC);
 
 		hitboxC = new HitboxComponent(new PlayerHittingBehavior(), team);
 		this.add(hitboxC);
+
+		this.add(new PlayerComponent(number, team));
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
 		this.add(collisionBehaviorComponent);
@@ -95,6 +93,11 @@ public class Player extends Entity
 		this.add(new HitlagComponent());
 
 		swingBox = new OffsetRectangle(0, 0, 144, 144);
+
+		stateC = new StateComponent();
+		this.addAllStates(stateC.machine);
+		stateC.machine.gotoState(PlayerStandState.class);
+		this.add(stateC);
 	}
 
 	private void addAllStates(StateMachine stateMachine)

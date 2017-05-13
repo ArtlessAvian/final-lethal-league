@@ -17,14 +17,15 @@ public class BallComponent implements Component
 	public Rectangle rect;
 	public int intangible = 0;
 
-	public int lastHit = -0;
+	public int lastHit = -1;
 
 	public static float precision = 10;
 
-	public BallComponent(DrawSystem drawSystem)
+	public BallComponent(DrawSystem drawSystem, int team)
 	{
 		this.drawSystem = drawSystem;
 		rect = new Rectangle(0,0,48,48);
 		behavior = new Ball.BallHittingBehavior();
+		lastHit = team;
 	}
 }

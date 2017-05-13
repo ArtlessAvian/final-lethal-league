@@ -6,12 +6,14 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Maineroni extends Game
 {
 	public SpriteBatch batch;
 	public BitmapFont font;
+	public GlyphLayout layout;
 	public OrthographicCamera screenSpace;
 
 	PlayerInputContainer[] inputs;
@@ -28,6 +30,7 @@ public class Maineroni extends Game
 		screenSpace.update();
 
 		font = new BitmapFont();
+		layout = new GlyphLayout(font, "");
 
 		allInputs = new InputMultiplexer();
 		inputs = new PlayerInputContainer[2];

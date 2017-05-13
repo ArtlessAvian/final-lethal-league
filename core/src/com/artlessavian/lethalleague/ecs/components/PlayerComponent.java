@@ -6,7 +6,7 @@ public class PlayerComponent implements Component
 {
 	public int number;
 	public int team;
-	int score;
+	public int score;
 
 	public PlayerComponent(int number, int team)
 	{

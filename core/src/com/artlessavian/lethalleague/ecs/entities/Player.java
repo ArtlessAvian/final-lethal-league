@@ -114,30 +114,6 @@ public class Player extends Entity
 	}
 
 	/**
-	 * Called whenever a player dies
-	 */
-	public void onDie()
-	{
-
-	}
-
-	/**
-	 * Called whenever a player hits a ball
-	 */
-	public void onHit()
-	{
-
-	}
-
-	/**
-	 * Called whenever the player is responsible for another dying
-	 */
-	public void onKill()
-	{
-
-	}
-
-	/**
 	 * @return if a player can super
 	 */
 	public boolean canSuper()

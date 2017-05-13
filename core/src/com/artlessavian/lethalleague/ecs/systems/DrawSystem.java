@@ -4,7 +4,6 @@ import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
 import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.*;
-import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -101,9 +100,9 @@ public class DrawSystem extends EntitySystem
 			PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
 			if (ballC != null && ballC.intangible == 0)
 			{
-				if (ballC.lastHit >= 0)
+				if (ballC.team >= 0)
 				{
-					spriteC.sprite.setColor(playerColors[ballC.lastHit]);
+					spriteC.sprite.setColor(playerColors[ballC.team]);
 				}
 				float displacement = physicsC.pos.dst(physicsC.lastPos);
 				for (float i = 0; i < displacement; i += ballC.precision)

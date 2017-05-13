@@ -1,5 +1,6 @@
 package com.artlessavian.lethalleague;
 
+import com.artlessavian.lethalleague.ecs.components.PlayerComponent;
 import com.artlessavian.lethalleague.ecs.components.RemoveComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 
@@ -34,6 +35,12 @@ public class PlayerInfo
 
 	public Player spawn()
 	{
+		if (instance != null)
+		{
+			stocks--;
+			PlayerComponent playerC = instance.getComponent(PlayerComponent.class);
+			score += playerC.score;
+		}
 		try
 		{
 			instance = (Player)playerConstructor.newInstance(inputs, number, team);

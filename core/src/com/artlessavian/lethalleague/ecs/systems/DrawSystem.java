@@ -26,7 +26,7 @@ public class DrawSystem extends EntitySystem
 
 	public float screenShakeTime = 0;
 	public float screenShakeAmount = 0;
-	public float screenShakeMultiplier = 0f;
+	public float screenShakeMultiplier = 1f;
 
 	public DrawSystem(Maineroni main, GameScreen game)
 	{
@@ -108,12 +108,14 @@ public class DrawSystem extends EntitySystem
 
 			if (physicsC != null)
 			{
-//				spriteC.sprite.setX(physicsC.pos.x + (physicsC.pos.x - physicsC.lastPos.x) * rollover);
-//				spriteC.sprite.setX(spriteC.sprite.getWidth()/2f + spriteC.sprite.getX());
-//				spriteC.sprite.setY(physicsC.pos.y + (physicsC.pos.y - physicsC.lastPos.y) * rollover);
-//
-				spriteC.sprite.setCenter(physicsC.pos.x, physicsC.pos.y + spriteC.sprite.getHeight() / 2);
 				spriteC.sprite.setFlip(physicsC.facingLeft, false);
+
+//				spriteC.sprite.setX(physicsC.pos.x + (physicsC.pos.x - physicsC.lastPos.x) * rollover);
+//				spriteC.sprite.setX(spriteC.sprite.getX() - spriteC.sprite.getWidth()/2f);
+//				spriteC.sprite.setY(physicsC.pos.y + (physicsC.pos.y - physicsC.lastPos.y) * rollover);
+//				spriteC.sprite.draw(main.batch);
+
+				spriteC.sprite.setCenter(physicsC.pos.x, physicsC.pos.y + spriteC.sprite.getHeight() / 2);
 			}
 
 			spriteC.sprite.draw(main.batch);

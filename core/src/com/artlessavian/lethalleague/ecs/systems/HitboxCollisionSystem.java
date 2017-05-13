@@ -61,6 +61,7 @@ public class HitboxCollisionSystem extends EntitySystem
 
 				HitboxComponent e2Hurtbox = e2.getComponent(HitboxComponent.class);
 				if (e2Hurtbox.intangible > 0) {continue;}
+				if (e1Hitboxes.team == e2Hurtbox.team) {continue;}
 
 				for (OffsetRectangle e1Hitbox : e1Hitboxes.hitboxes)
 				{

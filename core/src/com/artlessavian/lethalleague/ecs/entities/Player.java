@@ -62,8 +62,18 @@ public class Player extends Entity
 		stateC.machine.gotoState(PlayerStandState.class);
 		this.add(stateC);
 
-		Sprite s = new Sprite(new Texture("not_a_trace.png"));
-		s.setSize(144, 144);
+		Sprite s;
+		if ((Math.random() > 0.5))
+		{
+			s = new Sprite(new Texture("butts.png"));
+			s.setSize(190, 144);
+		}
+		else
+		{
+			s = new Sprite(new Texture("not_a_trace.png"));
+			s.setSize(144, 144);
+		}
+
 		spriteC = new SpriteComponent(s);
 		this.add(spriteC);
 

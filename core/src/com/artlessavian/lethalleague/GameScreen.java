@@ -2,6 +2,7 @@ package com.artlessavian.lethalleague;
 
 //import com.artlessavian.lethalleague.entities.Ball;
 
+import com.artlessavian.lethalleague.ecs.components.RemoveComponent;
 import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.artlessavian.lethalleague.ecs.systems.*;
@@ -15,15 +16,16 @@ public class GameScreen extends ScreenAdapter
 {
 	static final float deltaTime = 1/60f;
 
-	Maineroni main;
+	public Maineroni main;
 
-	Engine engine;
+	public Engine engine;
 	EntitySystem[] drawSystems;
 
 	public Stage stage;
 
 	Player p1;
 	Player p2;
+	Player p3;
 	public Ball ball;
 
 	public GameScreen(Maineroni main)
@@ -56,16 +58,18 @@ public class GameScreen extends ScreenAdapter
 		p1 = new Player(main.getInput(0), 0);
 //		p1.vel.add(2, 2);
 		p2 = new Player(main.getInput(1), 1);
-		ball = new Ball(drawSystem);
+		p3 = new Player(RandomInput.inputs, 2);
+		ball = new Ball(drawSystem, this);
 
 		engine.addEntity(p1);
 		engine.addEntity(p2);
+		engine.addEntity(p3);
 		engine.addEntity(ball);
 
 //		 hue
-//		for (int i = 0; i < 360; i++)
+//		for (int i = 0; i < 10; i++)
 //		{
-//			engine.addEntity(new Player(main.getInput(1), 1));
+//			engine.addEntity(new Ball(drawSystem));
 //		}
 	}
 
@@ -85,11 +89,22 @@ public class GameScreen extends ScreenAdapter
 
 		for (; rollover > 0; rollover -= deltaTime)
 		{
+			RandomInput.lmao();
 			engineRuns++;
 			engine.update(deltaTime);
 		}
 
 //		System.out.println(rollover / deltaTime + 1);
-		for (EntitySystem sys : drawSystems) {sys.update(rollover / deltaTime + 1);}
+		for (EntitySystem sys : drawSystems) {sys.update(rollover / deltaTime + 1f);}
 	}
+
+//	public boolean isRoundOver()
+//	{
+//		int count = 0;
+//		if (p1.getComponent(RemoveComponent.class) != null) {count++;}
+//		if (p2.getComponent(RemoveComponent.class) != null) {count++;}
+//		if (p3.getComponent(RemoveComponent.class) != null) {count++;}
+//
+//		return count == 1;
+//	}
 }

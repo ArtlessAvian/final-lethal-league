@@ -61,5 +61,6 @@ public class PlayerJumpState extends State
 	@Override
 	public void editSprite(Sprite sprite)
 	{
+
 	}
 }

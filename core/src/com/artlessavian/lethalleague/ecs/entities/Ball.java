@@ -1,17 +1,17 @@
 package com.artlessavian.lethalleague.ecs.entities;
 
-import com.artlessavian.lethalleague.OffsetRectangle;
+import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Stage;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
-import com.artlessavian.lethalleague.playerstates.PlayerSmashState;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Ball extends Entity
 {
-	public Ball(DrawSystem drawSystem)
+	public Ball(DrawSystem drawSystem, GameScreen game)
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.pos.y = 300;
@@ -31,6 +31,7 @@ public class Ball extends Entity
 		StageComponent stageC = new StageComponent(new BallCollisionBehavior());
 		this.add(stageC);
 
+		this.add(new MainAccessComponent(game));
 		this.add(new HitlagComponent());
 
 		this.add(new BallComponent(drawSystem));
@@ -127,7 +128,10 @@ public class Ball extends Entity
 		@Override
 		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
+			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
+			hitlagC.hitlag = 10;
 
+			MainAccessComponent mainAccessC = thisEntity.getComponent(MainAccessComponent.class);
 		}
 
 		@Override

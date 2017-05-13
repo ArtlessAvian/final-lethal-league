@@ -3,12 +3,14 @@ package com.artlessavian.lethalleague.playerstates;
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
+import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerSmashState extends State
 {
 	Player player;
+	private boolean hadHit;
 
 	public PlayerSmashState(Player player)
 	{
@@ -31,6 +33,8 @@ public class PlayerSmashState extends State
 		hitboxC.hitboxes.add(player.swingBox);
 
 		hitboxC.cannotHit.clear();
+
+		hadHit = false;
 	}
 
 	@Override
@@ -81,12 +85,36 @@ public class PlayerSmashState extends State
 			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
 
 			player.ball = null;
+			hadHit = true;
 		}
 	}
 
 	@Override
 	public void editSprite(Sprite sprite)
 	{
-		sprite.rotate(36);
+		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+		if (spriteC.usingTestSpriteSheet)
+		{
+			if (player.ball != null || hadHit || getTimeInState() > 20)
+			{
+				CommonPlayerFuncts.setUV(3,2, sprite);
+			}
+			else if (getTimeInState() > 15)
+			{
+				CommonPlayerFuncts.setUV(2,2, sprite);
+			}
+			else if (getTimeInState() > 10)
+			{
+				CommonPlayerFuncts.setUV(1,2, sprite);
+			}
+			else
+			{
+				CommonPlayerFuncts.setUV(0,2, sprite);
+			}
+		}
+		else
+		{
+			sprite.rotate(36);
+		}
 	}
 }

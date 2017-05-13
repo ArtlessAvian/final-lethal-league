@@ -7,6 +7,7 @@ public class SpriteComponent implements Component
 {
 	public Sprite sprite;
 	public boolean isScreenSpace = false;
+	public boolean usingTestSpriteSheet = false; // TODO: Migrate All States to this
 
 	public SpriteComponent(Sprite sprite)
 	{

@@ -120,7 +120,8 @@ public class DebugDrawSystem extends EntitySystem
 		int i = 12;
 		for (String key : TimeLogger.getKeys())
 		{
-			main.font.draw(main.batch, TimeLogger.get(key) + "", 300, i);
+			float time = TimeLogger.get(key);
+			main.font.draw(main.batch, Math.round(time*1000)/1000f + "", 300, i);
 			main.font.draw(main.batch, key, 100, i);
 			i += 12;
 		}

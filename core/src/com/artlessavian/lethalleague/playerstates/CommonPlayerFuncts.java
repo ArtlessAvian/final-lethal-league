@@ -3,6 +3,7 @@ package com.artlessavian.lethalleague.playerstates;
 import com.artlessavian.lethalleague.PlayerInputContainer;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class CommonPlayerFuncts
 {
@@ -91,6 +92,14 @@ public class CommonPlayerFuncts
 				physicsC.facingLeft = false;
 			}
 		}
+	}
+
+	public static void setUV(int x, int y, Sprite sprite)
+	{
+		sprite.setU(x / 8f);
+		sprite.setU2((x+1) / 8f);
+		sprite.setV(y / 8f);
+		sprite.setV2((y+1) / 8f);
 	}
 }
 

@@ -62,19 +62,28 @@ public class Player extends Entity
 		stateC.machine.gotoState(PlayerStandState.class);
 		this.add(stateC);
 
+		boolean isSpriteSheet = false;
 		Sprite s;
-		if ((Math.random() > 0.5))
+//		if ((Math.random() < 0.33))
+//		{
+//			s = new Sprite(new Texture("butts.png"));
+//			s.setSize(190, 144);
+//		}
+//		else if (Math.random() < 0.5f)
+//		{
+//			s = new Sprite(new Texture("not_a_trace.png"));
+//			s.setSize(144, 144);
+//		}
+//		else
 		{
-			s = new Sprite(new Texture("butts.png"));
-			s.setSize(190, 144);
-		}
-		else
-		{
-			s = new Sprite(new Texture("not_a_trace.png"));
+//			s = new Sprite(new Texture("creation tools/spritesheet guideline.png"));
+			s = new Sprite(new Texture("creation tools/sample.png"));
 			s.setSize(144, 144);
+			isSpriteSheet = true;
 		}
 
 		spriteC = new SpriteComponent(s);
+		spriteC.usingTestSpriteSheet = isSpriteSheet;
 		this.add(spriteC);
 
 		hitboxC = new HitboxComponent(new PlayerHittingBehavior(), team);

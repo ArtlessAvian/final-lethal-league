@@ -26,7 +26,7 @@ public class DrawSystem extends EntitySystem
 
 	public float screenShakeTime = 0;
 	public float screenShakeAmount = 0;
-	public float screenShakeMultiplier = 1f;
+	public float screenShakeMultiplier = 0f;
 
 	public DrawSystem(Maineroni main, GameScreen game)
 	{
@@ -116,6 +116,13 @@ public class DrawSystem extends EntitySystem
 //				spriteC.sprite.draw(main.batch);
 
 				spriteC.sprite.setCenter(physicsC.pos.x, physicsC.pos.y + spriteC.sprite.getHeight() / 2);
+			}
+
+			//TODO Remove me
+			if (spriteC.usingTestSpriteSheet)
+			{
+				spriteC.sprite.setRotation(0);
+				spriteC.sprite.setFlip(false, false);
 			}
 
 			spriteC.sprite.draw(main.batch);

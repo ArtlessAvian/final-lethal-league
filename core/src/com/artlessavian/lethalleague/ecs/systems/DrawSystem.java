@@ -98,7 +98,7 @@ public class DrawSystem extends EntitySystem
 			}
 
 			PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
-			if (ballC != null && ballC.intangible == 0)
+			if (ballC != null)
 			{
 				if (ballC.team >= 0)
 				{

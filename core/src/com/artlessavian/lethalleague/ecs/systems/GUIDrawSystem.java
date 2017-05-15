@@ -89,11 +89,14 @@ public class GUIDrawSystem extends EntitySystem
 		float speed = game.ball.instance.getComponent(PhysicsComponent.class).vel.len() / 60;
 		speedRectWidth = (15 * speedRectWidth + speed)/16f;
 
-		if (speedRectWidth > 1280)
+		if (speedRectWidth >= 300)
 		{
 			a.r = (float)Math.sin(Gdx.graphics.getFrameId() / 10f)/2f + 0.5f;
 			a.g = (float)Math.sin(Gdx.graphics.getFrameId() / 10f + Math.PI * 2/3f)/2f + 0.5f;
 			a.b = (float)Math.sin(Gdx.graphics.getFrameId() / 10f + Math.PI * 4/3f)/2f + 0.5f;
+
+			a.lerp(1, 1, 1, 1, Math.max(0, Math.min(1, (1280 - speedRectWidth)/(1280-300))));
+
 			rectangle.setColor(a);
 		}
 		rectangle.setSize(speedRectWidth, 10);

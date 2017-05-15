@@ -56,7 +56,7 @@ public class Player extends Entity
 
 //		boolean isSpriteSheet = false;
 		Sprite s;
-		if ((Math.random() < 0.33))
+		if (playerInfo.number == 0)
 		{
 			s = new Sprite(new Texture("butts.png"));
 			s.setSize(190, 144);
@@ -115,6 +115,57 @@ public class Player extends Entity
 	public boolean canSuper()
 	{
 		return false;
+	}
+
+	public float getAngle()
+	{
+		float angle = -100000000;
+
+		if (input.upPressed) {angle = upAngle;}
+		else if (input.downPressed) {angle = downAngle;}
+		else if (input.leftPressed || input.rightPressed) {angle = straightAngle;}
+
+		if (angle == -100000000)
+		{
+
+			long lastPressed = Math.max(input.downPressFrame, input.upPressFrame);
+			lastPressed = Math.max(lastPressed, input.leftPressFrame);
+			lastPressed = Math.max(lastPressed, input.rightPressFrame);
+
+			if (lastPressed == input.leftPressFrame || lastPressed == input.rightPressFrame)
+			{
+				angle = straightAngle;
+			}
+			else if (lastPressed == input.upPressFrame)
+			{
+				angle = upAngle;
+			}
+			else
+			{
+				angle = downAngle;
+			}
+		}
+
+		if (getComponent(PhysicsComponent.class).facingLeft)
+		{
+			return 180 - angle;
+		}
+		else
+		{
+			return angle;
+		}
+	}
+
+	public float getSmashAngle()
+	{
+		if (getComponent(PhysicsComponent.class).facingLeft)
+		{
+			return 180 - smashAngle;
+		}
+		else
+		{
+			return smashAngle;
+		}
 	}
 
 	public static class PlayerCollisionBehavior extends StageComponent.CollisionBehavior

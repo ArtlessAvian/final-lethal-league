@@ -18,8 +18,13 @@ public class BallComponent implements Component
 	public Rectangle rect;
 	public int intangible = 0;
 
+	public int trueSpeed = 0;
+
 	public int team = -1;
 	public Player lastHit;
+
+	public boolean getAngle;
+	public boolean wasSmashed;
 
 	public static float precision = 10;
 

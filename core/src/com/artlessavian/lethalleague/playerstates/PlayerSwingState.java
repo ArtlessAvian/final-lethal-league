@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class PlayerSwingState extends State
 {
 	Player player;
+	private int swingThrough;
 
 	public PlayerSwingState(Player player)
 	{
@@ -21,6 +22,8 @@ public class PlayerSwingState extends State
 		// TODO
 		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
 		hitboxC.hitboxes.remove(player.swingBox);
+
+		player.ball = null;
 	}
 
 	@Override
@@ -31,13 +34,16 @@ public class PlayerSwingState extends State
 		hitboxC.hitboxes.add(player.swingBox);
 
 		hitboxC.cannotHit.clear();
+		swingThrough = -1;
+
+		player.ball = null;
 	}
 
 	@Override
 	public boolean changeStateMaybe()
 	{
 		// TODO
-		if (getTimeInState() >= 30)
+		if ((getTimeInState() >= 30 && swingThrough == -1) || swingThrough == 0)
 		{
 			PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 			if (physicsC.grounded)
@@ -58,6 +64,8 @@ public class PlayerSwingState extends State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
+		if (swingThrough > 0) {swingThrough--;}
+
 		//TODO
 
 		if (!physicsC.grounded)
@@ -75,23 +83,24 @@ public class PlayerSwingState extends State
 
 		if (player.ball != null)
 		{
-			PhysicsComponent physicsCBall = player.ball.getComponent(PhysicsComponent.class);
-			if (player.input.upPressed)
-			{
-				physicsCBall.vel.setAngle(player.upAngle);
-			}
-			else if (player.input.downPressed)
-			{
-				physicsCBall.vel.setAngle(player.downAngle);
-			}
-			else
-			{
-				physicsCBall.vel.setAngle(player.straightAngle);
-			}
-
-			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
+//			PhysicsComponent physicsCBall = player.ball.getComponent(PhysicsComponent.class);
+//			if (player.input.upPressed)
+//			{
+//				physicsCBall.vel.setAngle(player.upAngle);
+//			}
+//			else if (player.input.downPressed)
+//			{
+//				physicsCBall.vel.setAngle(player.downAngle);
+//			}
+//			else
+//			{
+//				physicsCBall.vel.setAngle(player.straightAngle);
+//			}
+//
+//			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
 
 			player.ball = null;
+			swingThrough = 10;
 		}
 	}
 

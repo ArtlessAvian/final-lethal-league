@@ -12,11 +12,12 @@ public class Ball extends Entity
 	public Ball(DrawSystem drawSystem, int team)
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
-		physicsC.pos.y = 300;
+		physicsC.pos.y = 250;
 
 //		physicsC.vel.set(0,2f);
 
 //		physicsC.vel.setAngle((float)(360 * Math.random()));
+//		physicsC.passiveGravity = 4000;
 		physicsC.collision.setSize(48, 48);
 		this.add(physicsC);
 //		StateComponent stateC = new StateComponent();
@@ -28,7 +29,7 @@ public class Ball extends Entity
 //		HitboxComponent hitboxC = new HitboxComponent(new BallHittingBehavior());
 //		hitboxC.hurtbox = new OffsetRectangle(-24, 0, 48, 48);
 //		this.add(hitboxC);
-		StageComponent stageC = new StageComponent(new BallCollisionBehavior());
+		StageComponent stageC = new StageComponent(new BallCollisionBehavior(7));
 		this.add(stageC);
 
 //		this.add(new MainAccessComponent(game));
@@ -40,6 +41,18 @@ public class Ball extends Entity
 	// TODO
 	public static class BallCollisionBehavior extends StageComponent.CollisionBehavior
 	{
+		int wallHitlag = 7;
+
+		public BallCollisionBehavior()
+		{
+
+		}
+
+		public BallCollisionBehavior(int wallHitlag)
+		{
+			this.wallHitlag = wallHitlag;
+		}
+
 		@Override
 		public void onTouchCeil(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
@@ -57,7 +70,7 @@ public class Ball extends Entity
 			physicsC.vel.y *= -1;
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 7;
+			hitlagC.hitlag = this.wallHitlag;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -76,7 +89,7 @@ public class Ball extends Entity
 			physicsC.vel.y *= -1;
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 7;
+			hitlagC.hitlag = this.wallHitlag;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -95,7 +108,7 @@ public class Ball extends Entity
 			physicsC.vel.x *= -1;
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 7;
+			hitlagC.hitlag = this.wallHitlag;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -117,7 +130,7 @@ public class Ball extends Entity
 			physicsC.vel.x *= -1;
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 7;
+			hitlagC.hitlag = this.wallHitlag;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -125,6 +138,8 @@ public class Ball extends Entity
 
 	public static class BallHittingBehavior implements HitboxComponent.HitBehavior
 	{
+		int initSpeed = 180;
+
 		@Override
 		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
@@ -139,30 +154,35 @@ public class Ball extends Entity
 		@Override
 		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
 		{
+			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
 			PhysicsComponent physicsC = thisEntity.getComponent(PhysicsComponent.class);
 
-			if (physicsC.vel.len2() == 0)
+			if (ballC.trueSpeed == 0)
 			{
-				physicsC.vel.set(0, 120);
-			}
-
-			if (isSmash)
-			{
-				physicsC.vel.scl(2);
+				ballC.trueSpeed = initSpeed;
+				if (isSmash) ballC.trueSpeed *= 2;
 			}
 			else
 			{
-				physicsC.vel.setLength(physicsC.vel.len() + 60);
+				if (isSmash)
+				{
+					ballC.trueSpeed *= 2;
+				}
+				else
+				{
+					ballC.trueSpeed += 60;
+				}
 			}
-			physicsC.vel.clamp(0, 60 * 1000000);
+
+			if (ballC.trueSpeed > 60 * 1000000) {ballC.trueSpeed = 60000000;}
+			physicsC.vel.set(0,ballC.trueSpeed);
 
 			physicsC.lastPos.set(physicsC.pos.x, physicsC.pos.y);
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
 			hitlagC.hitlag = getHitlag(physicsC.vel.len());
 
-			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
-			ballC.intangible = hitlagC.hitlag-1;
+			ballC.intangible = hitlagC.hitlag + 5;
 			if (hitlagC.hitlag == 180)
 			{
 				ballC.drawSystem.doScreenShake(hitlagC.hitlag, 10);
@@ -175,6 +195,8 @@ public class Ball extends Entity
 			if (other instanceof Player)
 			{
 				ballC.lastHit = (Player)other;
+				ballC.getAngle = true;
+				ballC.wasSmashed = isSmash;
 
 				HitlagComponent hitlagCOther = other.getComponent(HitlagComponent.class);
 				hitlagCOther.hitlag = hitlagC.hitlag - 1;

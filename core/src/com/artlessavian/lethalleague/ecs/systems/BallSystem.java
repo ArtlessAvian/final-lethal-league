@@ -1,6 +1,7 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.OffsetRectangle;
+import com.artlessavian.lethalleague.PlayerInputContainer;
 import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.entities.Player;
@@ -43,7 +44,9 @@ public class BallSystem extends IteratingSystem
 	protected void processEntity(Entity entity, float deltaTime)
 	{
 		BallComponent ballC = entity.getComponent(BallComponent.class);
-		if (ballC.intangible > 0) {ballC.intangible--; return;}
+		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
+
+		if (ballC.intangible > 0) {return;}
 
 		hurtboxes.clear();
 		hitboxes.clear();
@@ -63,8 +66,6 @@ public class BallSystem extends IteratingSystem
 				}
 			}
 		}
-
-		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
 
 		float displacement = physicsC.pos.dst(physicsC.lastPos);
 		boolean hasCollided = false;

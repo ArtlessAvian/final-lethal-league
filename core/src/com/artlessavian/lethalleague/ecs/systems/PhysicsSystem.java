@@ -2,6 +2,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.Stage;
 import com.artlessavian.lethalleague.TimeLogger;
+import com.artlessavian.lethalleague.ecs.components.BallComponent;
 import com.artlessavian.lethalleague.ecs.components.HitlagComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.components.StageComponent;
@@ -31,12 +32,27 @@ public class PhysicsSystem extends IteratingSystem
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{
+		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
+		physicsC.lastPos.set(physicsC.pos);
+
 		HitlagComponent hitlagC = entity.getComponent(HitlagComponent.class);
 		if (hitlagC != null && hitlagC.hitlag > 0) {return;}
 
-		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
+		BallComponent ballC = entity.getComponent(BallComponent.class);
+		if (ballC != null && ballC.getAngle && hitlagC.hitlag == 0)
+		{
+			ballC.getAngle = false;
 
-		physicsC.lastPos.set(physicsC.pos);
+			//TODO: Should balls be responsible for their own angles?
+			if (ballC.wasSmashed)
+			{
+				physicsC.vel.setAngle(ballC.lastHit.getSmashAngle());
+			}
+			else
+			{
+				physicsC.vel.setAngle(ballC.lastHit.getAngle());
+			}
+		}
 
 		if (!physicsC.grounded)
 		{

@@ -13,12 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Player extends Entity
 {
-	private SpriteComponent spriteC;
-	private InputComponent inputC;
-	private PhysicsComponent physicsC;
-	private HitboxComponent hitboxC;
-	private StateComponent stateC;
-
+	private PlayerInfo playerInfo;
 	public PlayerInputContainer input;
 
 	public float gravity = 4000;
@@ -46,48 +41,49 @@ public class Player extends Entity
 	public OffsetRectangle swingBox;
 //	public OffsetRectangle smashBox; // helps you not get rsi
 
-	public Player(PlayerInputContainer input, int team)
+	public Player(PlayerInfo playerInfo)
 	{
-		this.input = input;
-		inputC = new InputComponent(input);
+		this.playerInfo = playerInfo;
+		this.input = playerInfo.inputs;
+		InputComponent inputC = new InputComponent(input);
 		this.add(inputC);
 
-		physicsC = new PhysicsComponent();
+		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.collision.setSize(72, 144);
 		physicsC.pos.x = (float)(Math.random() * 1000 - 500);
+		physicsC.pos.y = 360;
 		this.add(physicsC);
 
-		stateC = new StateComponent();
-		this.addAllStates(stateC.machine);
-		stateC.machine.gotoState(PlayerStandState.class);
-		this.add(stateC);
-
-		boolean isSpriteSheet = false;
+//		boolean isSpriteSheet = false;
 		Sprite s;
-//		if ((Math.random() < 0.33))
-//		{
-//			s = new Sprite(new Texture("butts.png"));
-//			s.setSize(190, 144);
-//		}
-//		else if (Math.random() < 0.5f)
-//		{
-//			s = new Sprite(new Texture("not_a_trace.png"));
-//			s.setSize(144, 144);
-//		}
-//		else
+		if (playerInfo.number == 0)
 		{
-//			s = new Sprite(new Texture("creation tools/spritesheet guideline.png"));
-			s = new Sprite(new Texture("creation tools/sample.png"));
-			s.setSize(144, 144);
-			isSpriteSheet = true;
+			s = new Sprite(new Texture("butts.png"));
+			s.setSize(190, 144);
 		}
+		else
+//		else if (Math.random() < 0.5f)
+		{
+			s = new Sprite(new Texture("not_a_trace.png"));
+			s.setSize(144, 144);
+		}
+//		else
+//		{
+//			s = new Sprite(new Texture("creation tools/spritesheet guideline.png"));
+//			s = new Sprite(new Texture("creation tools/sample.png"));
+//			s.setSize(144, 144);
+//			isSpriteSheet = true;
+//		}
 
-		spriteC = new SpriteComponent(s);
-		spriteC.usingTestSpriteSheet = isSpriteSheet;
+		SpriteComponent spriteC = new SpriteComponent(s);
+//		spriteC.usingTestSpriteSheet = isSpriteSheet;
 		this.add(spriteC);
 
-		hitboxC = new HitboxComponent(new PlayerHittingBehavior(), team);
+		HitboxComponent hitboxC = new HitboxComponent(new PlayerHittingBehavior(), playerInfo.team);
+		hitboxC.intangible = 120;
 		this.add(hitboxC);
+
+		this.add(new PlayerComponent(playerInfo));
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
 		this.add(collisionBehaviorComponent);
@@ -95,6 +91,11 @@ public class Player extends Entity
 		this.add(new HitlagComponent());
 
 		swingBox = new OffsetRectangle(0, 0, 144, 144);
+
+		StateComponent stateC = new StateComponent();
+		this.addAllStates(stateC.machine);
+		stateC.machine.gotoState(PlayerJumpState.class);
+		this.add(stateC);
 	}
 
 	private void addAllStates(StateMachine stateMachine)
@@ -109,35 +110,62 @@ public class Player extends Entity
 	}
 
 	/**
-	 * Called whenever a player dies
-	 */
-	public void onDie()
-	{
-
-	}
-
-	/**
-	 * Called whenever a player hits a ball
-	 */
-	public void onHit()
-	{
-
-	}
-
-	/**
-	 * Called whenever the player is responsible for another dying
-	 */
-	public void onKill()
-	{
-
-	}
-
-	/**
 	 * @return if a player can super
 	 */
 	public boolean canSuper()
 	{
 		return false;
+	}
+
+	public float getAngle()
+	{
+		float angle = -100000000;
+
+		if (input.upPressed) {angle = upAngle;}
+		else if (input.downPressed) {angle = downAngle;}
+		else if (input.leftPressed || input.rightPressed) {angle = straightAngle;}
+
+		if (angle == -100000000)
+		{
+
+			long lastPressed = Math.max(input.downPressFrame, input.upPressFrame);
+			lastPressed = Math.max(lastPressed, input.leftPressFrame);
+			lastPressed = Math.max(lastPressed, input.rightPressFrame);
+
+			if (lastPressed == input.leftPressFrame || lastPressed == input.rightPressFrame)
+			{
+				angle = straightAngle;
+			}
+			else if (lastPressed == input.upPressFrame)
+			{
+				angle = upAngle;
+			}
+			else
+			{
+				angle = downAngle;
+			}
+		}
+
+		if (getComponent(PhysicsComponent.class).facingLeft)
+		{
+			return 180 - angle;
+		}
+		else
+		{
+			return angle;
+		}
+	}
+
+	public float getSmashAngle()
+	{
+		if (getComponent(PhysicsComponent.class).facingLeft)
+		{
+			return 180 - smashAngle;
+		}
+		else
+		{
+			return smashAngle;
+		}
 	}
 
 	public static class PlayerCollisionBehavior extends StageComponent.CollisionBehavior
@@ -157,6 +185,8 @@ public class Player extends Entity
 			physicsC.vel.y = 0;
 
 			StateComponent stateC = thisEntity.getComponent(StateComponent.class);
+//
+// if ((!((Player)thisEntity).input.swingPressed && false) ||
 			if (stateC.machine.current.getClass() != PlayerSwingState.class && stateC.machine.current.getClass() != PlayerSmashState.class)
 			{
 				stateC.machine.gotoState(PlayerStandState.class);
@@ -202,6 +232,8 @@ public class Player extends Entity
 		{
 			if (other instanceof Ball)
 			{
+				PlayerComponent playerC = thisEntity.getComponent(PlayerComponent.class);
+				playerC.playerInfo.stocks--;
 				thisEntity.add(new RemoveComponent());
 			}
 		}

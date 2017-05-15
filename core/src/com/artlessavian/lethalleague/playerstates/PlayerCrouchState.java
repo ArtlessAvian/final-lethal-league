@@ -1,13 +1,16 @@
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
+import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
+import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerCrouchState extends State
 {
 	Player player;
+	private boolean antiSwingSpam;
 
 	public PlayerCrouchState(Player player)
 	{
@@ -18,15 +21,28 @@ public class PlayerCrouchState extends State
 	public void exit()
 	{
 		// TODO
-//		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-//		physicsC.collision.height = 144;
+		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+		physicsC.collision.height = 144;
+		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
+		hitboxC.hurtbox.setHeight(144);
+		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+		spriteC.sprite.setSize(spriteC.sprite.getWidth(), 144);
 	}
 
 	@Override
 	public void enter()
 	{
-//		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
-//		physicsC.collision.height = 50;
+		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+		physicsC.collision.height = 50;
+		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
+		hitboxC.hurtbox.setHeight(50);
+		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+		spriteC.sprite.setSize(spriteC.sprite.getWidth(), 50);
+
+		if (player.input.swingPressed)
+		{
+			antiSwingSpam = true;
+		}
 	}
 
 	@Override
@@ -39,8 +55,15 @@ public class PlayerCrouchState extends State
 		}
 		else if (player.input.jumpPressed)
 		{
-		    sm.gotoState(PlayerJumpState.class);
+			PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+			sm.gotoState(PlayerJumpState.class);
+			physicsC.vel.y = player.jumpVelocity;
 		    return true;
+		}
+		else if (player.input.swingPressed && !antiSwingSpam)
+		{
+			sm.gotoState(PlayerSwingState.class);
+			return true;
 		}
 		
 		return false;
@@ -54,6 +77,8 @@ public class PlayerCrouchState extends State
 		CommonPlayerFuncts.changeDirection(player, physicsC);
 		CommonPlayerFuncts.friction(player, physicsC);
 		// TODO
+
+		if (antiSwingSpam && !player.input.swingPressed) {antiSwingSpam = false;}
 	}
 
 	@Override

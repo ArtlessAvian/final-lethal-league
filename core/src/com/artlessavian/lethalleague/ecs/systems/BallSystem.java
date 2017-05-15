@@ -1,14 +1,13 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.OffsetRectangle;
+import com.artlessavian.lethalleague.PlayerInputContainer;
 import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.*;
-import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.artlessavian.lethalleague.playerstates.PlayerSmashState;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
@@ -45,7 +44,9 @@ public class BallSystem extends IteratingSystem
 	protected void processEntity(Entity entity, float deltaTime)
 	{
 		BallComponent ballC = entity.getComponent(BallComponent.class);
-		if (ballC.intangible > 0) {ballC.intangible--; return;}
+		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
+
+		if (ballC.intangible > 0) {return;}
 
 		hurtboxes.clear();
 		hitboxes.clear();
@@ -53,7 +54,7 @@ public class BallSystem extends IteratingSystem
 		{
 			HitboxComponent hitboxC2 = hitboxHaver.getComponent(HitboxComponent.class);
 
-			if (hitboxC2.intangible <= 0 && ballC.lastHit != hitboxC2.team)
+			if (hitboxC2.intangible <= 0 && ballC.team != hitboxC2.team && ballC.team >= 0)
 			{
 				hurtboxes.put(hitboxC2.hurtbox, hitboxHaver);
 			}
@@ -65,8 +66,6 @@ public class BallSystem extends IteratingSystem
 				}
 			}
 		}
-
-		PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
 
 		float displacement = physicsC.pos.dst(physicsC.lastPos);
 		boolean hasCollided = false;

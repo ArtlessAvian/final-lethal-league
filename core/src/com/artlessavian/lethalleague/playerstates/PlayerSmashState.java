@@ -11,6 +11,7 @@ public class PlayerSmashState extends State
 {
 	Player player;
 	private boolean hadHit;
+	private int swingThrough;
 
 	public PlayerSmashState(Player player)
 	{
@@ -35,13 +36,14 @@ public class PlayerSmashState extends State
 		hitboxC.cannotHit.clear();
 
 		hadHit = false;
+		swingThrough = -1;
 	}
 
 	@Override
 	public boolean changeStateMaybe()
 	{
 		// TODO
-		if (getTimeInState() >= 30)
+		if ((getTimeInState() >= 30 && swingThrough == -1) || swingThrough == 0)
 		{
 			PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 			if (physicsC.grounded)
@@ -64,6 +66,8 @@ public class PlayerSmashState extends State
 
 		//TODO
 
+		if (swingThrough > 0) {swingThrough--;}
+
 		if (!physicsC.grounded)
 		{
 			CommonPlayerFuncts.fall(player, physicsC);
@@ -79,13 +83,14 @@ public class PlayerSmashState extends State
 
 		if (player.ball != null)
 		{
-			PhysicsComponent physicsCBall = player.ball.getComponent(PhysicsComponent.class);
-			physicsCBall.vel.setAngle(player.smashAngle);
-
-			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
+//			PhysicsComponent physicsCBall = player.ball.getComponent(PhysicsComponent.class);
+//			physicsCBall.vel.setAngle(player.smashAngle);
+//
+//			if (physicsC.facingLeft) {physicsCBall.vel.x *= -1;}
 
 			player.ball = null;
 			hadHit = true;
+			swingThrough = 10;
 		}
 	}
 

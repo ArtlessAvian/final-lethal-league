@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class PlayerJumpState extends State
 {
 	Player player;
+	private boolean antiSwingSpam;
 
 	public PlayerJumpState(Player player)
 	{
@@ -25,14 +26,19 @@ public class PlayerJumpState extends State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 		physicsC.grounded = false;
+
+		if (player.input.swingPressed)
+		{
+			antiSwingSpam = true;
+		}
 	}
 
 	@Override
 	public boolean changeStateMaybe()
 	{
-		if (player.input.swingPressed)
+		if (player.input.swingPressed && !antiSwingSpam)
 		{
-			if (player.input.downPressed || player.input.rightPressed)
+			if (!(player.input.upPressed) && (player.input.downPressed || player.input.rightPressed || player.input.leftPressed))
 			{
 				sm.gotoState(PlayerSmashState.class);
 			}
@@ -56,6 +62,8 @@ public class PlayerJumpState extends State
 		CommonPlayerFuncts.changeDirection(player, physicsC);
 		CommonPlayerFuncts.horizontalInput(player, physicsC);
 		CommonPlayerFuncts.clampMovement(player, physicsC);
+
+		if (antiSwingSpam && !player.input.swingPressed) {antiSwingSpam = false;}
 	}
 
 	@Override

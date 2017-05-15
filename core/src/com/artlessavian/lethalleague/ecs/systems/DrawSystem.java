@@ -4,34 +4,38 @@ import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
 import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.*;
-import com.artlessavian.lethalleague.ecs.entities.Ball;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class DrawSystem extends EntitySystem
 {
 	Maineroni main;
 	GameScreen game;
 
+	private Color[] playerColors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
 	private ImmutableArray<Entity> entities;
 
 	OrthographicCamera cam;
-	private Texture map;
+	private Sprite indicator;
 
 	public float screenShakeTime = 0;
 	public float screenShakeAmount = 0;
-	public float screenShakeMultiplier = 0f;
+	public float screenShakeMultiplier = 1f;
 
 	public DrawSystem(Maineroni main, GameScreen game)
 	{
 		this.main = main;
 		this.game = game;
+		indicator = new Sprite(new Texture("playerindicator.png"));
+		indicator.setSize(100,100);
 	}
 
 	public void addedToEngine(Engine engine)
@@ -94,13 +98,17 @@ public class DrawSystem extends EntitySystem
 			}
 
 			PhysicsComponent physicsC = entity.getComponent(PhysicsComponent.class);
-			if (ballC != null && ballC.intangible == 0)
+			if (ballC != null)
 			{
+				if (ballC.team >= 0)
+				{
+					spriteC.sprite.setColor(playerColors[ballC.team]);
+				}
 				float displacement = physicsC.pos.dst(physicsC.lastPos);
 				for (float i = 0; i < displacement; i += ballC.precision)
 				{
-					float x = i/displacement * (physicsC.pos.x - physicsC.lastPos.x) + physicsC.lastPos.x;
-					float y = i/displacement * (physicsC.pos.y - physicsC.lastPos.y) + physicsC.lastPos.y;
+					float x = i / displacement * (physicsC.pos.x - physicsC.lastPos.x) + physicsC.lastPos.x;
+					float y = i / displacement * (physicsC.pos.y - physicsC.lastPos.y) + physicsC.lastPos.y;
 					spriteC.sprite.setCenter(x, y + spriteC.sprite.getHeight() / 2);
 					spriteC.sprite.draw(main.batch, 0.3f);
 				}
@@ -116,6 +124,19 @@ public class DrawSystem extends EntitySystem
 //				spriteC.sprite.draw(main.batch);
 
 				spriteC.sprite.setCenter(physicsC.pos.x, physicsC.pos.y + spriteC.sprite.getHeight() / 2);
+			}
+
+			PlayerComponent playerC = entity.getComponent(PlayerComponent.class);
+			if (playerC != null)
+			{
+				if (physicsC == null || physicsC.vel.len2() < 200)
+				{
+					indicator.setCenter(spriteC.sprite.getX() + spriteC.sprite.getWidth() / 2f, spriteC.sprite.getY() + 200);
+					indicator.setU(playerC.playerInfo.number / 4f);
+					indicator.setU2((playerC.playerInfo.number + 1) / 4f);
+					indicator.setColor(playerColors[playerC.playerInfo.team]);
+					indicator.draw(main.batch);
+				}
 			}
 
 			//TODO Remove me

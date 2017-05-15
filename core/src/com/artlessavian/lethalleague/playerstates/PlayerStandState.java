@@ -1,6 +1,7 @@
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
+import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
@@ -35,6 +36,9 @@ public class PlayerStandState extends State
 		{
 			antiSwingSpam = true;
 		}
+
+		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+		spriteC.sprite.setRotation(0);
 	}
 
 	@Override

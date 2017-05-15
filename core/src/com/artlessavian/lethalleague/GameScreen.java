@@ -11,6 +11,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Texture;
 
 public class GameScreen extends ScreenAdapter
 {
@@ -23,10 +24,11 @@ public class GameScreen extends ScreenAdapter
 
 	public Stage stage;
 
-	Player p1;
-	Player p2;
-	Player p3;
-	public Ball ball;
+	public PlayerInfo p1;
+	public PlayerInfo p2;
+	public BallInfo ball;
+
+	public boolean isStocks = false;
 
 	public GameScreen(Maineroni main)
 	{
@@ -35,11 +37,13 @@ public class GameScreen extends ScreenAdapter
 		this.stage = new Stage();
 
 		engine = new Engine();
+		engine.addSystem(new TimersSystem());
+		engine.addSystem(new GameLogicSystem(main, this, isStocks));
 		engine.addSystem(new StateSystem());
 		engine.addSystem(new PhysicsSystem(stage));
 		engine.addSystem(new HitboxCollisionSystem());
 		engine.addSystem(new BallSystem());
-		engine.addSystem(new HitlagSystem());
+//		engine.addSystem(new HitlagSystem());
 		engine.addSystem(new RemoveSystem());
 
 		drawSystems = new EntitySystem[3];
@@ -55,16 +59,13 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(debugDrawSystem);
 		drawSystems[2] = debugDrawSystem;
 
-		p1 = new Player(main.getInput(0), 0);
-//		p1.vel.add(2, 2);
-		p2 = new Player(main.getInput(1), 1);
-		p3 = new Player(RandomInput.inputs, 2);
-		ball = new Ball(drawSystem, this);
+		p1 = new PlayerInfo(Player.class, main.getInput(0), 0, 0);
+		p2 = new PlayerInfo(Player.class, main.getInput(1), 1, 1);
+		ball = new BallInfo(drawSystem);
 
-		engine.addEntity(p1);
-		engine.addEntity(p2);
-		engine.addEntity(p3);
-		engine.addEntity(ball);
+		engine.addEntity(p1.spawn());
+		engine.addEntity(p2.spawn());
+		engine.addEntity(ball.spawn());
 
 //		 hue
 //		for (int i = 0; i < 10; i++)

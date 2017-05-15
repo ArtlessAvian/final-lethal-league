@@ -36,8 +36,8 @@ public class PlayerCrouchState extends State
 		physicsC.collision.height = 50;
 		HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
 		hitboxC.hurtbox.setHeight(50);
-		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
-		spriteC.sprite.setSize(spriteC.sprite.getWidth(), 50);
+//		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+//		spriteC.sprite.setSize(spriteC.sprite.getWidth(), 50);
 
 		if (player.input.swingPressed)
 		{
@@ -84,5 +84,15 @@ public class PlayerCrouchState extends State
 	@Override
 	public void editSprite(Sprite sprite)
 	{
+		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+
+		if (spriteC.usingTestSpriteSheet)
+		{
+			CommonPlayerFuncts.setUV(1,0, sprite);
+		}
+		else
+		{
+			sprite.setSize(sprite.getWidth(), 50);
+		}
 	}
 }

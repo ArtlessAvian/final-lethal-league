@@ -140,11 +140,11 @@ public class DrawSystem extends EntitySystem
 			}
 
 			//TODO Remove me
-			if (spriteC.usingTestSpriteSheet)
-			{
-				spriteC.sprite.setRotation(0);
-				spriteC.sprite.setFlip(false, false);
-			}
+//			if (spriteC.usingTestSpriteSheet)
+//			{
+//				spriteC.sprite.setRotation(0);
+//				spriteC.sprite.setFlip(false, false);
+//			}
 
 			spriteC.sprite.draw(main.batch);
 		}

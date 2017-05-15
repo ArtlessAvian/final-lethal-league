@@ -13,7 +13,6 @@ public class Ball extends Entity
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.pos.y = 250;
-
 //		physicsC.vel.set(0,2f);
 
 //		physicsC.vel.setAngle((float)(360 * Math.random()));

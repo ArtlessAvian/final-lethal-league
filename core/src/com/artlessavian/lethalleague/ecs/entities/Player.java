@@ -134,7 +134,7 @@ public class Player extends Entity
 			physicsC.vel.y = 0;
 
 			StateComponent stateC = thisEntity.getComponent(StateComponent.class);
-			if (stateC.machine.current.getClass() != PlayerSwingState.class && stateC.machine.current.getClass() != PlayerSmashState.class)
+				stateC.machine.current.getClass() != PlayerSwingState.class && stateC.machine.current.getClass() != PlayerSmashState.class)
 			{
 				stateC.machine.gotoState(PlayerStandState.class);
 			}
@@ -179,6 +179,8 @@ public class Player extends Entity
 		{
 			if (other instanceof Ball)
 			{
+				PlayerComponent playerC = thisEntity.getComponent(PlayerComponent.class);
+				playerC.playerInfo.stocks--;
 				thisEntity.add(new RemoveComponent());
 			}
 		}

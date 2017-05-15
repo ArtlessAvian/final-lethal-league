@@ -44,7 +44,7 @@ public class Maineroni extends Game
 		allInputs.addProcessor(processors[1]);
 		Gdx.input.setInputProcessor(allInputs);
 
-		this.setScreen(new GameScreen(this));
+		this.setScreen(new TitleScreen(this));
 	}
 
 	@Override

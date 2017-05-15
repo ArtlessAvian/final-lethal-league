@@ -29,6 +29,8 @@ public class GameScreen extends ScreenAdapter
 	public PlayerInfo p2;
 	public BallInfo ball;
 
+	public boolean isStocks = false;
+
 	public GameScreen(Maineroni main)
 	{
 		this.main = main;
@@ -36,7 +38,7 @@ public class GameScreen extends ScreenAdapter
 		this.stage = new Stage();
 
 		engine = new Engine();
-		engine.addSystem(new GameLogicSystem(main, this, true));
+		engine.addSystem(new GameLogicSystem(main, this, isStocks));
 		engine.addSystem(new StateSystem());
 		engine.addSystem(new PhysicsSystem(stage));
 		engine.addSystem(new HitboxCollisionSystem());

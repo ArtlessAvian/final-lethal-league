@@ -14,7 +14,7 @@ public class PlayerInfo
 	public int number;
 	public int team;
 	public int score = 0;
-	int stocks = 8;
+	public int stocks = 8;
 
 	Player instance;
 
@@ -35,10 +35,6 @@ public class PlayerInfo
 
 	public Player spawn()
 	{
-		if (instance != null)
-		{
-			stocks--;
-		}
 		try
 		{
 			instance = (Player)playerConstructor.newInstance(this);

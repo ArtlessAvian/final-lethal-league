@@ -119,13 +119,16 @@ public class GUIDrawSystem extends EntitySystem
 		main.font.draw(main.batch, "units/frame", 605, 18);
 
 		main.font.getData().setScale(30/12);
+
 		// TODO: Not hardcode
 //		card.setCenter(426, 630);
 //		card.draw(main.batch);
 		main.font.draw(main.batch, game.p1.score + "", 426, 650);
+		main.font.draw(main.batch, game.p1.stocks + "", 426, 620);
 //		card.setCenter(426*2, 630);
 //		card.draw(main.batch);
 		main.font.draw(main.batch, game.p2.score + "", 426*2, 650);
+		main.font.draw(main.batch, game.p2.stocks + "", 426*2, 620);
 
 		main.font.getData().setScale(1);
 

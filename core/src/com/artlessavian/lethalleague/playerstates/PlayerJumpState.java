@@ -32,7 +32,7 @@ public class PlayerJumpState extends State
 	{
 		if (player.input.swingPressed)
 		{
-			if (player.input.downPressed || player.input.rightPressed)
+			if (!(player.input.upPressed) && (player.input.downPressed || player.input.rightPressed || player.input.leftPressed))
 			{
 				sm.gotoState(PlayerSmashState.class);
 			}

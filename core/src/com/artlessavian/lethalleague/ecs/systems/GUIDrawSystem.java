@@ -22,6 +22,7 @@ public class GUIDrawSystem extends EntitySystem
 	private ImmutableArray<Entity> entities;
 	Sprite rectangle;
 	Sprite bottom;
+//	Sprite card;
 
 	public GUIDrawSystem(Maineroni main, GameScreen game)
 	{
@@ -29,6 +30,7 @@ public class GUIDrawSystem extends EntitySystem
 		this.game = game;
 		this.rectangle = new Sprite(new Texture("white.png"));
 		this.bottom = new Sprite(new Texture("bottom gui.png"));
+//		this.card = new Sprite(new Texture("player card.png"));
 	}
 
 	public void addedToEngine(Engine engine)
@@ -115,6 +117,17 @@ public class GUIDrawSystem extends EntitySystem
 
 		main.font.getData().setScale(1);
 		main.font.draw(main.batch, "units/frame", 605, 18);
+
+		main.font.getData().setScale(30/12);
+		// TODO: Not hardcode
+//		card.setCenter(426, 630);
+//		card.draw(main.batch);
+		main.font.draw(main.batch, game.p1.score + "", 426, 650);
+//		card.setCenter(426*2, 630);
+//		card.draw(main.batch);
+		main.font.draw(main.batch, game.p2.score + "", 426*2, 650);
+
+		main.font.getData().setScale(1);
 
 		TimeLogger.logOut("GUIDrawSystem");
 	}

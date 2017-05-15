@@ -1,11 +1,9 @@
 package com.artlessavian.lethalleague.ecs.entities;
 
-import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Stage;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -15,6 +13,9 @@ public class Ball extends Entity
 	{
 		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.pos.y = 300;
+
+//		physicsC.vel.set(0,2f);
+
 //		physicsC.vel.setAngle((float)(360 * Math.random()));
 		physicsC.collision.setSize(48, 48);
 		this.add(physicsC);
@@ -56,7 +57,7 @@ public class Ball extends Entity
 			physicsC.vel.y *= -1;
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 3;
+			hitlagC.hitlag = 7;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -75,7 +76,7 @@ public class Ball extends Entity
 			physicsC.vel.y *= -1;
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 3;
+			hitlagC.hitlag = 7;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -94,7 +95,7 @@ public class Ball extends Entity
 			physicsC.vel.x *= -1;
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 3;
+			hitlagC.hitlag = 7;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -116,7 +117,7 @@ public class Ball extends Entity
 			physicsC.vel.x *= -1;
 
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 3;
+			hitlagC.hitlag = 7;
 
 			physicsC.pos.set(newX, newY);
 		}
@@ -130,7 +131,9 @@ public class Ball extends Entity
 			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
 			hitlagC.hitlag = 10;
 
-			MainAccessComponent mainAccessC = thisEntity.getComponent(MainAccessComponent.class);
+			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
+			ballC.lastHit.getComponent(PlayerComponent.class).playerInfo.score++;
+			System.out.println("hi");
 		}
 
 		@Override
@@ -140,7 +143,7 @@ public class Ball extends Entity
 
 			if (physicsC.vel.len2() == 0)
 			{
-				physicsC.vel.set(0, 200);
+				physicsC.vel.set(0, 120);
 			}
 
 			if (isSmash)
@@ -149,8 +152,9 @@ public class Ball extends Entity
 			}
 			else
 			{
-				physicsC.vel.setLength(physicsC.vel.len() + 20);
+				physicsC.vel.setLength(physicsC.vel.len() + 60);
 			}
+			physicsC.vel.clamp(0, 60 * 1000000);
 
 			physicsC.lastPos.set(physicsC.pos.x, physicsC.pos.y);
 
@@ -170,11 +174,13 @@ public class Ball extends Entity
 
 			if (other instanceof Player)
 			{
+				ballC.lastHit = (Player)other;
+
 				HitlagComponent hitlagCOther = other.getComponent(HitlagComponent.class);
 				hitlagCOther.hitlag = hitlagC.hitlag - 1;
 				HitboxComponent hitboxC = other.getComponent(HitboxComponent.class);
 				hitboxC.intangible = hitlagC.hitlag - 1;
-				ballC.lastHit = hitboxC.team;
+				ballC.team = hitboxC.team;
 			}
 
 		}
@@ -187,7 +193,7 @@ public class Ball extends Entity
 			}
 			else
 			{
-				return (int)(60 * speed / 5000);
+				return (int)(55 * speed / 5000) + 5;
 			}
 		}
 	}

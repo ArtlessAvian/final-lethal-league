@@ -13,12 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Player extends Entity
 {
-	private SpriteComponent spriteC;
-	private InputComponent inputC;
-	private PhysicsComponent physicsC;
-	private HitboxComponent hitboxC;
-	private StateComponent stateC;
-
+	private PlayerInfo playerInfo;
 	public PlayerInputContainer input;
 
 	public float gravity = 4000;
@@ -46,13 +41,14 @@ public class Player extends Entity
 	public OffsetRectangle swingBox;
 //	public OffsetRectangle smashBox; // helps you not get rsi
 
-	public Player(PlayerInputContainer input, int number, int team)
+	public Player(PlayerInfo playerInfo)
 	{
-		this.input = input;
-		inputC = new InputComponent(input);
+		this.playerInfo = playerInfo;
+		this.input = playerInfo.inputs;
+		InputComponent inputC = new InputComponent(input);
 		this.add(inputC);
 
-		physicsC = new PhysicsComponent();
+		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.collision.setSize(72, 144);
 		physicsC.pos.x = (float)(Math.random() * 1000 - 500);
 		physicsC.pos.y = 360;
@@ -79,15 +75,15 @@ public class Player extends Entity
 //			isSpriteSheet = true;
 //		}
 
-		spriteC = new SpriteComponent(s);
+		SpriteComponent spriteC = new SpriteComponent(s);
 //		spriteC.usingTestSpriteSheet = isSpriteSheet;
 		this.add(spriteC);
 
-		hitboxC = new HitboxComponent(new PlayerHittingBehavior(), team);
+		HitboxComponent hitboxC = new HitboxComponent(new PlayerHittingBehavior(), playerInfo.team);
 		hitboxC.intangible = 120;
 		this.add(hitboxC);
 
-		this.add(new PlayerComponent(number, team));
+		this.add(new PlayerComponent(playerInfo));
 
 		StageComponent collisionBehaviorComponent = new StageComponent(new Player.PlayerCollisionBehavior());
 		this.add(collisionBehaviorComponent);
@@ -96,7 +92,7 @@ public class Player extends Entity
 
 		swingBox = new OffsetRectangle(0, 0, 144, 144);
 
-		stateC = new StateComponent();
+		StateComponent stateC = new StateComponent();
 		this.addAllStates(stateC.machine);
 		stateC.machine.gotoState(PlayerJumpState.class);
 		this.add(stateC);

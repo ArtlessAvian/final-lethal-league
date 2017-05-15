@@ -10,10 +10,10 @@ import java.lang.reflect.InvocationTargetException;
 public class PlayerInfo
 {
 	Constructor playerConstructor;
-	private PlayerInputContainer inputs;
-	int number;
-	int team;
-	int score = 0;
+	public PlayerInputContainer inputs;
+	public int number;
+	public int team;
+	public int score = 0;
 	int stocks = 8;
 
 	Player instance;
@@ -22,7 +22,7 @@ public class PlayerInfo
 	{
 		try
 		{
-			this.playerConstructor = playerClass.getConstructor(PlayerInputContainer.class, Integer.TYPE, Integer.TYPE);
+			this.playerConstructor = playerClass.getConstructor(PlayerInfo.class);
 		}
 		catch (NoSuchMethodException e)
 		{
@@ -38,12 +38,10 @@ public class PlayerInfo
 		if (instance != null)
 		{
 			stocks--;
-			PlayerComponent playerC = instance.getComponent(PlayerComponent.class);
-			score += playerC.score;
 		}
 		try
 		{
-			instance = (Player)playerConstructor.newInstance(inputs, number, team);
+			instance = (Player)playerConstructor.newInstance(this);
 			return instance;
 		}
 		catch (IllegalAccessException e)

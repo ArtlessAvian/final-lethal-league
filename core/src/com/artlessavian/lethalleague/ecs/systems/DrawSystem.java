@@ -28,7 +28,7 @@ public class DrawSystem extends EntitySystem
 
 	public float screenShakeTime = 0;
 	public float screenShakeAmount = 0;
-	public float screenShakeMultiplier = 0f;
+	public float screenShakeMultiplier = 1f;
 
 	public DrawSystem(Maineroni main, GameScreen game)
 	{
@@ -132,9 +132,9 @@ public class DrawSystem extends EntitySystem
 				if (physicsC == null || physicsC.vel.len2() < 200)
 				{
 					indicator.setCenter(spriteC.sprite.getX() + spriteC.sprite.getWidth() / 2f, spriteC.sprite.getY() + 200);
-					indicator.setU(playerC.number / 4f);
-					indicator.setU2((playerC.number + 1) / 4f);
-					indicator.setColor(playerColors[playerC.team]);
+					indicator.setU(playerC.playerInfo.number / 4f);
+					indicator.setU2((playerC.playerInfo.number + 1) / 4f);
+					indicator.setColor(playerColors[playerC.playerInfo.team]);
 					indicator.draw(main.batch);
 				}
 			}

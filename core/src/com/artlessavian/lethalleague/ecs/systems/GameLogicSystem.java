@@ -57,9 +57,9 @@ public class GameLogicSystem extends EntitySystem
 				PlayerComponent playerC = entity.getComponent(PlayerComponent.class);
 				if (team == -1)
 				{
-					team = playerC.team;
+					team = playerC.playerInfo.team;
 				}
-				else if (team != playerC.team)
+				else if (team != playerC.playerInfo.team)
 				{
 					shouldRespawn = -1;
 				}

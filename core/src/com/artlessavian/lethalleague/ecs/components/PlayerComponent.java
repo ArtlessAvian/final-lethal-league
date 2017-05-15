@@ -1,16 +1,14 @@
 package com.artlessavian.lethalleague.ecs.components;
 
+import com.artlessavian.lethalleague.PlayerInfo;
 import com.badlogic.ashley.core.Component;
 
 public class PlayerComponent implements Component
 {
-	public int number;
-	public int team;
-	public int score;
+	public PlayerInfo playerInfo;
 
-	public PlayerComponent(int number, int team)
+	public PlayerComponent(PlayerInfo playerInfo)
 	{
-		this.number = number;
-		this.team = team;
+		this.playerInfo = playerInfo;
 	}
 }

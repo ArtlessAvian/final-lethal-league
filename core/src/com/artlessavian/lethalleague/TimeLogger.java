@@ -1,5 +1,6 @@
 package com.artlessavian.lethalleague;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -9,11 +10,11 @@ public class TimeLogger
 	private static final int LOGLENGTH = 60;
 
 	private static HashMap<String, long[]> lol = new HashMap<String, long[]>();
-	private static long logInTime;
+	private static ArrayList<Long> logInTimeStack = new ArrayList<Long>();
 
 	public static void logIn()
 	{
-		logInTime = System.nanoTime();
+		logInTimeStack.add(System.nanoTime());
 	}
 
 	public static void logOut(String key)
@@ -34,7 +35,7 @@ public class TimeLogger
 
 			lol.put(key, longs);
 		}
-		longs[0] = System.nanoTime() - logInTime;
+		longs[0] = System.nanoTime() - logInTimeStack.remove(logInTimeStack.size()-1);
 		longs[1] = Math.max(longs[0], longs[1]);
 		longs[(int)(longs[2] % LOGLENGTH) + 3] = longs[0];
 		longs[2]++;
@@ -43,12 +44,17 @@ public class TimeLogger
 	public static float getAverage(String key)
 	{
 		float sum = 0;
+		int ignore = 0;
 		long[] ay = lol.get(key);
 		for (int i = 3; i < 3 + LOGLENGTH; i++)
 		{
 			sum += ay[i];
+			if (ay[i] == 0)
+			{
+				ignore++;
+			}
 		}
-		return (sum / 1000f / 1000f) / LOGLENGTH;
+		return (sum / 1000f / 1000f) / (LOGLENGTH - ignore);
 	}
 
 	public static float getWorst(String key)

@@ -71,7 +71,7 @@ public class Player extends Entity
 //		{
 //			s = new Sprite(new Texture("creation tools/spritesheet guideline.png"));
 //			s = new Sprite(new Texture("creation tools/sample.png"));
-			s = new Sprite(new Texture("spritesheet test.png"));
+			s = new Sprite(playerInfo.texture);
 			s.setSize(144, 144);
 //			isSpriteSheet = true;
 //		}

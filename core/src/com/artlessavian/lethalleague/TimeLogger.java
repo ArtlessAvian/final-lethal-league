@@ -6,6 +6,8 @@ import java.util.Set;
 
 public class TimeLogger
 {
+	private static final int LOGLENGTH = 60;
+
 	private static HashMap<String, long[]> lol = new HashMap<String, long[]>();
 	private static long logInTime;
 
@@ -19,20 +21,44 @@ public class TimeLogger
 		long[] longs = lol.get(key);
 		if (longs == null)
 		{
-			longs = new long[60];
+			longs = new long[3 + LOGLENGTH];
+			// 0 is this frame
+			// 1 is worst
+			// 2 is where to replace for average
+			// 3 ... (LOGLENGTH+3) is for average
+
+			for (int i = 3; i < 3 + LOGLENGTH; i++)
+			{
+				longs[i] = 0;
+			}
+
 			lol.put(key, longs);
 		}
-		longs[(int)(Math.random() * 60)] = System.nanoTime() - logInTime;
+		longs[0] = System.nanoTime() - logInTime;
+		longs[1] = Math.max(longs[0], longs[1]);
+		longs[(int)(longs[2] % LOGLENGTH) + 3] = longs[0];
+		longs[2]++;
 	}
 
-	public static float get(String key)
+	public static float getAverage(String key)
 	{
-		float average = 0;
-		for (long l : lol.get(key))
+		float sum = 0;
+		long[] ay = lol.get(key);
+		for (int i = 3; i < 3 + LOGLENGTH; i++)
 		{
-			average += l;
+			sum += ay[i];
 		}
-		return average/60f / 1000f / 1000f;
+		return (sum / 1000f / 1000f) / LOGLENGTH;
+	}
+
+	public static float getWorst(String key)
+	{
+		return lol.get(key)[1] / 1000f / 1000f;
+	}
+
+	public static float getCurrent(String key)
+	{
+		return lol.get(key)[0] / 1000f / 1000f;
 	}
 
 	public static Set<String> getKeys()

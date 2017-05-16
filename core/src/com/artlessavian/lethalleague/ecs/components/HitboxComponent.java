@@ -14,21 +14,6 @@ public class HitboxComponent implements Component
 		void onGetHit(Entity thisEntity, Entity other, boolean isSmash);
 	}
 
-	public static class TempBehavior implements HitBehavior
-	{
-		@Override
-		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
-		{
-			System.out.println("hit " + thisEntity.hashCode() + " " + other.hashCode());
-		}
-
-		@Override
-		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
-		{
-//			System.out.println("get hit");
-		}
-	}
-
 	public HitBehavior behavior;
 	public ArrayList<OffsetRectangle> hitboxes;
 	public OffsetRectangle hurtbox; // where you get hurt from

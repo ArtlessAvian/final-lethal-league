@@ -2,6 +2,7 @@ package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
+import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -69,6 +70,18 @@ public class PlayerJumpState extends State
 	@Override
 	public void editSprite(Sprite sprite)
 	{
-
+		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+		if (spriteC.usingTestSpriteSheet)
+		{
+			if (physicsC.vel.y < 0)
+			{
+				CommonPlayerFuncts.setUV(3, 0, sprite);
+			}
+			else
+			{
+				CommonPlayerFuncts.setUV(2, 0, sprite);
+			}
+		}
 	}
 }

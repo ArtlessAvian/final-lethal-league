@@ -39,6 +39,8 @@ public class PlayerStandState extends State
 
 		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
 		spriteC.sprite.setRotation(0);
+
+		walkThing = -1;
 	}
 
 	@Override
@@ -77,13 +79,26 @@ public class PlayerStandState extends State
 		if (antiSwingSpam && !player.input.swingPressed) {antiSwingSpam = false;}
 	}
 
+	int walkThing = -1;
+
 	@Override
 	public void editSprite(Sprite sprite)
 	{
 		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 		if (spriteC.usingTestSpriteSheet)
 		{
-			CommonPlayerFuncts.setUV(0,0, sprite);
+			if ((player.input.leftPressed == player.input.rightPressed) ||
+				physicsC.vel.len() < 10)
+			{
+				CommonPlayerFuncts.setUV(0,0, sprite);
+				walkThing = -1;
+			}
+			else
+			{
+				walkThing++;
+				CommonPlayerFuncts.setUV((walkThing/8) % player.walkFrames,1, sprite);
+			}
 		}
 	}
 }

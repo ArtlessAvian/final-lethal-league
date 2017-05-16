@@ -3,12 +3,16 @@ package com.artlessavian.lethalleague;
 import com.artlessavian.lethalleague.ecs.components.PlayerComponent;
 import com.artlessavian.lethalleague.ecs.components.RemoveComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public class PlayerInfo
 {
+
+	public Texture texture;
+
 	Constructor playerConstructor;
 	public PlayerInputContainer inputs;
 	public int number;
@@ -31,13 +35,17 @@ public class PlayerInfo
 		this.inputs = inputs;
 		this.team = team;
 		this.number = number;
+
+		texture = new Texture("spritesheet test.png");
 	}
 
 	public Player spawn()
 	{
 		try
 		{
+			TimeLogger.logIn();
 			instance = (Player)playerConstructor.newInstance(this);
+			TimeLogger.logOut("PlayerInit");
 			return instance;
 		}
 		catch (IllegalAccessException e)

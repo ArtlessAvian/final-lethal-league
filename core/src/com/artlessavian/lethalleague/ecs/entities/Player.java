@@ -41,6 +41,8 @@ public class Player extends Entity
 	public OffsetRectangle swingBox;
 //	public OffsetRectangle smashBox; // helps you not get rsi
 
+	public int walkFrames = 4; // should be 8, but the sprite sheet i like only has 4
+
 	public Player(PlayerInfo playerInfo)
 	{
 		this.playerInfo = playerInfo;
@@ -56,27 +58,28 @@ public class Player extends Entity
 
 //		boolean isSpriteSheet = false;
 		Sprite s;
-		if (playerInfo.number == 0)
-		{
-			s = new Sprite(new Texture("butts.png"));
-			s.setSize(190, 144);
-		}
-		else
+//		if (playerInfo.number == 0)
+//		{
+//			s = new Sprite(new Texture("butts.png"));
+//			s.setSize(190, 144);
+//		}
+//		else
 //		else if (Math.random() < 0.5f)
 		{
-			s = new Sprite(new Texture("not_a_trace.png"));
-			s.setSize(144, 144);
+//			s = new Sprite(new Texture("not_a_trace.png"));
+//			s.setSize(144, 144);
 		}
 //		else
 //		{
 //			s = new Sprite(new Texture("creation tools/spritesheet guideline.png"));
 //			s = new Sprite(new Texture("creation tools/sample.png"));
-//			s.setSize(144, 144);
+			s = new Sprite(playerInfo.texture);
+			s.setSize(144, 144);
 //			isSpriteSheet = true;
 //		}
 
 		SpriteComponent spriteC = new SpriteComponent(s);
-//		spriteC.usingTestSpriteSheet = isSpriteSheet;
+		spriteC.usingTestSpriteSheet = true;
 		this.add(spriteC);
 
 		HitboxComponent hitboxC = new HitboxComponent(new PlayerHittingBehavior(), playerInfo.team);

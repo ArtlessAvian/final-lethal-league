@@ -41,6 +41,8 @@ public class Player extends Entity
 	public OffsetRectangle swingBox;
 //	public OffsetRectangle smashBox; // helps you not get rsi
 
+	public int walkFrames = 4; // should be 8, but the sprite sheet i like only has 4
+
 	public Player(PlayerInfo playerInfo)
 	{
 		this.playerInfo = playerInfo;

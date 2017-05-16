@@ -100,15 +100,15 @@ public class PlayerSmashState extends State
 		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
 		if (spriteC.usingTestSpriteSheet)
 		{
-			if (player.ball != null || hadHit || getTimeInState() > 20)
+			if (hadHit || getTimeInState() > 20)
 			{
 				CommonPlayerFuncts.setUV(3,2, sprite);
 			}
-			else if (getTimeInState() > 15)
+			else if (player.ball != null || getTimeInState() > 15)
 			{
 				CommonPlayerFuncts.setUV(2,2, sprite);
 			}
-			else if (getTimeInState() > 10)
+			else if (getTimeInState() > 13)
 			{
 				CommonPlayerFuncts.setUV(1,2, sprite);
 			}

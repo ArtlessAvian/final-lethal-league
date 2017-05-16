@@ -67,6 +67,12 @@ public class PlayerSwingState extends State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
+		// TODO: Revise?
+//		if (!hadHit && getTimeInState() > 20)
+//		{
+//			HitboxComponent hitboxC = player.getComponent(HitboxComponent.class);
+//			hitboxC.hitboxes.remove(player.swingBox);
+//		}
 		if (swingThrough > 0) {swingThrough--;}
 
 		//TODO
@@ -115,15 +121,15 @@ public class PlayerSwingState extends State
 
 		if (spriteC.usingTestSpriteSheet)
 		{
-			if (player.ball != null || hadHit || getTimeInState() > 20)
+			if (hadHit || getTimeInState() > 20)
 			{
 				CommonPlayerFuncts.setUV(7,0, sprite);
 			}
-			else if (getTimeInState() > 15)
+			else if (player.ball != null || getTimeInState() > 15)
 			{
 				CommonPlayerFuncts.setUV(6,0, sprite);
 			}
-			else if (getTimeInState() > 10)
+			else if (getTimeInState() > 13)
 			{
 				CommonPlayerFuncts.setUV(5,0, sprite);
 			}

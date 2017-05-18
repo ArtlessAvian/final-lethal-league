@@ -6,6 +6,8 @@ import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -42,15 +44,21 @@ public class Ball extends Entity
 	// TODO
 	public static class BallCollisionBehavior extends StageComponent.CollisionBehavior
 	{
+		Sound wallHit;
 		int wallHitlag = 7;
 
 		public BallCollisionBehavior()
 		{
-
+			try
+			{
+				wallHit = Gdx.audio.newSound(Gdx.files.internal("sound/wall_bounce.wav"));
+			}
+			catch (Exception e) {System.out.println("hey");}
 		}
 
 		public BallCollisionBehavior(int wallHitlag)
 		{
+			this();
 			this.wallHitlag = wallHitlag;
 		}
 
@@ -76,6 +84,10 @@ public class Ball extends Entity
 			physicsC.pos.set(newX, newY);
 
 			GameScreen.makePoof(physicsC.pos.x, physicsC.pos.y + physicsC.collision.height);
+			if (wallHit != null)
+			{
+				wallHit.play();
+			}
 		}
 
 		@Override
@@ -97,6 +109,10 @@ public class Ball extends Entity
 			physicsC.pos.set(newX, newY);
 
 			GameScreen.makePoof(physicsC.pos.x, physicsC.pos.y);
+			if (wallHit != null)
+			{
+				wallHit.play();
+			}
 		}
 
 		@Override
@@ -118,6 +134,10 @@ public class Ball extends Entity
 			physicsC.pos.set(newX, newY);
 
 			GameScreen.makePoof(physicsC.pos.x - physicsC.collision.width/2f, physicsC.collision.y + physicsC.collision.height/2f);
+			if (wallHit != null)
+			{
+				wallHit.play();
+			}
 		}
 
 		@Override
@@ -142,12 +162,36 @@ public class Ball extends Entity
 			physicsC.pos.set(newX, newY);
 
 			GameScreen.makePoof(physicsC.pos.x + physicsC.collision.width/2f, physicsC.collision.y + physicsC.collision.height/2f);
+			if (wallHit != null)
+			{
+				wallHit.play();
+			}
 		}
 	}
 
 	public static class BallHittingBehavior implements HitboxComponent.HitBehavior
 	{
+		Sound weakHit;
+		Sound weakSmash;
+		Sound mediumHit;
+		Sound mediumSmash;
+		Sound strongHit;
+		Sound strongSmash;
 		int initSpeed = 180;
+
+		public BallHittingBehavior()
+		{
+			try
+			{
+				weakHit = Gdx.audio.newSound(Gdx.files.internal("sound/weak_hit.wav"));
+				weakSmash = Gdx.audio.newSound(Gdx.files.internal("sound/weak_smash.wav"));
+				mediumHit = Gdx.audio.newSound(Gdx.files.internal("sound/medium_hit.wav"));
+				mediumSmash = Gdx.audio.newSound(Gdx.files.internal("sound/medium_smash.wav"));
+				strongHit = Gdx.audio.newSound(Gdx.files.internal("sound/strong_hit.wav"));
+				strongSmash = Gdx.audio.newSound(Gdx.files.internal("sound/strong_smash.wav"));
+			}
+			catch (Exception e) {System.out.println("hey");}
+		}
 
 		@Override
 		public void onHit(Entity thisEntity, Entity other, boolean isSmash, Engine engine)
@@ -217,8 +261,8 @@ public class Ball extends Entity
 				ballC.team = hitboxC.team;
 			}
 
-			for (int i = 0; i < 1000; i++)
-//			for (float i = 1000; i <= ballC.trueSpeed; i *= 1.2f)
+//			for (int i = 0; i < 1000; i++)
+			for (float i = 1000; i <= ballC.trueSpeed; i *= 1.2f)
 			{
 				Particle p = new Particle(physicsC.lastPos.x, physicsC.lastPos.y, Particle.ParticleThing.star, 600);
 				PhysicsComponent particlePhysicsC = p.getComponent(PhysicsComponent.class);
@@ -234,6 +278,26 @@ public class Ball extends Entity
 					particleSpriteC.passiveSpin *= 4;
 				}
 			}
+
+			try
+			{
+				if (physicsC.vel.len() < 1000)
+				{
+					if (!isSmash) {weakHit.play();}
+					else {weakSmash.play();}
+				}
+				else if (physicsC.vel.len() < 5000)
+				{
+					if (!isSmash) {mediumHit.play();}
+					else {mediumSmash.play();}
+				}
+				else
+				{
+					if (!isSmash) {strongHit.play();}
+					else {strongSmash.play();}
+				}
+			}
+			catch (NullPointerException e) {System.out.println("woo");}
 		}
 
 		public int getHitlag(float speed)

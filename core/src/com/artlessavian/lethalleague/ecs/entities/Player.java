@@ -5,6 +5,8 @@ import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.playerstates.*;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
@@ -215,6 +217,19 @@ public class Player extends Entity
 
 	private static class PlayerHittingBehavior implements HitboxComponent.HitBehavior
 	{
+		Sound die;
+		public PlayerHittingBehavior()
+		{
+			try
+			{
+				die = Gdx.audio.newSound(Gdx.files.internal("sound/kill.wav"));
+			}
+			catch (Exception e)
+			{
+
+			}
+		}
+
 		@Override
 		public void onHit(Entity thisEntity, Entity other, boolean isSmash, Engine engine)
 		{
@@ -244,6 +259,11 @@ public class Player extends Entity
 				PlayerCorpse corpse = new PlayerCorpse((Player)thisEntity);
 
 				engine.addEntity(corpse);
+
+				if (die != null)
+				{
+					die.play();
+				}
 			}
 		}
 	}

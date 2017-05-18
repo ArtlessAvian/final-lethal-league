@@ -79,6 +79,11 @@ public class DrawSystem extends EntitySystem
 
 		for (Entity entity : entities)
 		{
+			SpriteComponent spriteC = entity.getComponent(SpriteComponent.class);
+			if (spriteC.isScreenSpace) {continue;}
+
+			spriteC.sprite.rotate(spriteC.passiveSpin);
+
 			HitboxComponent hitboxC = entity.getComponent(HitboxComponent.class);
 			BallComponent ballC = entity.getComponent(BallComponent.class);
 			if (ballC != null && ballC.intangible > 0 ||
@@ -86,9 +91,6 @@ public class DrawSystem extends EntitySystem
 			{
 				if (Gdx.graphics.getFrameId() / 2 % 2 == 0) {continue;}
 			}
-
-			SpriteComponent spriteC = entity.getComponent(SpriteComponent.class);
-			if (spriteC.isScreenSpace) {continue;}
 
 			StateComponent stateC = entity.getComponent(StateComponent.class);
 			if (stateC != null)

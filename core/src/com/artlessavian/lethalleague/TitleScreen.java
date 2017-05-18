@@ -39,6 +39,7 @@ public class TitleScreen implements Screen
 
 		main.batch.setProjectionMatrix(main.screenSpace.combined);
 
+		// TODO: Make not terrible. Draw Images?
 		main.font.draw(main.batch, "temporary title screen!", 300, 500);
 
 		main.font.draw(main.batch, "game:", 500, 400);

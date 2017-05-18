@@ -1,8 +1,10 @@
 package com.artlessavian.lethalleague.ecs.entities;
 
+import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Stage;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,7 +24,7 @@ public class Ball extends Entity
 //		StateComponent stateC = new StateComponent();
 //		stateC.machine.current = new PlayerStandState(this);
 //		this.add(stateC);
-		SpriteComponent spriteC = new SpriteComponent(new Sprite(new Texture("grid.png")));
+		SpriteComponent spriteC = new SpriteComponent(new Sprite(new Texture("circle.png")));
 		spriteC.sprite.setSize(48, 48);
 		this.add(spriteC);
 //		HitboxComponent hitboxC = new HitboxComponent(new BallHittingBehavior());
@@ -72,6 +74,8 @@ public class Ball extends Entity
 			hitlagC.hitlag = this.wallHitlag;
 
 			physicsC.pos.set(newX, newY);
+
+			GameScreen.makePoof(physicsC.pos.x, physicsC.pos.y + physicsC.collision.height);
 		}
 
 		@Override
@@ -91,6 +95,8 @@ public class Ball extends Entity
 			hitlagC.hitlag = this.wallHitlag;
 
 			physicsC.pos.set(newX, newY);
+
+			GameScreen.makePoof(physicsC.pos.x, physicsC.pos.y);
 		}
 
 		@Override
@@ -110,6 +116,8 @@ public class Ball extends Entity
 			hitlagC.hitlag = this.wallHitlag;
 
 			physicsC.pos.set(newX, newY);
+
+			GameScreen.makePoof(physicsC.pos.x - physicsC.collision.width/2f, physicsC.collision.y + physicsC.collision.height/2f);
 		}
 
 		@Override
@@ -132,6 +140,8 @@ public class Ball extends Entity
 			hitlagC.hitlag = this.wallHitlag;
 
 			physicsC.pos.set(newX, newY);
+
+			GameScreen.makePoof(physicsC.pos.x + physicsC.collision.width/2f, physicsC.collision.y + physicsC.collision.height/2f);
 		}
 	}
 
@@ -140,18 +150,21 @@ public class Ball extends Entity
 		int initSpeed = 180;
 
 		@Override
-		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
+		public void onHit(Entity thisEntity, Entity other, boolean isSmash, Engine engine)
 		{
-			HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
-			hitlagC.hitlag = 10;
+			if (other instanceof Player)
+			{
+				HitlagComponent hitlagC = thisEntity.getComponent(HitlagComponent.class);
+				hitlagC.hitlag = 10;
 
-			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
-			ballC.lastHit.getComponent(PlayerComponent.class).playerInfo.score++;
-			System.out.println("hi");
+				BallComponent ballC = thisEntity.getComponent(BallComponent.class);
+				ballC.lastHit.getComponent(PlayerComponent.class).playerInfo.score++;
+				System.out.println("hi");
+			}
 		}
 
 		@Override
-		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
+		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash, Engine engine)
 		{
 			BallComponent ballC = thisEntity.getComponent(BallComponent.class);
 			PhysicsComponent physicsC = thisEntity.getComponent(PhysicsComponent.class);
@@ -204,6 +217,23 @@ public class Ball extends Entity
 				ballC.team = hitboxC.team;
 			}
 
+			for (int i = 0; i < 1000; i++)
+//			for (float i = 1000; i <= ballC.trueSpeed; i *= 1.2f)
+			{
+				Particle p = new Particle(physicsC.lastPos.x, physicsC.lastPos.y, Particle.ParticleThing.star, 600);
+				PhysicsComponent particlePhysicsC = p.getComponent(PhysicsComponent.class);
+				SpriteComponent particleSpriteC = p.getComponent(SpriteComponent.class);
+				GameScreen.engine.addEntity(p);
+				particlePhysicsC.vel.set(500, 0);
+				particlePhysicsC.vel.setAngle((float)(Math.random() * 90 + 45));
+				particlePhysicsC.passiveGravity = 1000;
+				particleSpriteC.passiveSpin = (float)(Math.random() * 8 - 4);
+				particleSpriteC.sprite.setScale(1/4f);
+				if (isSmash)
+				{
+					particleSpriteC.passiveSpin *= 4;
+				}
+			}
 		}
 
 		public int getHitlag(float speed)

@@ -2,6 +2,7 @@ package com.artlessavian.lethalleague.ecs.components;
 
 import com.artlessavian.lethalleague.OffsetRectangle;
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ public class HitboxComponent implements Component
 {
 	public interface HitBehavior
 	{
-		void onHit(Entity thisEntity, Entity other, boolean isSmash);
-		void onGetHit(Entity thisEntity, Entity other, boolean isSmash);
+		void onHit(Entity thisEntity, Entity other, boolean isSmash, Engine engine);
+		void onGetHit(Entity thisEntity, Entity other, boolean isSmash, Engine engine);
 	}
 
 	public HitBehavior behavior;

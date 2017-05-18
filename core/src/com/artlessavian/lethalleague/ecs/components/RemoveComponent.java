@@ -5,5 +5,6 @@ import com.badlogic.gdx.Gdx;
 
 public class RemoveComponent implements Component
 {
-	long removeTime = Gdx.graphics.getFrameId();
+	long deleteTime = Gdx.graphics.getFrameId();
+	public int removeTimer;
 }

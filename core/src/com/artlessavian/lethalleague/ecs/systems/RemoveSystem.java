@@ -35,7 +35,11 @@ public class RemoveSystem extends EntitySystem
 		tempStorage.clear();
 		for (Entity entity : entities)
 		{
-			tempStorage.add(entity);
+			RemoveComponent removeC = entity.getComponent(RemoveComponent.class);
+			if (removeC.removeTimer == 0)
+			{
+				tempStorage.add(entity);
+			}
 		}
 
 		for (Entity entity : tempStorage)

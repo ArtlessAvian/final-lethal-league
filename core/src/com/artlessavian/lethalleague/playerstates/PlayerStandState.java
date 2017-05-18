@@ -1,9 +1,11 @@
 package com.artlessavian.lethalleague.playerstates;
 
+import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.State;
 import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
+import com.artlessavian.lethalleague.ecs.entities.Particle;
 import com.artlessavian.lethalleague.ecs.entities.Player;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -93,6 +95,10 @@ public class PlayerStandState extends State
 			{
 				CommonPlayerFuncts.setUV(0,0, sprite);
 				walkThing = -1;
+				if (Math.random() < 0.1 && physicsC.vel.len() > 5)
+				{
+					GameScreen.engine.addEntity(new Particle(physicsC.pos.x, physicsC.pos.y, Particle.ParticleThing.poof, 10));
+				}
 			}
 			else
 			{

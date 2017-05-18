@@ -4,7 +4,7 @@ import com.artlessavian.lethalleague.*;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.playerstates.*;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
@@ -176,8 +176,8 @@ public class Player extends Entity
 		@Override
 		public void onTouchCeil(Stage stage, PhysicsComponent physicsC, Entity thisEntity)
 		{
-			physicsC.pos.y = stage.bounds.y + stage.bounds.height - physicsC.collision.height;
-			physicsC.vel.y = 0;
+//			physicsC.pos.y = stage.bounds.y + stage.bounds.height - physicsC.collision.height;
+//			physicsC.vel.y = 0;
 		}
 
 		@Override
@@ -194,6 +194,8 @@ public class Player extends Entity
 			{
 				stateC.machine.gotoState(PlayerStandState.class);
 			}
+
+			GameScreen.makePoof(physicsC.pos.x, physicsC.pos.y);
 		}
 
 		@Override
@@ -214,7 +216,7 @@ public class Player extends Entity
 	private static class PlayerHittingBehavior implements HitboxComponent.HitBehavior
 	{
 		@Override
-		public void onHit(Entity thisEntity, Entity other, boolean isSmash)
+		public void onHit(Entity thisEntity, Entity other, boolean isSmash, Engine engine)
 		{
 			if (other instanceof Player) {return;}
 
@@ -231,13 +233,17 @@ public class Player extends Entity
 		}
 
 		@Override
-		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash)
+		public void onGetHit(Entity thisEntity, Entity other, boolean isSmash, Engine engine)
 		{
 			if (other instanceof Ball)
 			{
 				PlayerComponent playerC = thisEntity.getComponent(PlayerComponent.class);
 				playerC.playerInfo.stocks--;
 				thisEntity.add(new RemoveComponent());
+
+				PlayerCorpse corpse = new PlayerCorpse((Player)thisEntity);
+
+				engine.addEntity(corpse);
 			}
 		}
 	}

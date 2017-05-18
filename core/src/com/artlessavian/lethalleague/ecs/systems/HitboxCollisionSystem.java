@@ -76,8 +76,8 @@ public class HitboxCollisionSystem extends EntitySystem
 						}
 
 //						System.out.println("hi");
-						e1Hitboxes.behavior.onHit(e1, e2, isSmash);
-						e2Hurtbox.behavior.onGetHit(e2, e1, isSmash);
+						e1Hitboxes.behavior.onHit(e1, e2, isSmash, getEngine());
+						e2Hurtbox.behavior.onGetHit(e2, e1, isSmash, getEngine());
 						break;
 					}
 				}

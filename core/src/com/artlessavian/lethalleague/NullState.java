@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class NullState extends State
 {
+	// TODO: Move into State
+
 	public static NullState singleton = new NullState();
 
 	@Override

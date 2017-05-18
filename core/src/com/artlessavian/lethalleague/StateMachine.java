@@ -3,7 +3,7 @@ package com.artlessavian.lethalleague;
 import java.util.HashMap;
 
 /**
- * A State Based Machine for arbitary usage
+ * A State Based Machine for arbitrary usage
  */
 public class StateMachine
 {

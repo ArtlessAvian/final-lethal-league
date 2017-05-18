@@ -7,7 +7,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
- * Mirrors HitboxComponent, kindof
+ * Mirrors HitboxComponent, kind of
  */
 public class BallComponent implements Component
 {

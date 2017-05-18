@@ -10,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 
 public class PlayerInfo
 {
-
 	public Texture texture;
 
 	Constructor playerConstructor;

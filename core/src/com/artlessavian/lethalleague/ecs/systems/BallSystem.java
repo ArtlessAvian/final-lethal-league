@@ -1,7 +1,6 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.OffsetRectangle;
-import com.artlessavian.lethalleague.PlayerInputContainer;
 import com.artlessavian.lethalleague.TimeLogger;
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.artlessavian.lethalleague.ecs.entities.Player;
@@ -91,8 +90,8 @@ public class BallSystem extends IteratingSystem
 		{
 			if (ballC.rect.overlaps(hitbox))
 			{
-				entityHitsBall(hitboxes.get(hitbox), entity);
 				physicsC.pos.set(x,y);
+				entityHitsBall(hitboxes.get(hitbox), entity);
 				return true;
 			}
 		}
@@ -121,8 +120,8 @@ public class BallSystem extends IteratingSystem
 		}
 
 //				System.out.println("hi");
-		e1HitboxC.behavior.onHit(entity, ball, isSmash);
-		e2BallC.behavior.onGetHit(ball, entity, isSmash);
+		e1HitboxC.behavior.onHit(entity, ball, isSmash, getEngine());
+		e2BallC.behavior.onGetHit(ball, entity, isSmash, getEngine());
 	}
 
 	private void ballHitsEntity(Entity entity, Entity ball)
@@ -130,7 +129,7 @@ public class BallSystem extends IteratingSystem
 		HitboxComponent e1HitboxC = entity.getComponent(HitboxComponent.class);
 		BallComponent e2BallC = ball.getComponent(BallComponent.class);
 
-		e1HitboxC.behavior.onGetHit(entity, ball, false);
-		e2BallC.behavior.onHit(ball, entity, false);
+		e1HitboxC.behavior.onGetHit(entity, ball, false, getEngine());
+		e2BallC.behavior.onHit(ball, entity, false, getEngine());
 	}
 }

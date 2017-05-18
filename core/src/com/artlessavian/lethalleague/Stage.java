@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public class Stage
 {
+	// TODO: I wonder if this can be static and lazy?
+
 	public Rectangle bounds;
 	Sprite sprite;
 	Sprite background;
@@ -26,6 +28,7 @@ public class Stage
 		sprite.setPosition(bounds.x, bounds.y);
 
 		background = new Sprite(new Texture("awwye.png"));
+//		background = new Sprite(new Texture("windows_xp_bliss-wide.jpg"));
 		background.setCenter(0,720/2f);
 	}
 

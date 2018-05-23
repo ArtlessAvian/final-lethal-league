@@ -54,7 +54,16 @@ public class Player extends Entity
 
 		PhysicsComponent physicsC = new PhysicsComponent();
 		physicsC.collision.setSize(72, 144);
-		physicsC.pos.x = (float)(Math.random() * 1000 - 500);
+
+		if (playerInfo.number % 2 == 0)
+		{
+			physicsC.pos.x = -500;
+		}
+		else
+		{
+			physicsC.pos.x = 500;
+		}
+
 		physicsC.pos.y = 360;
 		this.add(physicsC);
 

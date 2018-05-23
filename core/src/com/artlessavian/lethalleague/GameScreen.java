@@ -28,7 +28,7 @@ public class GameScreen extends ScreenAdapter
 
 	public boolean isStocks = false;
 
-	public GameScreen(Maineroni main)
+	public GameScreen(Maineroni main, boolean ai)
 	{
 		this.main = main;
 
@@ -40,6 +40,7 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(new GameLogicSystem(main, this, isStocks));
 		engine.addSystem(new StateSystem());
 		engine.addSystem(new PhysicsSystem(stage));
+		engine.addSystem(new AntiBallStealSystem());
 		engine.addSystem(new HitboxCollisionSystem());
 		engine.addSystem(new BallSystem());
 //		engine.addSystem(new HitlagSystem());
@@ -55,12 +56,22 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(guiDrawSystem);
 		drawSystems[1] = guiDrawSystem;
 
-//		DebugDrawSystem debugDrawSystem = new DebugDrawSystem(main, this, drawSystem);
+//		DebugDrawSystem debugDrawSystem = new DebugDrawSDwystem(main, this, drawSystem);
 //		engine.addSystem(debugDrawSystem);
 //		drawSystems[2] = debugDrawSystem;
 
 		// Player/Ball Factories
-		p1 = new PlayerInfo(Player.class, main.getInput(0), 0, 0);
+
+		if (!ai)
+		{
+			p1 = new PlayerInfo(Player.class, main.getInput(0), 0, 0);
+		}
+		else
+		{
+			p1 = new PlayerInfo(Player.class, RandomInput.inputs, 0, 0);
+			RandomInput.game = this;
+			RandomInput.me = p1;
+		}
 		p2 = new PlayerInfo(Player.class, main.getInput(1), 1, 1);
 		ball = new BallInfo(drawSystem);
 
@@ -76,6 +87,8 @@ public class GameScreen extends ScreenAdapter
 
 	public void render(float delta)
 	{
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {main.setScreen(new TitleScreen(main));}
+
 		// TODO: Remove me!
 		if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {timeStop = !timeStop;}
 		if (!timeStop || Gdx.input.isKeyJustPressed(Input.Keys.EQUALS))

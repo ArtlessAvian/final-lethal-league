@@ -269,13 +269,17 @@ public class Ball extends Entity
 				SpriteComponent particleSpriteC = p.getComponent(SpriteComponent.class);
 				GameScreen.engine.addEntity(p);
 				particlePhysicsC.vel.set(500, 0);
+				particlePhysicsC.vel.scl((float)(Math.random() * 0.2 + 0.9));
 				particlePhysicsC.vel.setAngle((float)(Math.random() * 90 + 45));
 				particlePhysicsC.passiveGravity = 1000;
-				particleSpriteC.passiveSpin = (float)(Math.random() * 8 - 4);
-				particleSpriteC.sprite.setScale(1/4f);
+				particleSpriteC.sprite.setScale(1/2f);
 				if (isSmash)
 				{
-					particleSpriteC.passiveSpin *= 4;
+					particleSpriteC.passiveSpin = (float)(Math.random() * 16 + 20);
+				}
+				else
+				{
+					particleSpriteC.passiveSpin = (float)(Math.random() * 8 - 4);
 				}
 			}
 

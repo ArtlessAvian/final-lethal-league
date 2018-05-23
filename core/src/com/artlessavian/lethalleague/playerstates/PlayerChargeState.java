@@ -1,12 +1,12 @@
+/*
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
-import com.artlessavian.lethalleague.StateMachine;
-import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class PlayerChargeState implements State
+public class PlayerChargeState extends State
 {
 	Player player;
 
@@ -28,7 +28,7 @@ public class PlayerChargeState implements State
 	}
 
 	@Override
-	public boolean changeStateMaybe(StateMachine sm)
+	public boolean changeStateMaybe()
 	{
 		// TODO
 		return false;
@@ -41,4 +41,10 @@ public class PlayerChargeState implements State
 
 		// TODO
 	}
+
+	@Override
+	public void editSprite(Sprite sprite)
+	{
+	}
 }
+*/

@@ -1,14 +1,15 @@
 package com.artlessavian.lethalleague.playerstates;
 
 import com.artlessavian.lethalleague.State;
-import com.artlessavian.lethalleague.StateMachine;
-import com.artlessavian.lethalleague.ecs.components.InputComponent;
 import com.artlessavian.lethalleague.ecs.components.PhysicsComponent;
+import com.artlessavian.lethalleague.ecs.components.SpriteComponent;
 import com.artlessavian.lethalleague.ecs.entities.Player;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class PlayerJumpState implements State
+public class PlayerJumpState extends State
 {
 	Player player;
+	private boolean antiSwingSpam;
 
 	public PlayerJumpState(Player player)
 	{
@@ -18,19 +19,36 @@ public class PlayerJumpState implements State
 	@Override
 	public void exit()
 	{
-		// TODO
+		//DONE
 	}
 
 	@Override
 	public void enter()
 	{
-		// TODO
+		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+		physicsC.grounded = false;
+
+		if (player.input.swingPressed)
+		{
+			antiSwingSpam = true;
+		}
 	}
 
 	@Override
-	public boolean changeStateMaybe(StateMachine sm)
+	public boolean changeStateMaybe()
 	{
-		// TODO
+		if (player.input.swingPressed && !antiSwingSpam)
+		{
+			if (!(player.input.upPressed) && (player.input.downPressed || player.input.rightPressed || player.input.leftPressed))
+			{
+				sm.gotoState(PlayerSmashState.class);
+			}
+			else
+			{
+				sm.gotoState(PlayerSwingState.class);
+			}
+			return true;
+		}
 		return false;
 	}
 
@@ -39,6 +57,31 @@ public class PlayerJumpState implements State
 	{
 		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
 
-		// TODO
+		CommonPlayerFuncts.fall(player, physicsC);
+		CommonPlayerFuncts.fastfallCheck(player, physicsC);
+
+		CommonPlayerFuncts.changeDirection(player, physicsC);
+		CommonPlayerFuncts.horizontalInput(player, physicsC);
+		CommonPlayerFuncts.clampMovement(player, physicsC);
+
+		if (antiSwingSpam && !player.input.swingPressed) {antiSwingSpam = false;}
+	}
+
+	@Override
+	public void editSprite(Sprite sprite)
+	{
+		PhysicsComponent physicsC = player.getComponent(PhysicsComponent.class);
+		SpriteComponent spriteC = player.getComponent(SpriteComponent.class);
+		if (spriteC.usingTestSpriteSheet)
+		{
+			if (physicsC.vel.y < 0)
+			{
+				CommonPlayerFuncts.setUV(3, 0, sprite);
+			}
+			else
+			{
+				CommonPlayerFuncts.setUV(2, 0, sprite);
+			}
+		}
 	}
 }

@@ -1,28 +1,34 @@
 package com.artlessavian.lethalleague;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public class PlayerInput extends InputAdapter
 {
-	public boolean upPressed;
-	public boolean leftPressed;
-	public boolean downPressed;
-	public boolean rightPressed;
-
 	int upKeycode;
 	int leftKeycode;
 	int downKeycode;
 	int rightKeycode;
+	int swingKeycode;
+	int jumpKeycode;
 
-	public PlayerInput(int playerNumber)
+	boolean tapJump = true;
+
+	PlayerInputContainer inputs;
+
+	public PlayerInput(int playerNumber, PlayerInputContainer inputs)
 	{
+		this.inputs = inputs;
+
 		if (playerNumber == 0)
 		{
 			upKeycode = Input.Keys.UP;
 			leftKeycode = Input.Keys.LEFT;
 			downKeycode = Input.Keys.DOWN;
 			rightKeycode = Input.Keys.RIGHT;
+			swingKeycode = Input.Keys.SHIFT_RIGHT;
+			jumpKeycode = Input.Keys.SLASH;
 		}
 		else if (playerNumber == 1)
 		{
@@ -30,6 +36,9 @@ public class PlayerInput extends InputAdapter
 			leftKeycode = Input.Keys.A;
 			downKeycode = Input.Keys.S;
 			rightKeycode = Input.Keys.D;
+			swingKeycode = Input.Keys.J;
+			jumpKeycode = Input.Keys.SPACE;
+
 		}
 	}
 
@@ -38,23 +47,48 @@ public class PlayerInput extends InputAdapter
 	{
 		if (keycode == upKeycode)
 		{
-			System.out.println("hi");
-			upPressed = true;
+			inputs.upPressed = true;
+			inputs.upPressFrame = Gdx.graphics.getFrameId();
+			if (tapJump)
+			{
+				inputs.jumpPressed = true;
+				inputs.jumpPressFrame = Gdx.graphics.getFrameId();
+			}
+			return true;
+
 		}
 		if (keycode == leftKeycode)
 		{
-			leftPressed = true;
+			inputs.leftPressed = true;
+			inputs.leftPressFrame = Gdx.graphics.getFrameId();
+			return true;
 		}
 		if (keycode == downKeycode)
 		{
-			downPressed = true;
+			inputs.downPressed = true;
+			inputs.downPressFrame = Gdx.graphics.getFrameId();
+			return true;
 		}
 		if (keycode == rightKeycode)
 		{
-			rightPressed = true;
+			inputs.rightPressed = true;
+			inputs.rightPressFrame = Gdx.graphics.getFrameId();
+			return true;
+		}
+		if (keycode == swingKeycode)
+		{
+			inputs.swingPressed = true;
+			inputs.swingPressFrame = Gdx.graphics.getFrameId();
+			return true;
+		}
+		if (keycode == jumpKeycode)
+		{
+			inputs.jumpPressed = true;
+			inputs.jumpPressFrame = Gdx.graphics.getFrameId();
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override
@@ -62,21 +96,36 @@ public class PlayerInput extends InputAdapter
 	{
 		if (keycode == upKeycode)
 		{
-			upPressed = false;
+			inputs.upPressed = false;
+			if (tapJump) {inputs.jumpPressed = false;}
+			return true;
 		}
 		if (keycode == leftKeycode)
 		{
-			leftPressed = false;
+			inputs.leftPressed = false;
+			return true;
 		}
 		if (keycode == downKeycode)
 		{
-			downPressed = false;
+			inputs.downPressed = false;
+			return true;
 		}
 		if (keycode == rightKeycode)
 		{
-			rightPressed = false;
+			inputs.rightPressed = false;
+			return true;
+		}
+		if (keycode == swingKeycode)
+		{
+			inputs.swingPressed = false;
+			return true;
+		}
+		if (keycode == jumpKeycode)
+		{
+			inputs.jumpPressed = false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 }

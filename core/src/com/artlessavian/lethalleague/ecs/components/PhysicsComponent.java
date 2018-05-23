@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class PhysicsComponent implements Component
 {
-	public float passiveGravity = 10;
+	public float passiveGravity = 0;
 
 	public Vector2 pos;
 	public Vector2 vel;

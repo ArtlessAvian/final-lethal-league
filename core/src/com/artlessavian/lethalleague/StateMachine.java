@@ -3,10 +3,11 @@ package com.artlessavian.lethalleague;
 import java.util.HashMap;
 
 /**
- * A State Based Machine for arbitary usage
+ * A State Based Machine for arbitrary usage
  */
 public class StateMachine
 {
+	int runs = 0;
 	public State current = NullState.singleton;
 	private HashMap<Class<? extends State>, State> states;
 
@@ -18,6 +19,7 @@ public class StateMachine
 	public void addState(State state)
 	{
 		states.put(state.getClass(), state);
+		state.sm = this;
 	}
 
 	/**
@@ -29,18 +31,22 @@ public class StateMachine
 	public void addState(Class<? extends State> clazz, State state)
 	{
 		states.put(clazz, state);
+		state.sm = this;
 	}
 
 	public void gotoState(Class<? extends State> newState)
 	{
+		current.lastExit = runs;
 		current.exit();
 		current = states.get(newState);
 		current.enter();
+		current.lastEnter = runs;
 	}
 
 	public void run()
 	{
-		for (int i = 0; i < 10 && current.changeStateMaybe(this); i++) { }
+		for (int i = 0; i < 10 && current.changeStateMaybe(); i++) { }
 		current.doStuff();
+		runs++;
 	}
 }

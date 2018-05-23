@@ -1,15 +1,28 @@
 package com.artlessavian.lethalleague;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 /**
  * One object per state, reused by the same state machine
  */
-public interface State
+public abstract class State
 {
-	void exit();
+	long lastEnter;
+	long lastExit;
+	public StateMachine sm;
 
-	void enter();
+	public abstract void exit();
 
-	boolean changeStateMaybe(StateMachine sm);
+	public abstract void enter();
 
-	void doStuff();
+	public abstract boolean changeStateMaybe();
+
+	public abstract void doStuff();
+
+	public abstract void editSprite(Sprite sprite);
+
+	public long getTimeInState()
+	{
+		return sm.runs - lastEnter;
+	}
 }

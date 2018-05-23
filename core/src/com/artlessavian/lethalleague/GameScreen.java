@@ -2,27 +2,31 @@ package com.artlessavian.lethalleague;
 
 //import com.artlessavian.lethalleague.entities.Ball;
 
+import com.artlessavian.lethalleague.ecs.entities.Particle;
 import com.artlessavian.lethalleague.ecs.entities.Player;
-import com.artlessavian.lethalleague.ecs.systems.DrawSystem;
-import com.artlessavian.lethalleague.ecs.systems.PhysicsSystem;
-import com.artlessavian.lethalleague.ecs.systems.StateSystem;
+import com.artlessavian.lethalleague.ecs.systems.*;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 
 public class GameScreen extends ScreenAdapter
 {
-	Maineroni main;
+	static final float deltaTime = 1/60f;
 
-	Engine engine;
+	public Maineroni main;
+
+	public static Engine engine;
 	EntitySystem[] drawSystems;
 
 	public Stage stage;
 
-	Player p1;
-	Player p2;
-//	Ball ball;
-//	Stage stage;
+	public PlayerInfo p1;
+	public PlayerInfo p2;
+	public BallInfo ball;
+
+	public boolean isStocks = false;
 
 	public GameScreen(Maineroni main)
 	{
@@ -30,31 +34,85 @@ public class GameScreen extends ScreenAdapter
 
 		this.stage = new Stage();
 
+		// Engine and all Systems
 		engine = new Engine();
+		engine.addSystem(new TimersSystem());
+		engine.addSystem(new GameLogicSystem(main, this, isStocks));
 		engine.addSystem(new StateSystem());
 		engine.addSystem(new PhysicsSystem(stage));
+		engine.addSystem(new HitboxCollisionSystem());
+		engine.addSystem(new BallSystem());
+//		engine.addSystem(new HitlagSystem());
+		engine.addSystem(new RemoveSystem());
 
-		drawSystems = new EntitySystem[1];
+		// Drawing Systems
+		drawSystems = new EntitySystem[2];
 		DrawSystem drawSystem = new DrawSystem(main, this);
 		engine.addSystem(drawSystem);
 		drawSystems[0] = drawSystem;
 
-		p1 = new Player(main.getInput(0));
-//		p1.vel.add(2, 2);
-//		p2 = new Player(main.getInput(1));
-//		ball = new Ball();
-//		stage = new Stage();
+		GUIDrawSystem guiDrawSystem = new GUIDrawSystem(main, this);
+		engine.addSystem(guiDrawSystem);
+		drawSystems[1] = guiDrawSystem;
 
-		engine.addEntity(p1);
+//		DebugDrawSystem debugDrawSystem = new DebugDrawSystem(main, this, drawSystem);
+//		engine.addSystem(debugDrawSystem);
+//		drawSystems[2] = debugDrawSystem;
+
+		// Player/Ball Factories
+		p1 = new PlayerInfo(Player.class, main.getInput(0), 0, 0);
+		p2 = new PlayerInfo(Player.class, main.getInput(1), 1, 1);
+		ball = new BallInfo(drawSystem);
+
+		engine.addEntity(p1.spawn());
+		engine.addEntity(p2.spawn());
+		engine.addEntity(ball.spawn());
 	}
 
+	public int engineRuns = 0;
 	float rollover = 0;
+	boolean timeStop = false;
+	float timeScale = 1/1f;
 
 	public void render(float delta)
 	{
-		rollover += delta;
-		for (; rollover > 0; rollover -= 1 / 60f) {engine.update(0);}
+		// TODO: Remove me!
+		if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {timeStop = !timeStop;}
+		if (!timeStop || Gdx.input.isKeyJustPressed(Input.Keys.EQUALS))
+		{
+			rollover += delta * timeScale;
+		}
 
-		for (EntitySystem sys : drawSystems) {sys.update(0);}
+		for (; rollover > 0; rollover -= deltaTime)
+		{
+			RandomInput.lmao();
+			engineRuns++;
+			engine.update(deltaTime);
+		}
+
+//		System.out.println(rollover / deltaTime + 1);
+		for (EntitySystem sys : drawSystems) {sys.update(rollover / deltaTime + 1f);}
 	}
+
+	public static void makePoof(float x, float y)
+	{
+		for (int i = 0; i < 50; i++)
+		{
+			engine.addEntity(new Particle(
+				x + (float)Math.random() * 10 - 5,
+				y + (float)Math.random() * 10 - 5,
+				Particle.ParticleThing.poof, (int)(Math.random() * 10) + 10
+			));
+		}
+	}
+
+//	public boolean isRoundOver()
+//	{
+//		int count = 0;
+//		if (p1.getComponent(RemoveComponent.class) != null) {count++;}
+//		if (p2.getComponent(RemoveComponent.class) != null) {count++;}
+//		if (p3.getComponent(RemoveComponent.class) != null) {count++;}
+//
+//		return count == 1;
+//	}
 }

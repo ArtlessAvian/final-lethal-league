@@ -6,15 +6,18 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Maineroni extends Game
 {
 	public SpriteBatch batch;
-	BitmapFont font;
-	OrthographicCamera screenSpace;
+	public BitmapFont font;
+	public GlyphLayout layout;
+	public OrthographicCamera screenSpace;
 
-	PlayerInput[] inputs;
+	PlayerInputContainer[] inputs;
+	PlayerInput[] processors;
 	InputMultiplexer allInputs;
 
 	@Override
@@ -27,26 +30,27 @@ public class Maineroni extends Game
 		screenSpace.update();
 
 		font = new BitmapFont();
+		layout = new GlyphLayout(font, "");
 
 		allInputs = new InputMultiplexer();
-		inputs = new PlayerInput[2];
-		inputs[0] = new PlayerInput(0);
-		inputs[1] = new PlayerInput(1);
+		inputs = new PlayerInputContainer[2];
+		inputs[0] = new PlayerInputContainer();
+		inputs[1] = new PlayerInputContainer();
+		processors = new PlayerInput[2];
+		processors[0] = new PlayerInput(0, inputs[0]);
+		processors[1] = new PlayerInput(1, inputs[1]);
 
-		for (PlayerInput p : inputs)
-		{
-			allInputs.addProcessor(p);
-		}
-
+		allInputs.addProcessor(processors[0]);
+		allInputs.addProcessor(processors[1]);
 		Gdx.input.setInputProcessor(allInputs);
 
-		this.setScreen(new GameScreen(this));
+		this.setScreen(new TitleScreen(this));
 	}
 
 	@Override
 	public void render()
 	{
-		Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1);
+		Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
@@ -67,7 +71,7 @@ public class Maineroni extends Game
 		font.dispose();
 	}
 
-	public PlayerInput getInput(int id)
+	public PlayerInputContainer getInput(int id)
 	{
 		return inputs[id];
 	}

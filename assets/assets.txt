@@ -1,0 +1,41 @@
+d:assets:0:application/unknown
+i:awwye.png:232916:image/png
+i:badlogic.jpg:68465:image/jpeg
+i:bottom gui.png:1990:image/png
+i:butts.png:57504:image/png
+i:circle.png:1368:image/png
+d:creation tools:0:application/unknown
+i:creation tools/sample.png:196617:image/png
+i:creation tools/sprite guideline.png:543:image/png
+b:creation tools/sprite guideline.xcf:6411:application/unknown
+i:creation tools/spritesheet guideline not rainbowy.png:83305:image/png
+i:creation tools/spritesheet guideline.png:379996:image/png
+b:creation tools/spritesheet guideline.xcf:669902:application/unknown
+i:grid.png:274:image/png
+i:not_a_trace.png:5746:image/png
+i:playerindicator.png:9658:image/png
+i:poof.png:654:image/png
+d:sound:0:application/unknown
+a:sound/kill.wav:320788:audio/x-wav
+a:sound/medium_hit.wav:220012:audio/x-wav
+a:sound/medium_smash.wav:246336:audio/x-wav
+a:sound/strong_hit.wav:465340:audio/x-wav
+a:sound/strong_smash.wav:772952:audio/x-wav
+a:sound/swing.wav:30004:audio/x-wav
+a:sound/wall_bounce.wav:53956:audio/x-wav
+a:sound/weak_hit.wav:69320:audio/x-wav
+a:sound/weak_smash.wav:112592:audio/x-wav
+i:spritesheet test.png:380060:image/png
+b:spritesheet test.xcf:2218388:application/unknown
+i:star.png:1878:image/png
+i:teststage.png:6465:image/png
+i:white.png:169:image/png
+i:windows_xp_bliss-wide.jpg:1050208:image/jpeg
+t:com/badlogic/gdx/graphics/g3d/particles/particles.fragment.glsl:859:application/unknown
+t:com/badlogic/gdx/graphics/g3d/particles/particles.vertex.glsl:2996:application/unknown
+t:com/badlogic/gdx/graphics/g3d/shaders/default.fragment.glsl:5350:application/unknown
+t:com/badlogic/gdx/graphics/g3d/shaders/default.vertex.glsl:9159:application/unknown
+t:com/badlogic/gdx/graphics/g3d/shaders/depth.fragment.glsl:904:application/unknown
+t:com/badlogic/gdx/graphics/g3d/shaders/depth.vertex.glsl:3056:application/unknown
+t:com/badlogic/gdx/utils/arial-15.fnt:21743:application/unknown
+i:com/badlogic/gdx/utils/arial-15.png:21814:image/png

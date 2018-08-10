@@ -2,7 +2,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
-import com.artlessavian.lethalleague.TimeLogger;
+
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -49,7 +49,7 @@ public class GUIDrawSystem extends EntitySystem
 	@Override
 	public void update(float rollover)
 	{
-		TimeLogger.logIn();
+		
 
 		main.batch.setProjectionMatrix(main.screenSpace.combined);
 
@@ -137,6 +137,6 @@ public class GUIDrawSystem extends EntitySystem
 
 		main.font.getData().setScale(1);
 
-		TimeLogger.logOut("GUIDrawSystem");
+		;
 	}
 }

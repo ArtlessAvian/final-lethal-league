@@ -12,7 +12,7 @@ public class PlayerInfo
 {
 	public Texture texture;
 
-	Constructor playerConstructor;
+	// Constructor playerConstructor;
 	public PlayerInputContainer inputs;
 	public int number;
 	public int team;
@@ -21,16 +21,16 @@ public class PlayerInfo
 
 	Player instance;
 
-	PlayerInfo(Class<? extends Player> playerClass, PlayerInputContainer inputs, int number, int team)
+	PlayerInfo(Object playerClass, PlayerInputContainer inputs, int number, int team)
 	{
-		try
-		{
-			this.playerConstructor = playerClass.getConstructor(PlayerInfo.class);
-		}
-		catch (NoSuchMethodException e)
-		{
-			e.printStackTrace();
-		}
+		// try
+		// {
+		// 	this.playerConstructor = playerClass.getConstructor(PlayerInfo.class);
+		// }
+		// catch (NoSuchMethodException e)
+		// {
+		// 	e.printStackTrace();
+		// }
 		this.inputs = inputs;
 		this.team = team;
 		this.number = number;
@@ -40,28 +40,30 @@ public class PlayerInfo
 
 	public Player spawn()
 	{
-		try
-		{
-			TimeLogger.logIn();
-			instance = (Player)playerConstructor.newInstance(this);
-			TimeLogger.logOut("PlayerInit");
-			return instance;
-		}
-		catch (IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
-		catch (InstantiationException e)
-		{
-			e.printStackTrace();
-		}
-		catch (InvocationTargetException e)
-		{
-			e.printStackTrace();
-		}
+		instance = new Player(this);
 
-		// if this happens, i will die internally
-		return null;
+		// try
+		// {
+			
+		// 	instance = (Player)playerConstructor.newInstance(this);
+		// 	;
+			return instance;
+		// }
+		// catch (IllegalAccessException e)
+		// {
+		// 	e.printStackTrace();
+		// }
+		// catch (InstantiationException e)
+		// {
+		// 	e.printStackTrace();
+		// }
+		// catch (InvocationTargetException e)
+		// {
+		// 	e.printStackTrace();
+		// }
+
+		// // if this happens, i will die internally
+		// return null;
 	}
 
 	public boolean isDead()

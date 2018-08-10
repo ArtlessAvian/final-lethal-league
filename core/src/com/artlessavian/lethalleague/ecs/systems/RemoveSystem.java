@@ -2,7 +2,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
-import com.artlessavian.lethalleague.TimeLogger;
+
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -30,7 +30,7 @@ public class RemoveSystem extends EntitySystem
 	{
 		if (entities.size() == 0) {return;}
 
-		TimeLogger.logIn();
+		
 
 		tempStorage.clear();
 		for (Entity entity : entities)
@@ -48,6 +48,6 @@ public class RemoveSystem extends EntitySystem
 		}
 		tempStorage.clear();
 
-		TimeLogger.logOut("RemoveSystem");
+		;
 	}
 }

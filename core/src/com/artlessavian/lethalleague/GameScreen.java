@@ -40,7 +40,7 @@ public class GameScreen extends ScreenAdapter
 		engine.addSystem(new GameLogicSystem(main, this, isStocks));
 		engine.addSystem(new StateSystem());
 		engine.addSystem(new PhysicsSystem(stage));
-		engine.addSystem(new AntiBallStealSystem());
+		// engine.addSystem(new AntiBallStealSystem());
 		engine.addSystem(new HitboxCollisionSystem());
 		engine.addSystem(new BallSystem());
 //		engine.addSystem(new HitlagSystem());

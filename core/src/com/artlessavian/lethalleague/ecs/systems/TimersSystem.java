@@ -1,6 +1,6 @@
 package com.artlessavian.lethalleague.ecs.systems;
 
-import com.artlessavian.lethalleague.TimeLogger;
+
 import com.artlessavian.lethalleague.ecs.components.BallComponent;
 import com.artlessavian.lethalleague.ecs.components.HitboxComponent;
 import com.artlessavian.lethalleague.ecs.components.HitlagComponent;
@@ -24,9 +24,9 @@ public class TimersSystem extends IteratingSystem
 	@Override
 	public void update(float delta)
 	{
-		TimeLogger.logIn();
+		
 		super.update(delta);
-		TimeLogger.logOut("TimerSystem");
+		;
 	}
 
 	@Override

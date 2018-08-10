@@ -2,7 +2,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
-import com.artlessavian.lethalleague.TimeLogger;
+
 import com.artlessavian.lethalleague.ecs.components.*;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -60,7 +60,7 @@ public class DrawSystem extends EntitySystem
 	@Override
 	public void update(float rollover)
 	{
-		TimeLogger.logIn();
+		
 
 		cam.position.x = 0;
 		cam.position.y = cam.viewportHeight / 2f;
@@ -151,6 +151,6 @@ public class DrawSystem extends EntitySystem
 			spriteC.sprite.draw(main.batch);
 		}
 
-		TimeLogger.logOut("DrawSystem");
+		;
 	}
 }

@@ -2,7 +2,7 @@ package com.artlessavian.lethalleague.ecs.systems;
 
 import com.artlessavian.lethalleague.GameScreen;
 import com.artlessavian.lethalleague.Maineroni;
-import com.artlessavian.lethalleague.TimeLogger;
+
 import com.artlessavian.lethalleague.TitleScreen;
 import com.artlessavian.lethalleague.ecs.components.PlayerComponent;
 import com.artlessavian.lethalleague.ecs.components.RemoveComponent;
@@ -38,7 +38,7 @@ public class GameLogicSystem extends EntitySystem
 	@Override
 	public void update(float delta)
 	{
-		TimeLogger.logIn();
+		
 
 		if (isInbetweenRounds)
 		{
@@ -78,7 +78,7 @@ public class GameLogicSystem extends EntitySystem
 			}
 		}
 
-		TimeLogger.logOut("GameLogicSystem");
+		;
 	}
 
 	private boolean isGameOver()
